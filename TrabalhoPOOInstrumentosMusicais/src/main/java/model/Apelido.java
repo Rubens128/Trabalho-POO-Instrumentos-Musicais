@@ -8,15 +8,13 @@ package model;
  *
  * @author predrim
  */
-public class InstrumentoUsaAfinacao {
+public class Apelido {
     private long instrumentoId;
-    private long afinacaoId;
-    private String contexto;
+    private String apelido;
     
-    public InstrumentoUsaAfinacao(long instrumentoId, long afinacaoId, String contexto) {
+    public Apelido (long instrumentoId, String apelido) {
         this.instrumentoId = instrumentoId;
-        this.afinacaoId = afinacaoId;
-        this.contexto = contexto;
+        this.apelido = apelido;
     }
     
     // Getters e Setters
@@ -28,19 +26,12 @@ public class InstrumentoUsaAfinacao {
         this.instrumentoId = instrumentoId;
     }
     
-    public long getAfinacaoId() {
-        return afinacaoId;
+    public String getApelidos() {
+        return apelido;
     }
-
-    public void setAfinacaoId(long afinacaoId) {
-        this.afinacaoId = afinacaoId;
+    
+    public void setApelidos(String apelido) {
+        this.apelido = apelido;
     }
-
-    public String getContexto() {
-        return contexto;
-    }
-
-    public void setContexto(String contexto) {
-        this.contexto = contexto;
-    }
+    
 }

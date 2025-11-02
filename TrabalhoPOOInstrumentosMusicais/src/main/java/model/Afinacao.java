@@ -29,16 +29,16 @@ public class Afinacao {
         return id;
     }
     
-    public void setId(long novoId) {
-        this.id = novoId;
+    public void setId(long Id) {
+        this.id = Id;
     }
     
     public String getNome() {
         return nome;
     }
     
-    public void setNome(String novoNome) {
-        this.nome = novoNome;
+    public void setNome(String Nome) {
+        this.nome = Nome;
     }
     
     public String getDescricao() {
@@ -61,8 +61,8 @@ public class Afinacao {
         return contextoAfinacao;
     }
     
-    public void setContextoAfinacao(String novoContextoAfinacao) {
-        this.contextoAfinacao = novoContextoAfinacao;
+    public void setContextoAfinacao(String ContextoAfinacao) {
+        this.contextoAfinacao = ContextoAfinacao;
     }
     
     

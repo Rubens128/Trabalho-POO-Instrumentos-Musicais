@@ -27,16 +27,16 @@ public class AlcanceInstrumento {
         return instrumentoId;
     }
     
-    public void setInstrumentoId(long novoInstrumentoId) {
-        this.instrumentoId = novoInstrumentoId;
+    public void setInstrumentoId(long instrumentoId) {
+        this.instrumentoId = instrumentoId;
     } 
     
     public String getTipo() {
         return tipo;
     }
     
-    public void setTipo(String novoTipo) {
-        this.tipo = novoTipo;
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
     
     public String getNotaMin() {

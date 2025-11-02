@@ -19,7 +19,6 @@ public class Instrumento {
     private String classificacaoSonoridade;
     private FamiliaInstrumento familiaInstrumento;
     private AlcanceInstrumento alcanceInstrumento;
-    private ArrayList<String> apelidos;
     private ArrayList<Audio> audios;
     private ArrayList<ParteEMaterial> partesEMateriais;
     private ArrayList<Afinacao> afinacoes;
@@ -33,7 +32,6 @@ public class Instrumento {
         this.classificacaoSonoridade = builder.classificacaoSonoridade;
         this.familiaInstrumento = builder.familiaInstrumento;
         this.alcanceInstrumento = builder.alcanceInstrumento;
-        this.apelidos = builder.apelidos;
         this.audios = builder.audios;
         this.partesEMateriais = builder.partesEMateriais;
         this.afinacoes = builder.afinacoes;
@@ -70,10 +68,6 @@ public class Instrumento {
 
     public AlcanceInstrumento getAlcanceInstrumento() {
         return alcanceInstrumento;
-    }
-
-    public ArrayList<String> getApelidos() {
-        return apelidos;
     }
 
     public ArrayList<Audio> getAudios() {
@@ -121,10 +115,6 @@ public class Instrumento {
         this.alcanceInstrumento = alcanceInstrumento;
     }
 
-    public void setApelidos(ArrayList<String> apelidos) {
-        this.apelidos = apelidos;
-    }
-
     public void setAudios(ArrayList<Audio> audios) {
         this.audios = audios;
     }
@@ -139,14 +129,6 @@ public class Instrumento {
     
     // Métodos de Ajuda para Listas
     
-    // Apelidos
-    public void adicionarApelido(String apelido) {
-        if (this.apelidos == null) {
-            this.apelidos = new ArrayList<>();
-        }
-        this.apelidos.add(apelido);
-    }
-
     // Audios
     public void adicionarAudio(Audio audio) {
         if (this.audios == null) {
@@ -186,8 +168,7 @@ public class Instrumento {
         private String historia = null;
         private FamiliaInstrumento familiaInstrumento = null;
         private AlcanceInstrumento alcanceInstrumento = null;
-        private ArrayList<String> apelidos = new ArrayList<>(); // Inicializa listas
-        private ArrayList<Audio> audios = new ArrayList<>();
+        private ArrayList<Audio> audios = new ArrayList<>(); // Inicializa listas
         private ArrayList<ParteEMaterial> partesEMateriais = new ArrayList<>();
         private ArrayList<Afinacao> afinacoes = new ArrayList<>();
 
@@ -221,13 +202,8 @@ public class Instrumento {
         }
         
         // Métodos para listas opcionais
-        public T apelidos(ArrayList<String> val) {
-            this.apelidos = new ArrayList<>(val); // Copia a lista
-            return (T) this;
-        }
-        
         public T audios(ArrayList<Audio> val) {
-            this.audios = new ArrayList<>(val);
+            this.audios = new ArrayList<>(val); // Copia a lista
             return (T) this;
         }
         

@@ -30,16 +30,16 @@ public class FamiliaInstrumento {
         return id;
     }
     
-    public void setId(long novoId) {
-        this.id = novoId;
+    public void setId(long id) {
+        this.id = id;
     }
     
     public String getNome() {
         return nome;
     }
     
-    public void setNome(String novoNome) {
-        this.nome = novoNome;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
     
     public String getDescricao() {
