@@ -11,16 +11,29 @@ package view;
 public class InterfaceInputPadrao extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(InterfaceInputPadrao.class.getName());
-
+    
+    private boolean unicaTela;
     /**
      * Creates new form InterfaceInputPadrão
      * 
      * @param titulo serve para mostrar o titulo da interface
      */
-    public InterfaceInputPadrao(String titulo) {
+    public InterfaceInputPadrao(String titulo, boolean unicaTela, boolean editar) {
         initComponents();
         
         Titulo.setText(titulo);
+        
+        if(editar){
+            
+            SubTitulo.setText("Não digitar nada mantém o valor atual");
+            
+            Descricao.setText("Descrição:");
+            Referencia.setText("Referência:");
+            
+        }else{
+            
+            SubTitulo.setVisible(false);
+        }
         
         if(!titulo.equals("Afinação")){
             
@@ -30,6 +43,10 @@ public class InterfaceInputPadrao extends javax.swing.JFrame {
             Referencia.setVisible(false);
             InputReferencia.setVisible(false);
         }
+        
+        this.unicaTela = unicaTela;
+        
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -52,6 +69,7 @@ public class InterfaceInputPadrao extends javax.swing.JFrame {
         InputReferencia = new javax.swing.JTextField();
         BotaoRegistrar = new javax.swing.JButton();
         BotaoCancelar = new javax.swing.JButton();
+        SubTitulo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -96,7 +114,7 @@ public class InterfaceInputPadrao extends javax.swing.JFrame {
 
         Referencia.setFont(new java.awt.Font("Segoe UI", 1, 32)); // NOI18N
         Referencia.setForeground(java.awt.Color.white);
-        Referencia.setText("Referencia(opcional):");
+        Referencia.setText("Referência(opcional):");
         Referencia.setToolTipText("");
 
         InputReferencia.setBackground(new java.awt.Color(11, 27, 70));
@@ -129,6 +147,15 @@ public class InterfaceInputPadrao extends javax.swing.JFrame {
         BotaoCancelar.setBorderPainted(false);
         BotaoCancelar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         BotaoCancelar.setPreferredSize(new java.awt.Dimension(180, 50));
+        BotaoCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BotaoCancelarActionPerformed(evt);
+            }
+        });
+
+        SubTitulo.setFont(new java.awt.Font("Segoe UI", 1, 25)); // NOI18N
+        SubTitulo.setForeground(java.awt.Color.white);
+        SubTitulo.setText("Titulo");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -136,18 +163,20 @@ public class InterfaceInputPadrao extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(37, 37, 37)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(InputReferencia)
-                    .addComponent(Nome, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 572, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ScrollDescricao, javax.swing.GroupLayout.DEFAULT_SIZE, 610, Short.MAX_VALUE)
-                    .addComponent(Referencia)
-                    .addComponent(Descricao)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(BotaoCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(BotaoRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(InputNome))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(SubTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 572, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(InputReferencia)
+                        .addComponent(Nome, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(Titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 572, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(ScrollDescricao, javax.swing.GroupLayout.DEFAULT_SIZE, 610, Short.MAX_VALUE)
+                        .addComponent(Referencia)
+                        .addComponent(Descricao)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                            .addComponent(BotaoCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(BotaoRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(InputNome)))
                 .addContainerGap(33, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -155,19 +184,21 @@ public class InterfaceInputPadrao extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addComponent(Titulo)
-                .addGap(31, 31, 31)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(SubTitulo)
+                .addGap(18, 18, 18)
                 .addComponent(Nome, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(InputNome, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(37, 37, 37)
+                .addGap(18, 18, 18)
                 .addComponent(Descricao, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(ScrollDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33)
+                .addGap(18, 18, 18)
                 .addComponent(Referencia, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(InputReferencia, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(BotaoCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(BotaoRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -200,6 +231,17 @@ public class InterfaceInputPadrao extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_BotaoRegistrarActionPerformed
 
+    private void BotaoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotaoCancelarActionPerformed
+        
+        this.dispose();
+        
+        if(!unicaTela) return;
+        
+        TelaInstrumentos telaInstrumento = new TelaInstrumentos();
+        
+        telaInstrumento.setVisible(true);
+    }//GEN-LAST:event_BotaoCancelarActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BotaoCancelar;
     private javax.swing.JButton BotaoRegistrar;
@@ -210,6 +252,7 @@ public class InterfaceInputPadrao extends javax.swing.JFrame {
     private javax.swing.JLabel Nome;
     private javax.swing.JLabel Referencia;
     private javax.swing.JScrollPane ScrollDescricao;
+    private javax.swing.JLabel SubTitulo;
     private javax.swing.JLabel Titulo;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables

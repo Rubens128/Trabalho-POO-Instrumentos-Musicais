@@ -21,14 +21,35 @@ import javax.swing.ImageIcon;
 public class InterfaceInputAudio extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(InterfaceInputAudio.class.getName());
-
+    
+    private InterfaceInputPadrao telaInputTecnica;
+    private InterfaceInputPadrao telaInputFamiliaID;
+    private TelaListarPadrao telaListarTecnica, telaListarInstrumento;
+    
+    private boolean unicaTela;
+    
     /**
      * Creates new form InterfaceInputAudio
      */
-    public InterfaceInputAudio() {
+    public InterfaceInputAudio(boolean unicaTela, boolean editar) {
         initComponents();
         
+        if(editar){
+            
+            TituloPagina.setText("Áudio" + " (Não digitar nada mantém o valor atual):");
+            
+            Descricao.setText("Descrição:");
+            Bpm.setText("BPM:");
+            Tecnica.setText("Técnica:");
+            Instrumento_ID.setText("Instrumento_ID:");
+            Creditos_Gravacao.setText("Créditos_Gravação");
+        }
+        
         AudioDrop.setTransferHandler(new ReceberArquivo());
+        
+        setLocationRelativeTo(null);
+        
+        this.unicaTela = unicaTela;
     }
     
     public class ReceberArquivo extends TransferHandler{
@@ -132,12 +153,16 @@ public class InterfaceInputAudio extends javax.swing.JFrame {
         Icone = new javax.swing.JButton();
         InstrucaoArquivo = new javax.swing.JLabel();
         ExtensoesArquivo = new javax.swing.JLabel();
-        Bpm1 = new javax.swing.JLabel();
+        Tecnica = new javax.swing.JLabel();
         InputBpm1 = new javax.swing.JTextField();
         AdicionarTecnica = new javax.swing.JButton();
         ListarTecnica = new javax.swing.JButton();
         BotaoRegistrar = new javax.swing.JButton();
         BotaoCancelar = new javax.swing.JButton();
+        Instrumento_ID = new javax.swing.JLabel();
+        AdicionarInstrumentoID = new javax.swing.JButton();
+        ListarInstrumentoID = new javax.swing.JButton();
+        InputBpm2 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1230, 843));
@@ -304,10 +329,10 @@ public class InterfaceInputAudio extends javax.swing.JFrame {
                 .addContainerGap(14, Short.MAX_VALUE))
         );
 
-        Bpm1.setFont(new java.awt.Font("Segoe UI", 1, 32)); // NOI18N
-        Bpm1.setForeground(java.awt.Color.white);
-        Bpm1.setText("Tecnica(opcional):");
-        Bpm1.setToolTipText("");
+        Tecnica.setFont(new java.awt.Font("Segoe UI", 1, 32)); // NOI18N
+        Tecnica.setForeground(java.awt.Color.white);
+        Tecnica.setText("Tecnica(opcional):");
+        Tecnica.setToolTipText("");
 
         InputBpm1.setBackground(new java.awt.Color(11, 27, 70));
         InputBpm1.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
@@ -328,6 +353,11 @@ public class InterfaceInputAudio extends javax.swing.JFrame {
         AdicionarTecnica.setContentAreaFilled(false);
         AdicionarTecnica.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         AdicionarTecnica.setFocusPainted(false);
+        AdicionarTecnica.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AdicionarTecnicaActionPerformed(evt);
+            }
+        });
 
         ListarTecnica.setBackground(new java.awt.Color(11, 27, 58));
         ListarTecnica.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/list_32px.png"))); // NOI18N
@@ -356,6 +386,54 @@ public class InterfaceInputAudio extends javax.swing.JFrame {
         BotaoCancelar.setBorderPainted(false);
         BotaoCancelar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         BotaoCancelar.setPreferredSize(new java.awt.Dimension(180, 50));
+        BotaoCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BotaoCancelarActionPerformed(evt);
+            }
+        });
+
+        Instrumento_ID.setFont(new java.awt.Font("Segoe UI", 1, 32)); // NOI18N
+        Instrumento_ID.setForeground(java.awt.Color.white);
+        Instrumento_ID.setText("Instrumento_id(opcional):");
+        Instrumento_ID.setToolTipText("");
+
+        AdicionarInstrumentoID.setBackground(new java.awt.Color(11, 27, 58));
+        AdicionarInstrumentoID.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/add_32px.png"))); // NOI18N
+        AdicionarInstrumentoID.setBorder(null);
+        AdicionarInstrumentoID.setBorderPainted(false);
+        AdicionarInstrumentoID.setContentAreaFilled(false);
+        AdicionarInstrumentoID.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        AdicionarInstrumentoID.setFocusPainted(false);
+        AdicionarInstrumentoID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AdicionarInstrumentoIDActionPerformed(evt);
+            }
+        });
+
+        ListarInstrumentoID.setBackground(new java.awt.Color(11, 27, 58));
+        ListarInstrumentoID.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/list_32px.png"))); // NOI18N
+        ListarInstrumentoID.setBorder(null);
+        ListarInstrumentoID.setBorderPainted(false);
+        ListarInstrumentoID.setContentAreaFilled(false);
+        ListarInstrumentoID.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        ListarInstrumentoID.setFocusPainted(false);
+        ListarInstrumentoID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ListarInstrumentoIDActionPerformed(evt);
+            }
+        });
+
+        InputBpm2.setBackground(new java.awt.Color(11, 27, 70));
+        InputBpm2.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        InputBpm2.setForeground(java.awt.Color.white);
+        InputBpm2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 3, true));
+        InputBpm2.setCaretColor(java.awt.Color.white);
+        InputBpm2.setPreferredSize(new java.awt.Dimension(610, 27));
+        InputBpm2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                InputBpm2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -364,51 +442,55 @@ public class InterfaceInputAudio extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(37, 37, 37)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(InputTitutlo, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(ScrollDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(39, 39, 39))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(InputNota, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Bpm)
-                            .addComponent(InputBpm, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(InputOitava, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(Creditos_Gravacao))
-                            .addComponent(InputCreditos_Gravacao, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(39, 39, 39))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(TituloPagina, javax.swing.GroupLayout.PREFERRED_SIZE, 572, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                        .addComponent(Titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 441, Short.MAX_VALUE)
                         .addComponent(Descricao)
                         .addGap(283, 283, 283))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(Nota, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(Oitava, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(426, 426, 426))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(InputBpm1, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(Bpm1)
+                                .addComponent(Instrumento_ID)
                                 .addGap(18, 18, 18)
-                                .addComponent(AdicionarTecnica)
+                                .addComponent(AdicionarInstrumentoID)
                                 .addGap(18, 18, 18)
-                                .addComponent(ListarTecnica))
-                            .addComponent(InputBpm1, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(ListarInstrumentoID))
+                            .addComponent(InputBpm2, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(AudioDrop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(93, 93, 93)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(BotaoCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(BotaoRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(107, 107, 107))))
+                        .addGap(107, 107, 107))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(InputNota, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(Bpm)
+                                .addComponent(InputBpm, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(InputTitutlo, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(Nota, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(Tecnica)
+                                .addGap(18, 18, 18)
+                                .addComponent(AdicionarTecnica)
+                                .addGap(18, 18, 18)
+                                .addComponent(ListarTecnica)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(InputOitava, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(Creditos_Gravacao)
+                                .addComponent(Oitava, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(InputCreditos_Gravacao, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(ScrollDescricao, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(39, 39, 39))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(TituloPagina, javax.swing.GroupLayout.PREFERRED_SIZE, 1082, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -422,44 +504,56 @@ public class InterfaceInputAudio extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(106, 106, 106)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(Oitava)
-                            .addComponent(Nota, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(InputTitutlo, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(InputTitutlo, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(Nota, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(ScrollDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
                         .addComponent(InputNota, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(30, 30, 30)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(Bpm, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Creditos_Gravacao, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(InputBpm, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(InputCreditos_Gravacao, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(InputOitava, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(42, 42, 42)
+                        .addComponent(Bpm, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Oitava)
+                        .addGap(18, 18, 18)
+                        .addComponent(InputOitava, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Creditos_Gravacao, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(InputBpm, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(Bpm1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(ListarTecnica)
-                                .addComponent(AdicionarTecnica, javax.swing.GroupLayout.Alignment.TRAILING)))
-                        .addGap(18, 18, 18)
-                        .addComponent(InputBpm1, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(45, 45, 45)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(InputCreditos_Gravacao, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(87, 87, 87)
                         .addComponent(BotaoCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(BotaoRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(AudioDrop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(115, Short.MAX_VALUE))
+                        .addGap(33, 33, 33)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(Tecnica, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(ListarTecnica)
+                                .addComponent(AdicionarTecnica, javax.swing.GroupLayout.Alignment.TRAILING)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(35, 35, 35)
+                                .addComponent(AudioDrop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(InputBpm1, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(35, 35, 35)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(Instrumento_ID, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(ListarInstrumentoID)
+                                        .addComponent(AdicionarInstrumentoID, javax.swing.GroupLayout.Alignment.TRAILING)))
+                                .addGap(18, 18, 18)
+                                .addComponent(InputBpm2, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(113, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -507,57 +601,118 @@ public class InterfaceInputAudio extends javax.swing.JFrame {
     }//GEN-LAST:event_InputBpm1ActionPerformed
 
     private void ListarTecnicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ListarTecnicaActionPerformed
-        // TODO add your handling code here:
+        if(telaListarTecnica != null){
+            
+            if(!telaListarTecnica.isDisplayable()){
+                
+                telaListarTecnica = null;
+            }else{
+                
+                return;
+            }
+        }
+        
+        telaListarTecnica = new TelaListarPadrao("Técnica:");
+        
+        telaListarTecnica.setVisible(true);
     }//GEN-LAST:event_ListarTecnicaActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void BotaoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotaoCancelarActionPerformed
+        this.dispose();
+        
+        if(!unicaTela) return;
+        
+        if(telaInputTecnica != null) telaInputTecnica.dispose();
+        
+        TelaInstrumentos telaInstrumento = new TelaInstrumentos();
+        
+        telaInstrumento.setVisible(true);
+    }//GEN-LAST:event_BotaoCancelarActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new InterfaceInputAudio().setVisible(true));
-    }
+    private void AdicionarTecnicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AdicionarTecnicaActionPerformed
+        
+        if(telaInputTecnica != null){
+            
+            if(!telaInputTecnica.isDisplayable()){
+                
+                telaInputTecnica = null;
+            }else{
+                
+                return;
+            }
+        }
+        
+        telaInputTecnica = new InterfaceInputPadrao("Tecnica", false, false);
+            
+        telaInputTecnica.setVisible(true);
+    }//GEN-LAST:event_AdicionarTecnicaActionPerformed
+
+    private void ListarInstrumentoIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ListarInstrumentoIDActionPerformed
+        if(telaListarInstrumento != null){
+            
+            if(!telaListarInstrumento.isDisplayable()){
+                
+                telaListarInstrumento = null;
+            }else{
+                
+                return;
+            }
+        }
+        
+        telaListarInstrumento = new TelaListarPadrao("Instrumentos:");
+        
+        telaListarInstrumento.setVisible(true);
+    }//GEN-LAST:event_ListarInstrumentoIDActionPerformed
+
+    private void InputBpm2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InputBpm2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_InputBpm2ActionPerformed
+
+    private void AdicionarInstrumentoIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AdicionarInstrumentoIDActionPerformed
+        if(telaInputFamiliaID != null){
+            
+            if(!telaInputFamiliaID.isDisplayable()){
+                
+                telaInputFamiliaID = null;
+            }else{
+                
+                return;
+            }
+        }
+        
+        telaInputFamiliaID = new InterfaceInputPadrao("Familia_id", false, false);
+            
+        telaInputFamiliaID.setVisible(true);
+    }//GEN-LAST:event_AdicionarInstrumentoIDActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton AdicionarInstrumentoID;
     private javax.swing.JButton AdicionarTecnica;
     private javax.swing.JPanel AudioDrop;
     private javax.swing.JButton BotaoCancelar;
     private javax.swing.JButton BotaoRegistrar;
     private javax.swing.JLabel Bpm;
-    private javax.swing.JLabel Bpm1;
     private javax.swing.JLabel Creditos_Gravacao;
     private javax.swing.JLabel Descricao;
     private javax.swing.JLabel ExtensoesArquivo;
     private javax.swing.JButton Icone;
     private javax.swing.JTextField InputBpm;
     private javax.swing.JTextField InputBpm1;
+    private javax.swing.JTextField InputBpm2;
     private javax.swing.JTextField InputCreditos_Gravacao;
     private javax.swing.JTextArea InputDescricao;
     private javax.swing.JTextField InputNota;
     private javax.swing.JTextField InputOitava;
     private javax.swing.JTextField InputTitutlo;
     private javax.swing.JLabel InstrucaoArquivo;
+    private javax.swing.JLabel Instrumento_ID;
+    private javax.swing.JButton ListarInstrumentoID;
     private javax.swing.JButton ListarTecnica;
     private javax.swing.JLabel Nota;
     private javax.swing.JLabel Oitava;
     private javax.swing.JScrollPane ScrollDescricao;
+    private javax.swing.JLabel Tecnica;
     private javax.swing.JLabel Titulo;
     private javax.swing.JLabel TituloPagina;
     private javax.swing.JPanel jPanel1;

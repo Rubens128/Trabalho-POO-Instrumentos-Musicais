@@ -11,12 +11,50 @@ package view;
 public class InterfaceInputInstrumento extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(InterfaceInputInstrumento.class.getName());
-
+    private InterfaceInputAudio telaInputAudio;
+    private InterfaceInputPadrao telaInputFamilia, telaInputAfinacao, telaInputMaterial; 
+    private boolean unicaTela;
+    private TelaListarPadrao telaListarAudio, telaListarFamilia, telaListarAfinacao, telaListarMaterial;
+    
     /**
      * Creates new form InterfaceInputInstrumento
+     * @param familiaInstrumento variavel para identificar a especialização do instrumento
      */
-    public InterfaceInputInstrumento() {
+    public InterfaceInputInstrumento(String familiaInstrumento, boolean unicaTela, boolean editar) {
         initComponents();
+        
+        setLocationRelativeTo(null);
+        
+        if(editar){
+            
+            Titulo.setText("Instrumento" + " (Não digitar nada mantém o valor atual):");
+            
+            Descricao.setText("Descrição:");
+            Historia.setText("História:");
+            Afinacao_ids.setText("Afinação_ids:");
+            Audio_ids.setText("Audio_ids:");
+        }
+        
+        if(familiaInstrumento.equalsIgnoreCase("harmonico")){
+            
+            Opcao1.setText("Polifonia_max:");
+            Opcao2.setText("Tem_pedal_sustain?");
+            Opcao3.setText("Suporta_acordes?");
+            
+        }else if(familiaInstrumento.equalsIgnoreCase("melodico")){
+            
+            Opcao1.setText("Transpositor?");
+            Opcao2.setText("Afinacao_transposicao:");
+            Opcao3.setText("Microtonalidade_suportada?");
+            
+        }else if(familiaInstrumento.equalsIgnoreCase("ritmico")){
+            
+            Opcao1.setText("Altura_definida?");
+            Opcao2.setText("Categoria_percussao:");
+            Opcao3.setText("Tocado_com:");
+        }
+        
+        this.unicaTela = unicaTela;
     }
 
     /**
@@ -161,6 +199,11 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
         AdicionarFamInsId.setContentAreaFilled(false);
         AdicionarFamInsId.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         AdicionarFamInsId.setFocusPainted(false);
+        AdicionarFamInsId.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AdicionarFamInsIdActionPerformed(evt);
+            }
+        });
 
         ListarAudio_ids.setBackground(new java.awt.Color(11, 27, 58));
         ListarAudio_ids.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/list_32px.png"))); // NOI18N
@@ -240,6 +283,11 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
         AdicionarAfinacao_ids.setContentAreaFilled(false);
         AdicionarAfinacao_ids.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         AdicionarAfinacao_ids.setFocusPainted(false);
+        AdicionarAfinacao_ids.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AdicionarAfinacao_idsActionPerformed(evt);
+            }
+        });
 
         ListarAfinacao_ids.setBackground(new java.awt.Color(11, 27, 58));
         ListarAfinacao_ids.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/list_32px.png"))); // NOI18N
@@ -320,6 +368,11 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
         AdicionarMaterial.setContentAreaFilled(false);
         AdicionarMaterial.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         AdicionarMaterial.setFocusPainted(false);
+        AdicionarMaterial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AdicionarMaterialActionPerformed(evt);
+            }
+        });
 
         ListarMaterial.setBackground(new java.awt.Color(11, 27, 58));
         ListarMaterial.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/list_32px.png"))); // NOI18N
@@ -412,6 +465,11 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
         BotaoCancelar.setBorderPainted(false);
         BotaoCancelar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         BotaoCancelar.setPreferredSize(new java.awt.Dimension(180, 50));
+        BotaoCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BotaoCancelarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -420,74 +478,78 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 572, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(Familia_Instrumento_id)
-                                .addGap(18, 18, 18)
-                                .addComponent(AdicionarFamInsId)
-                                .addGap(18, 18, 18)
-                                .addComponent(ListarFamInsId))
-                            .addComponent(ScrollDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(InputFamInsId, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(36, 36, 36)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(Familia_Instrumento_id)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(AdicionarFamInsId)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(ListarFamInsId))
+                                    .addComponent(ScrollDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(InputFamInsId, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(36, 36, 36)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(Afinacao_ids)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(AdicionarAfinacao_ids)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(ListarAfinacao_ids))
+                                    .addComponent(ScrollHistoria, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(InputAfinacao_ids, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(Material)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(AdicionarMaterial)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(ListarMaterial))))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(Afinacao_ids)
-                                .addGap(18, 18, 18)
-                                .addComponent(AdicionarAfinacao_ids)
-                                .addGap(18, 18, 18)
-                                .addComponent(ListarAfinacao_ids))
-                            .addComponent(ScrollHistoria, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(InputAfinacao_ids, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(Material)
-                                .addGap(18, 18, 18)
-                                .addComponent(AdicionarMaterial)
-                                .addGap(18, 18, 18)
-                                .addComponent(ListarMaterial))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(InputNome, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(InputParte, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(Opcao2)
+                                    .addComponent(InputOpcao2, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(Nome, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(Descricao))
+                                .addGap(36, 36, 36)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(Historia)
+                                    .addComponent(InputOpcao3, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(Opcao3)
+                                    .addComponent(Classificacao_sonoridade)
+                                    .addComponent(InputClassificacao_sonoridade, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(InputMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(ParteNome))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(InputNome, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(InputParte, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Opcao2)
-                            .addComponent(InputOpcao2, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Nome, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Descricao))
-                        .addGap(36, 36, 36)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(Historia)
-                            .addComponent(InputOpcao3, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Opcao3)
-                            .addComponent(Classificacao_sonoridade)
-                            .addComponent(InputClassificacao_sonoridade, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(InputMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(ParteNome))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(Apelidos, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(314, 314, 314))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(InputNotaMinNotaMax, javax.swing.GroupLayout.PREFERRED_SIZE, 430, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(InputOpcao1, javax.swing.GroupLayout.PREFERRED_SIZE, 430, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(InputApelidos, javax.swing.GroupLayout.PREFERRED_SIZE, 430, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(Audio_ids)
-                                .addGap(18, 18, 18)
-                                .addComponent(AdicionarAudio_ids)
-                                .addGap(18, 18, 18)
-                                .addComponent(ListarAudio_ids))
-                            .addComponent(InputAudio_ids, javax.swing.GroupLayout.PREFERRED_SIZE, 430, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(NotaMinNotaMax)
-                            .addComponent(Opcao1)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(BotaoCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(35, 35, 35)
-                                .addComponent(BotaoRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap())))
+                                .addComponent(Apelidos, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(314, 314, 314))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(InputNotaMinNotaMax, javax.swing.GroupLayout.PREFERRED_SIZE, 430, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(InputOpcao1, javax.swing.GroupLayout.PREFERRED_SIZE, 430, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(InputApelidos, javax.swing.GroupLayout.PREFERRED_SIZE, 430, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(Audio_ids)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(AdicionarAudio_ids)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(ListarAudio_ids))
+                                    .addComponent(InputAudio_ids, javax.swing.GroupLayout.PREFERRED_SIZE, 430, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(NotaMinNotaMax)
+                                    .addComponent(Opcao1)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                        .addComponent(BotaoCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(35, 35, 35)
+                                        .addComponent(BotaoRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addContainerGap())))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(Titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 1404, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -594,7 +656,21 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
     }//GEN-LAST:event_InputAfinacao_idsActionPerformed
 
     private void ListarAudio_idsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ListarAudio_idsActionPerformed
-        // TODO add your handling code here:
+         if(telaListarAudio != null){
+            
+            if(!telaListarAudio.isDisplayable()){
+                
+                telaListarAudio = null;
+            
+            }else{
+                
+                return;
+            }
+        }
+        
+        telaListarAudio = new TelaListarPadrao("Áudios");
+        
+        telaListarAudio.setVisible(true);
     }//GEN-LAST:event_ListarAudio_idsActionPerformed
 
     private void InputAudio_idsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InputAudio_idsActionPerformed
@@ -602,21 +678,46 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
     }//GEN-LAST:event_InputAudio_idsActionPerformed
 
     private void ListarFamInsIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ListarFamInsIdActionPerformed
-        // TODO add your handling code here:
+        if(telaListarFamilia != null){
+            
+            if(!telaListarFamilia.isDisplayable()){
+                
+                telaListarFamilia = null;
+            
+            }else{
+                
+                return;
+            }
+        }
+        
+        telaListarFamilia = new TelaListarPadrao("Família_Instrumento_ids:");
+        
+        telaListarFamilia.setVisible(true);
     }//GEN-LAST:event_ListarFamInsIdActionPerformed
 
     private void ListarAfinacao_idsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ListarAfinacao_idsActionPerformed
-        // TODO add your handling code here:
+        if(telaListarAfinacao != null){
+            
+            if(!telaListarAfinacao.isDisplayable()){
+                
+                telaListarAfinacao = null;
+            
+            }else{
+                
+                return;
+            }
+        }
+        
+        telaListarAfinacao = new TelaListarPadrao("Afinações:");
+        
+        telaListarAfinacao.setVisible(true);
     }//GEN-LAST:event_ListarAfinacao_idsActionPerformed
 
     private void InputFamInsIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InputFamInsIdActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_InputFamInsIdActionPerformed
 
-    private void AdicionarAudio_idsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AdicionarAudio_idsActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_AdicionarAudio_idsActionPerformed
-
+    
     private void InputOpcao1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InputOpcao1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_InputOpcao1ActionPerformed
@@ -630,7 +731,21 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
     }//GEN-LAST:event_InputOpcao2ActionPerformed
 
     private void ListarMaterialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ListarMaterialActionPerformed
-        // TODO add your handling code here:
+        if(telaListarMaterial != null){
+            
+            if(!telaListarMaterial.isDisplayable()){
+                
+                telaListarMaterial = null;
+            
+            }else{
+                
+                return;
+            }
+        }
+        
+        telaListarMaterial = new TelaListarPadrao("Materiais:");
+        
+        telaListarMaterial.setVisible(true);
     }//GEN-LAST:event_ListarMaterialActionPerformed
 
     private void InputMaterialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InputMaterialActionPerformed
@@ -653,31 +768,98 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_BotaoRegistrarActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
+    private void BotaoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotaoCancelarActionPerformed
+        this.dispose();
+        
+        if(!unicaTela) return;
+        
+        if(telaInputFamilia != null) telaInputFamilia.dispose();
+        if(telaInputAudio != null) telaInputAudio.dispose();
+        if(telaInputAfinacao != null) telaInputAfinacao.dispose();
+        if(telaInputMaterial != null) telaInputMaterial.dispose();
+        
+        TelaInstrumentos telaInstrumento = new TelaInstrumentos();
+        
+        telaInstrumento.setVisible(true);
+    }//GEN-LAST:event_BotaoCancelarActionPerformed
+
+    private void AdicionarFamInsIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AdicionarFamInsIdActionPerformed
+        
+        if(telaInputFamilia != null){
+            
+            if(!telaInputFamilia.isDisplayable()){
+                
+                telaInputFamilia = null;
+            
+            }else{
+                
+                return;
             }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
+        
+        telaInputFamilia = new InterfaceInputPadrao("Familia_Instrumento", false, false);
+            
+        telaInputFamilia.setVisible(true);
+    }//GEN-LAST:event_AdicionarFamInsIdActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new InterfaceInputInstrumento().setVisible(true));
-    }
+    private void AdicionarAfinacao_idsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AdicionarAfinacao_idsActionPerformed
+        
+        if(telaInputAfinacao != null){
+            
+            if(!telaInputAfinacao.isDisplayable()){
+                
+                telaInputAfinacao = null;
+            
+            }else{
+                
+                return;
+            }
+        }
+        
+        telaInputAfinacao = new InterfaceInputPadrao("Afinação", false, false);
+            
+        telaInputAfinacao.setVisible(true);
+    }//GEN-LAST:event_AdicionarAfinacao_idsActionPerformed
 
+    private void AdicionarMaterialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AdicionarMaterialActionPerformed
+        
+        if(telaInputMaterial != null){
+            
+            if(!telaInputMaterial.isDisplayable()){
+                
+                telaInputMaterial = null;
+            
+            }else{
+                
+                return;
+            }
+        }
+        
+        telaInputMaterial = new InterfaceInputPadrao("Material", false, false);
+            
+        telaInputMaterial.setVisible(true);
+    }//GEN-LAST:event_AdicionarMaterialActionPerformed
+
+    private void AdicionarAudio_idsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AdicionarAudio_idsActionPerformed
+        
+        if(telaInputAudio != null){
+            
+            if(!telaInputAudio.isDisplayable()){
+                
+                telaInputAudio = null;
+            
+            }else{
+                
+                return;
+            }
+        }
+        
+        telaInputAudio = new InterfaceInputAudio(false, false);
+            
+        telaInputAudio.setVisible(true);
+    }//GEN-LAST:event_AdicionarAudio_idsActionPerformed
+
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AdicionarAfinacao_ids;
     private javax.swing.JButton AdicionarAudio_ids;

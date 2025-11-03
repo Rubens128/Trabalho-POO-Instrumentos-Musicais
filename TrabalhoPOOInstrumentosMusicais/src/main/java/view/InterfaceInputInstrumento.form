@@ -52,88 +52,95 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="Titulo" min="-2" pref="572" max="-2" attributes="0"/>
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
-                                  <Component id="Familia_Instrumento_id" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="AdicionarFamInsId" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="ListarFamInsId" min="-2" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" attributes="0">
+                                          <Component id="Familia_Instrumento_id" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                                          <Component id="AdicionarFamInsId" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                                          <Component id="ListarFamInsId" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Component id="ScrollDescricao" alignment="0" min="-2" pref="470" max="-2" attributes="0"/>
+                                      <Component id="InputFamInsId" min="-2" pref="470" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" attributes="0">
+                                          <Component id="Afinacao_ids" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                                          <Component id="AdicionarAfinacao_ids" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                                          <Component id="ListarAfinacao_ids" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Component id="ScrollHistoria" min="-2" pref="470" max="-2" attributes="0"/>
+                                      <Component id="InputAfinacao_ids" min="-2" pref="470" max="-2" attributes="0"/>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="Material" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                                          <Component id="AdicionarMaterial" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                                          <Component id="ListarMaterial" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
                               </Group>
-                              <Component id="ScrollDescricao" alignment="0" min="-2" pref="470" max="-2" attributes="0"/>
-                              <Component id="InputFamInsId" min="-2" pref="470" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <Component id="Afinacao_ids" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="AdicionarAfinacao_ids" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="ListarAfinacao_ids" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <Component id="ScrollHistoria" min="-2" pref="470" max="-2" attributes="0"/>
-                              <Component id="InputAfinacao_ids" min="-2" pref="470" max="-2" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
-                                  <Component id="Material" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="AdicionarMaterial" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="ListarMaterial" min="-2" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="InputNome" min="-2" pref="470" max="-2" attributes="0"/>
+                                      <Component id="InputParte" min="-2" pref="470" max="-2" attributes="0"/>
+                                      <Component id="Opcao2" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="InputOpcao2" alignment="0" min="-2" pref="470" max="-2" attributes="0"/>
+                                      <Component id="Nome" alignment="0" min="-2" pref="163" max="-2" attributes="0"/>
+                                      <Component id="Descricao" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="36" pref="36" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="Historia" min="-2" max="-2" attributes="0"/>
+                                      <Component id="InputOpcao3" min="-2" pref="470" max="-2" attributes="0"/>
+                                      <Component id="Opcao3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="Classificacao_sonoridade" min="-2" max="-2" attributes="0"/>
+                                      <Component id="InputClassificacao_sonoridade" min="-2" pref="470" max="-2" attributes="0"/>
+                                      <Component id="InputMaterial" alignment="0" min="-2" pref="470" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <Component id="ParteNome" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace pref="50" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Component id="Apelidos" min="-2" pref="163" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="314" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="InputNotaMinNotaMax" min="-2" pref="430" max="-2" attributes="0"/>
+                                      <Component id="InputOpcao1" min="-2" pref="430" max="-2" attributes="0"/>
+                                      <Component id="InputApelidos" min="-2" pref="430" max="-2" attributes="0"/>
+                                      <Group type="102" attributes="0">
+                                          <Component id="Audio_ids" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                                          <Component id="AdicionarAudio_ids" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                                          <Component id="ListarAudio_ids" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Component id="InputAudio_ids" min="-2" pref="430" max="-2" attributes="0"/>
+                                      <Component id="NotaMinNotaMax" min="-2" max="-2" attributes="0"/>
+                                      <Component id="Opcao1" min="-2" max="-2" attributes="0"/>
+                                      <Group type="102" alignment="1" attributes="0">
+                                          <Component id="BotaoCancelar" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
+                                          <Component id="BotaoRegistrar" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="InputNome" min="-2" pref="470" max="-2" attributes="0"/>
-                              <Component id="InputParte" min="-2" pref="470" max="-2" attributes="0"/>
-                              <Component id="Opcao2" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="InputOpcao2" alignment="0" min="-2" pref="470" max="-2" attributes="0"/>
-                              <Component id="Nome" alignment="0" min="-2" pref="163" max="-2" attributes="0"/>
-                              <Component id="Descricao" alignment="0" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="36" pref="36" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="Historia" min="-2" max="-2" attributes="0"/>
-                              <Component id="InputOpcao3" min="-2" pref="470" max="-2" attributes="0"/>
-                              <Component id="Opcao3" min="-2" max="-2" attributes="0"/>
-                              <Component id="Classificacao_sonoridade" min="-2" max="-2" attributes="0"/>
-                              <Component id="InputClassificacao_sonoridade" min="-2" pref="470" max="-2" attributes="0"/>
-                              <Component id="InputMaterial" alignment="0" min="-2" pref="470" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <Component id="ParteNome" alignment="0" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace pref="50" max="32767" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="1" attributes="0">
-                          <Component id="Apelidos" min="-2" pref="163" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="314" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="InputNotaMinNotaMax" min="-2" pref="430" max="-2" attributes="0"/>
-                              <Component id="InputOpcao1" min="-2" pref="430" max="-2" attributes="0"/>
-                              <Component id="InputApelidos" min="-2" pref="430" max="-2" attributes="0"/>
-                              <Group type="102" attributes="0">
-                                  <Component id="Audio_ids" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="AdicionarAudio_ids" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="ListarAudio_ids" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <Component id="InputAudio_ids" min="-2" pref="430" max="-2" attributes="0"/>
-                              <Component id="NotaMinNotaMax" min="-2" max="-2" attributes="0"/>
-                              <Component id="Opcao1" min="-2" max="-2" attributes="0"/>
-                              <Group type="102" alignment="1" attributes="0">
-                                  <Component id="BotaoCancelar" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
-                                  <Component id="BotaoRegistrar" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="Titulo" min="-2" pref="1404" max="-2" attributes="0"/>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -463,6 +470,9 @@
             </Property>
             <Property name="focusPainted" type="boolean" value="false"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="AdicionarFamInsIdActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="ListarAudio_ids">
           <Properties>
@@ -624,6 +634,9 @@
             </Property>
             <Property name="focusPainted" type="boolean" value="false"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="AdicionarAfinacao_idsActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="ListarAfinacao_ids">
           <Properties>
@@ -805,6 +818,9 @@
             </Property>
             <Property name="focusPainted" type="boolean" value="false"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="AdicionarMaterialActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="ListarMaterial">
           <Properties>
@@ -1009,6 +1025,9 @@
               <Dimension value="[180, 50]"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BotaoCancelarActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

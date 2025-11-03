@@ -8,9 +8,13 @@ package view;
  *
  * @author ruben
  */
+
+import javax.swing.JMenuItem;
+
 public class TelaInstrumentos extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(TelaInstrumentos.class.getName());
+    private String acaoMenu = "";
 
     /**
      * Creates new form TelaPrincipal
@@ -21,6 +25,8 @@ public class TelaInstrumentos extends javax.swing.JFrame {
         DivInstrumentos.getVerticalScrollBar().setUnitIncrement(32);
 
         CardsPanel.setLayout(new javax.swing.BoxLayout(CardsPanel, javax.swing.BoxLayout.Y_AXIS));
+        
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -40,6 +46,10 @@ public class TelaInstrumentos extends javax.swing.JFrame {
         material = new javax.swing.JMenuItem();
         parte = new javax.swing.JMenuItem();
         afinação = new javax.swing.JMenuItem();
+        menuInstrumento = new javax.swing.JPopupMenu();
+        instrumentoHarmonico = new javax.swing.JMenuItem();
+        instrumentoMelodico = new javax.swing.JMenuItem();
+        instrumentoRitmico = new javax.swing.JMenuItem();
         DivPanel = new javax.swing.JPanel();
         DivInstrumentos = new javax.swing.JScrollPane();
         CardsPanel = new javax.swing.JPanel();
@@ -57,58 +67,139 @@ public class TelaInstrumentos extends javax.swing.JFrame {
         instrumento.setBackground(new java.awt.Color(11, 27, 58));
         instrumento.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         instrumento.setForeground(java.awt.Color.white);
-        instrumento.setText("instrumento");
+        instrumento.setText("Instrumento");
         instrumento.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 4, 4));
         instrumento.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        instrumento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                instrumentoActionPerformed(evt);
+            }
+        });
         menu.add(instrumento);
 
         audio.setBackground(new java.awt.Color(11, 27, 58));
         audio.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         audio.setForeground(java.awt.Color.white);
-        audio.setText("audio");
+        audio.setText("Audio");
         audio.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 4, 4));
         audio.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        audio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                audioActionPerformed(evt);
+            }
+        });
         menu.add(audio);
 
         familia_instrumento.setBackground(new java.awt.Color(11, 27, 58));
         familia_instrumento.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         familia_instrumento.setForeground(java.awt.Color.white);
-        familia_instrumento.setText("familia_instrumento");
+        familia_instrumento.setText("Familia_Instrumento");
         familia_instrumento.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 4, 4));
         familia_instrumento.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        familia_instrumento.setName(""); // NOI18N
+        familia_instrumento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                padraoActionPerformed(evt);
+            }
+        });
         menu.add(familia_instrumento);
 
         tecnica.setBackground(new java.awt.Color(11, 27, 58));
         tecnica.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         tecnica.setForeground(java.awt.Color.white);
-        tecnica.setText("tecnica");
+        tecnica.setText("Tecnica");
         tecnica.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 4, 4));
         tecnica.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        tecnica.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                padraoActionPerformed(evt);
+            }
+        });
         menu.add(tecnica);
 
         material.setBackground(new java.awt.Color(11, 27, 58));
         material.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         material.setForeground(java.awt.Color.white);
-        material.setText("material");
+        material.setText("Material");
         material.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 4, 4));
         material.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        material.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                padraoActionPerformed(evt);
+            }
+        });
         menu.add(material);
 
         parte.setBackground(new java.awt.Color(11, 27, 58));
         parte.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         parte.setForeground(java.awt.Color.white);
-        parte.setText("parte");
+        parte.setText("Parte");
         parte.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 4, 4));
         parte.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        parte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                padraoActionPerformed(evt);
+            }
+        });
         menu.add(parte);
 
         afinação.setBackground(new java.awt.Color(11, 27, 58));
         afinação.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         afinação.setForeground(java.awt.Color.white);
-        afinação.setText("afinação");
+        afinação.setText("Afinação");
         afinação.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 4, 4));
         afinação.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        afinação.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                padraoActionPerformed(evt);
+            }
+        });
         menu.add(afinação);
+
+        menuInstrumento.setBackground(new java.awt.Color(11, 27, 58));
+        menuInstrumento.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        menuInstrumento.setForeground(java.awt.Color.white);
+        menuInstrumento.setBorder(javax.swing.BorderFactory.createEmptyBorder(3, 3, 3, 3));
+        menuInstrumento.setBorderPainted(false);
+
+        instrumentoHarmonico.setBackground(new java.awt.Color(11, 27, 58));
+        instrumentoHarmonico.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        instrumentoHarmonico.setForeground(java.awt.Color.white);
+        instrumentoHarmonico.setText("Instrumento Harmonico");
+        instrumentoHarmonico.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 4, 4));
+        instrumentoHarmonico.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        instrumentoHarmonico.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                instrumentoHarmonicoActionPerformed(evt);
+            }
+        });
+        menuInstrumento.add(instrumentoHarmonico);
+
+        instrumentoMelodico.setBackground(new java.awt.Color(11, 27, 58));
+        instrumentoMelodico.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        instrumentoMelodico.setForeground(java.awt.Color.white);
+        instrumentoMelodico.setText("Instrumento Melodico");
+        instrumentoMelodico.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 4, 4));
+        instrumentoMelodico.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        instrumentoMelodico.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                instrumentoMelodicoActionPerformed(evt);
+            }
+        });
+        menuInstrumento.add(instrumentoMelodico);
+
+        instrumentoRitmico.setBackground(new java.awt.Color(11, 27, 58));
+        instrumentoRitmico.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        instrumentoRitmico.setForeground(java.awt.Color.white);
+        instrumentoRitmico.setText("Instrumento Ritmico");
+        instrumentoRitmico.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 4, 4));
+        instrumentoRitmico.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        instrumentoRitmico.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                instrumentoRitmicoActionPerformed(evt);
+            }
+        });
+        menuInstrumento.add(instrumentoRitmico);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(11, 27, 43));
@@ -147,6 +238,11 @@ public class TelaInstrumentos extends javax.swing.JFrame {
         editar.setContentAreaFilled(false);
         editar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         editar.setFocusPainted(false);
+        editar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editarActionPerformed(evt);
+            }
+        });
 
         adicionar.setBackground(new java.awt.Color(11, 27, 58));
         adicionar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/add.png"))); // NOI18N
@@ -168,15 +264,20 @@ public class TelaInstrumentos extends javax.swing.JFrame {
         deletar.setContentAreaFilled(false);
         deletar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         deletar.setFocusPainted(false);
+        deletar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deletarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout DivPanelLayout = new javax.swing.GroupLayout(DivPanel);
         DivPanel.setLayout(DivPanelLayout);
         DivPanelLayout.setHorizontalGroup(
             DivPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(DivPanelLayout.createSequentialGroup()
-                .addGap(44, 44, 44)
+                .addGap(53, 53, 53)
                 .addComponent(titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 494, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 465, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 456, Short.MAX_VALUE)
                 .addComponent(adicionar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(deletar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -192,14 +293,13 @@ public class TelaInstrumentos extends javax.swing.JFrame {
         DivPanelLayout.setVerticalGroup(
             DivPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(DivPanelLayout.createSequentialGroup()
-                .addGap(44, 44, 44)
-                .addGroup(DivPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(30, 30, 30)
+                .addGroup(DivPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(titulo)
-                    .addGroup(DivPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(deletar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(adicionar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(editar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(549, Short.MAX_VALUE))
+                    .addComponent(deletar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(adicionar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(editar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(563, Short.MAX_VALUE))
             .addGroup(DivPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, DivPanelLayout.createSequentialGroup()
                     .addContainerGap(124, Short.MAX_VALUE)
@@ -223,8 +323,148 @@ public class TelaInstrumentos extends javax.swing.JFrame {
 
     private void adicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adicionarActionPerformed
         
+        acaoMenu = "Adicionar";
         menu.show(adicionar, -(adicionar.getWidth()), adicionar.getHeight());
+        
     }//GEN-LAST:event_adicionarActionPerformed
+
+    private void deletarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deletarActionPerformed
+        
+        acaoMenu = "Deletar";
+        menu.show(adicionar, -(adicionar.getWidth()), adicionar.getHeight());
+    }//GEN-LAST:event_deletarActionPerformed
+
+    private void editarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarActionPerformed
+        
+        acaoMenu = "Editar";
+        menu.show(adicionar, -(adicionar.getWidth()), adicionar.getHeight());
+    }//GEN-LAST:event_editarActionPerformed
+
+    private void instrumentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_instrumentoActionPerformed
+           
+        menuInstrumento.show(adicionar, -(adicionar.getWidth()), adicionar.getHeight());
+        
+    }//GEN-LAST:event_instrumentoActionPerformed
+
+    private void audioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_audioActionPerformed
+        
+        this.dispose();
+        
+        
+        if(acaoMenu.equalsIgnoreCase("Adicionar")){
+            
+            InterfaceInputAudio telaInputAudio = new InterfaceInputAudio(true, false);
+            
+            telaInputAudio.setVisible(true);
+            
+        }else if(acaoMenu.equalsIgnoreCase("Deletar")){
+            
+            InterfaceDeletarPadrao telaDeletarAudio = new InterfaceDeletarPadrao("Audio", true);
+            
+            telaDeletarAudio.setVisible(true);
+        }else if(acaoMenu.equalsIgnoreCase("Editar")){
+            
+            InterfaceInputAudio telaInputAudio = new InterfaceInputAudio(true, true);
+            
+            telaInputAudio.setVisible(true);
+        }
+        
+    }//GEN-LAST:event_audioActionPerformed
+
+    private void padraoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_padraoActionPerformed
+       
+        this.dispose();
+  
+        JMenuItem menuItem = (JMenuItem) evt.getSource();
+        String nome = menuItem.getText();
+        
+        if(acaoMenu.equalsIgnoreCase("Adicionar")){
+            
+            InterfaceInputPadrao telaInputPadrao = new InterfaceInputPadrao(nome, true, false);
+            
+            telaInputPadrao.setVisible(true);
+            
+        }else if(acaoMenu.equalsIgnoreCase("Deletar")){
+            
+            InterfaceDeletarPadrao telaDeletarAudio = new InterfaceDeletarPadrao(nome, true);
+            
+            telaDeletarAudio.setVisible(true);
+        }else if(acaoMenu.equalsIgnoreCase("Editar")){
+            
+            InterfaceInputPadrao telaInputPadrao = new InterfaceInputPadrao(nome, true, true);
+            
+            telaInputPadrao.setVisible(true);
+        }
+    }//GEN-LAST:event_padraoActionPerformed
+
+    private void instrumentoHarmonicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_instrumentoHarmonicoActionPerformed
+        
+        this.dispose();
+        
+        if(acaoMenu.equalsIgnoreCase("Adicionar")){
+            
+            InterfaceInputInstrumento telaInputInstrumento = new InterfaceInputInstrumento("harmonico", true, false);
+            
+            telaInputInstrumento.setVisible(true);
+            
+        }else if(acaoMenu.equalsIgnoreCase("Deletar")){
+            
+            InterfaceDeletarPadrao telaDeletarInstrumento = new InterfaceDeletarPadrao("Instrumento", true);
+            
+            telaDeletarInstrumento.setVisible(true);
+        }else if(acaoMenu.equalsIgnoreCase("Editar")){
+            
+            InterfaceInputInstrumento telaInputInstrumento = new InterfaceInputInstrumento("harmonico", true, true);
+            
+            telaInputInstrumento.setVisible(true);
+        }
+    }//GEN-LAST:event_instrumentoHarmonicoActionPerformed
+
+    private void instrumentoMelodicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_instrumentoMelodicoActionPerformed
+        
+        this.dispose();
+        
+        if(acaoMenu.equalsIgnoreCase("Adicionar")){
+            
+            InterfaceInputInstrumento telaInputInstrumento = new InterfaceInputInstrumento("melodico", true, false);
+            
+            telaInputInstrumento.setVisible(true);
+            
+        }else if(acaoMenu.equalsIgnoreCase("Deletar")){
+            
+            InterfaceDeletarPadrao telaDeletarInstrumento = new InterfaceDeletarPadrao("Instrumento", true);
+            
+            telaDeletarInstrumento.setVisible(true);
+        }else if(acaoMenu.equalsIgnoreCase("Editar")){
+            
+            InterfaceInputInstrumento telaInputInstrumento = new InterfaceInputInstrumento("melodico", true, true);
+            
+            telaInputInstrumento.setVisible(true);
+        }
+    }//GEN-LAST:event_instrumentoMelodicoActionPerformed
+
+    private void instrumentoRitmicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_instrumentoRitmicoActionPerformed
+        
+        this.dispose();
+        
+        if(acaoMenu.equalsIgnoreCase("Adicionar")){
+            
+            InterfaceInputInstrumento telaInputInstrumento = new InterfaceInputInstrumento("ritmico", true, false);
+            
+            telaInputInstrumento.setVisible(true);
+            
+        }else if(acaoMenu.equalsIgnoreCase("Deletar")){
+            
+            InterfaceDeletarPadrao telaDeletarInstrumento = new InterfaceDeletarPadrao("Instrumento", true);
+            
+            telaDeletarInstrumento.setVisible(true);
+        }else if(acaoMenu.equalsIgnoreCase("Editar")){
+            
+            InterfaceInputInstrumento telaInputInstrumento = new InterfaceInputInstrumento("ritmico", true, true);
+            
+            telaInputInstrumento.setVisible(true);
+        }
+    }//GEN-LAST:event_instrumentoRitmicoActionPerformed
  
     public void addInstrumentoCard(String nome, String descricao, boolean temAudio){
         
@@ -250,8 +490,12 @@ public class TelaInstrumentos extends javax.swing.JFrame {
     private javax.swing.JButton editar;
     private javax.swing.JMenuItem familia_instrumento;
     private javax.swing.JMenuItem instrumento;
+    private javax.swing.JMenuItem instrumentoHarmonico;
+    private javax.swing.JMenuItem instrumentoMelodico;
+    private javax.swing.JMenuItem instrumentoRitmico;
     private javax.swing.JMenuItem material;
     private javax.swing.JPopupMenu menu;
+    private javax.swing.JPopupMenu menuInstrumento;
     private javax.swing.JMenuItem parte;
     private javax.swing.JMenuItem tecnica;
     private javax.swing.JLabel titulo;

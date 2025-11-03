@@ -3,10 +3,6 @@
  */
 
 package view;
-import dao.AudioDAO;
-import model.Audio;
-import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -15,9 +11,9 @@ import java.util.Map;
 public class TrabalhoPOOInstrumentosMusicais {
 
     public static void main(String[] args) {
-        /*java.awt.EventQueue.invokeLater(() -> {
+        java.awt.EventQueue.invokeLater(() -> {
             
-            /*TelaInstrumentos telaInstrumentos = new TelaInstrumentos();;;
+            TelaInstrumentos telaInstrumentos = new TelaInstrumentos();;;;
             telaInstrumentos.setVisible(true);
             
             telaInstrumentos.addInstrumentoCard("teste", "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", true);
@@ -28,19 +24,8 @@ public class TrabalhoPOOInstrumentosMusicais {
             telaInstrumentos.addInstrumentoCard("teste", "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", true);
             telaInstrumentos.addInstrumentoCard("teste", "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", true);
             telaInstrumentos.addInstrumentoCard("teste", "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", true);
-            telaInstrumentos.addInstrumentoCard("teste2", "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", true);*/
-            
-            /*InterfaceInputPadrao interfaceTeste = new InterfaceInputPadrao("Afinação");;;
-            interfaceTeste.setVisible(true);
-            
-            InterfaceInputAudio interfaceTeste = new InterfaceInputAudio();
-            interfaceTeste.setVisible(true);
-        });*/
-            
-            AudioDAO a = new AudioDAO();
-            
-            Audio audio = a.buscarPorID(3);
-            
-            System.out.println(audio.getId());
+            telaInstrumentos.addInstrumentoCard("teste2", "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", true);
+           
+        });
     }
 }

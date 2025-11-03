@@ -11,12 +11,26 @@ package view;
 public class InterfaceDeletarPadrao extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(InterfaceDeletarPadrao.class.getName());
-
+    
+    private boolean unicaTela;
+    
+    private TelaListarPadrao telaListar;
+    private String titulo;
+    
     /**
      * Creates new form InterfaceDeletarPadrao
      */
-    public InterfaceDeletarPadrao() {
+    public InterfaceDeletarPadrao(String titulo, boolean unicaTela) {
         initComponents();
+        
+        Titulo.setText(titulo);
+        
+        Erro.setVisible(false);
+        
+        setLocationRelativeTo(null);
+        
+        this.unicaTela = unicaTela;
+        this.titulo = titulo;
     }
 
     /**
@@ -35,9 +49,9 @@ public class InterfaceDeletarPadrao extends javax.swing.JFrame {
         Erro = new javax.swing.JLabel();
         BotaoCancelar = new javax.swing.JButton();
         BotaoRegistrar = new javax.swing.JButton();
+        ListarTecnica = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(680, 580));
 
         jPanel1.setBackground(new java.awt.Color(11, 27, 58));
         jPanel1.setPreferredSize(new java.awt.Dimension(680, 657));
@@ -73,6 +87,11 @@ public class InterfaceDeletarPadrao extends javax.swing.JFrame {
         BotaoCancelar.setBorderPainted(false);
         BotaoCancelar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         BotaoCancelar.setPreferredSize(new java.awt.Dimension(180, 50));
+        BotaoCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BotaoCancelarActionPerformed(evt);
+            }
+        });
 
         BotaoRegistrar.setBackground(new java.awt.Color(252, 255, 255));
         BotaoRegistrar.setFont(new java.awt.Font("Segoe UI", 1, 32)); // NOI18N
@@ -84,6 +103,19 @@ public class InterfaceDeletarPadrao extends javax.swing.JFrame {
         BotaoRegistrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BotaoRegistrarActionPerformed(evt);
+            }
+        });
+
+        ListarTecnica.setBackground(new java.awt.Color(11, 27, 58));
+        ListarTecnica.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/list_32px.png"))); // NOI18N
+        ListarTecnica.setBorder(null);
+        ListarTecnica.setBorderPainted(false);
+        ListarTecnica.setContentAreaFilled(false);
+        ListarTecnica.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        ListarTecnica.setFocusPainted(false);
+        ListarTecnica.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ListarTecnicaActionPerformed(evt);
             }
         });
 
@@ -100,7 +132,10 @@ public class InterfaceDeletarPadrao extends javax.swing.JFrame {
                         .addComponent(BotaoRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(Erro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(Nome, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(Nome, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(ListarTecnica))
                         .addComponent(Titulo)
                         .addComponent(InputNome, javax.swing.GroupLayout.DEFAULT_SIZE, 615, Short.MAX_VALUE)))
                 .addContainerGap(32, Short.MAX_VALUE))
@@ -111,7 +146,9 @@ public class InterfaceDeletarPadrao extends javax.swing.JFrame {
                 .addGap(30, 30, 30)
                 .addComponent(Titulo)
                 .addGap(35, 35, 35)
-                .addComponent(Nome, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(Nome, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ListarTecnica))
                 .addGap(18, 18, 18)
                 .addComponent(InputNome, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(56, 56, 56)
@@ -145,36 +182,44 @@ public class InterfaceDeletarPadrao extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_BotaoRegistrarActionPerformed
 
+    private void BotaoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotaoCancelarActionPerformed
+        this.dispose();
+        
+        if(!unicaTela) return;
+        
+        TelaInstrumentos telaInstrumento = new TelaInstrumentos();
+        
+        telaInstrumento.setVisible(true);
+    }//GEN-LAST:event_BotaoCancelarActionPerformed
+
+    private void ListarTecnicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ListarTecnicaActionPerformed
+        if(telaListar != null){
+            
+            if(!telaListar.isDisplayable()){
+                
+                telaListar = null;
+            
+            }else{
+                
+                return;
+            }
+        }
+
+        telaListar = new TelaListarPadrao(titulo);
+
+        telaListar.setVisible(true);
+    }//GEN-LAST:event_ListarTecnicaActionPerformed
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new InterfaceDeletarPadrao().setVisible(true));
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BotaoCancelar;
     private javax.swing.JButton BotaoRegistrar;
     private javax.swing.JLabel Erro;
     private javax.swing.JTextField InputNome;
+    private javax.swing.JButton ListarTecnica;
     private javax.swing.JLabel Nome;
     private javax.swing.JLabel Titulo;
     private javax.swing.JPanel jPanel1;
