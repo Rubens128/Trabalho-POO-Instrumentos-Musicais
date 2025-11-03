@@ -8,11 +8,11 @@ package model;
  *
  * @author predrim
  */
-public class Apelido {
+public class Apelidos {
     private long instrumentoId;
     private String apelido;
     
-    public Apelido (long instrumentoId, String apelido) {
+    public Apelidos (long instrumentoId, String apelido) {
         this.instrumentoId = instrumentoId;
         this.apelido = apelido;
     }

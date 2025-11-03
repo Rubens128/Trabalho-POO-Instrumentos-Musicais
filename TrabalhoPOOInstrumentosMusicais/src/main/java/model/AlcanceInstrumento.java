@@ -18,6 +18,7 @@ public class AlcanceInstrumento {
     public AlcanceInstrumento(long instrumentoId, String tipo, String notaMin, String notaMax) {
         
         this.instrumentoId = instrumentoId;
+        this.tipo = tipo;
         this.notaMin = notaMin;
         this.notaMax = notaMax;
     }
