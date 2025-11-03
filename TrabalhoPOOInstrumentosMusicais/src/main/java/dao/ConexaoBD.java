@@ -8,6 +8,13 @@ package dao;
  *
  * @author ruben
  */
-public class dao {
+
+import java.sql.SQLException;
+import java.sql.Connection;
+
+public interface ConexaoBD {
     
+    Connection obterConexao() throws SQLException, ClassNotFoundException;
+    
+    void fecharConexao(Connection c) throws SQLException;
 }

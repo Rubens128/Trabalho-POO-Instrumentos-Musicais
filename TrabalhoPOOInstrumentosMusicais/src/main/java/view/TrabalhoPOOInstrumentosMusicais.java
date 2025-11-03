@@ -3,6 +3,10 @@
  */
 
 package view;
+import dao.AudioDAO;
+import model.Audio;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -11,7 +15,7 @@ package view;
 public class TrabalhoPOOInstrumentosMusicais {
 
     public static void main(String[] args) {
-        java.awt.EventQueue.invokeLater(() -> {
+        /*java.awt.EventQueue.invokeLater(() -> {
             
             /*TelaInstrumentos telaInstrumentos = new TelaInstrumentos();;;
             telaInstrumentos.setVisible(true);
@@ -27,10 +31,16 @@ public class TrabalhoPOOInstrumentosMusicais {
             telaInstrumentos.addInstrumentoCard("teste2", "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", true);*/
             
             /*InterfaceInputPadrao interfaceTeste = new InterfaceInputPadrao("Afinação");;;
-            interfaceTeste.setVisible(true);*/
+            interfaceTeste.setVisible(true);
             
             InterfaceInputAudio interfaceTeste = new InterfaceInputAudio();
             interfaceTeste.setVisible(true);
-        });
+        });*/
+            
+            AudioDAO a = new AudioDAO();
+            
+            Audio audio = a.buscarPorID(3);
+            
+            System.out.println(audio.getId());
     }
 }
