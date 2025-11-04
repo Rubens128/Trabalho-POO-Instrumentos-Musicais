@@ -86,7 +86,7 @@ public class ParteDAO {
     */
     public Map<String, Long> inserir(Parte parte){
         
-        String sql = "INSERT INTO parte (nome, descricao) VALUES (?, ?)";
+        String sql = "INSERT INTO parte (instrumento_id, nome, descricao) VALUES (?, ?, ?)";
         
         Map<String, Long> retornos = new HashMap<>();
         Connection c = null;
@@ -101,8 +101,9 @@ public class ParteDAO {
             
             try (PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
                 
-                ps.setString(1, parte.getNome());
-                ps.setString(2, parte.getDescricao());
+                ps.setLong(1, parte.getInstrumentoId());
+                ps.setString(2, parte.getNome());
+                ps.setString(3, parte.getDescricao());
 
                 ps.executeUpdate();
                
@@ -253,12 +254,12 @@ public class ParteDAO {
     }
     
     /*
-    Atualiza valores da tupla especificada através do ID na tabela parte  
+    Atualiza valores da tupla especificada através do instrumento_id  
     */
     
-    public Map<String, Long> atualizar(Parte parte){
+    public Map<String, Long> atualizar(Parte parte, long instrumento_id){
         
-        String sql = "UPDATE parte SET nome = ?, descricao = ? WHERE id = ?";
+        String sql = "UPDATE parte SET instrumento_id = ?, nome = ?, descricao = ? WHERE instrumento_id = ?";
         
         Map<String, Long> retornos = new HashMap<>();
         Connection c = null;
@@ -272,9 +273,10 @@ public class ParteDAO {
         
             try (PreparedStatement ps = c.prepareStatement(sql)) {
                 
-                ps.setString(1, parte.getNome());
-                ps.setString(2, parte.getDescricao());
-                ps.setLong(6, parte.getInstrumentoId());
+                ps.setLong(1, parte.getInstrumentoId());
+                ps.setString(2, parte.getNome());
+                ps.setString(3, parte.getDescricao());
+                ps.setLong(4, instrumento_id);
 
                 int atualizou = ps.executeUpdate();
                 
@@ -324,7 +326,7 @@ public class ParteDAO {
     
     public Map<String, Long> deletar(long instrumento_id) {
         
-        String sql = "DELETE FROM parte WHERE id = ?";
+        String sql = "DELETE FROM parte WHERE instrumento_id = ?";
         
         Map<String, Long> retornos = new HashMap<>();
         Connection c = null;

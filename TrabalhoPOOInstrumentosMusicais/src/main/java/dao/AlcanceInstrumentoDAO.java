@@ -78,8 +78,7 @@ public class AlcanceInstrumentoDAO {
     Insere valores na tabela alcance_instrumento. 
     Os seguintes padrões seguem para os métodos de atualizar(), e deletar():
     
-    Introduz em 'retornos' a chave "ID" e o ID gerado como valor, 
-    assim como a chave "Codigo" com valor 200 em caso de conseguir capturar o ID com sucesso.
+    Introduz em 'retornos' a chave "Codigo" com valor 200 em caso de conseguir capturar o ID com sucesso.
     
     Em caso de erro retorna um código de erro ou um marcador em caso de erro genérico
     como valor de "Codigo". 
@@ -101,7 +100,7 @@ public class AlcanceInstrumentoDAO {
             
             c.setAutoCommit(false); // inicia transação
             
-            try (PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
+            try (PreparedStatement ps = c.prepareStatement(sql)){
                 
                 ps.setLong(1, alcanceInstrumento.getInstrumentoId());
                 ps.setString(2, alcanceInstrumento.getTipo());
@@ -109,13 +108,7 @@ public class AlcanceInstrumentoDAO {
                 ps.setString(4, alcanceInstrumento.getNotaMax());
 
                 ps.executeUpdate();
-               
-                try(ResultSet rs = ps.getGeneratedKeys()){
-                    
-                    if (rs.next()) retornos.put("ID", rs.getLong(1));
-                    else System.out.println("Erro ao retornar ID");
-                }
-                
+           
                  c.commit(); 
                  sucesso = true; 
                  System.out.println("Alcance de instrumento inserido com sucesso!");

@@ -104,8 +104,8 @@ public class MaterialDAO {
             // try-with-resources garante fechamento de PreparedStatement e ResultSet
             try (PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
                 
-                ps.setString(2, material.getNome());
-                ps.setString(3, material.getDescricao());
+                ps.setString(1, material.getNome());
+                ps.setString(2, material.getDescricao());
 
                 ps.executeUpdate();
                
@@ -278,9 +278,9 @@ public class MaterialDAO {
             try (PreparedStatement ps = c.prepareStatement(sql)) {
                 
                 
-                ps.setString(2, material.getNome());
-                ps.setString(3, material.getDescricao());
-                ps.setLong(9, material.getId());
+                ps.setString(1, material.getNome());
+                ps.setString(2, material.getDescricao());
+                ps.setLong(3, material.getId());
 
                 int atualizou = ps.executeUpdate();
                 

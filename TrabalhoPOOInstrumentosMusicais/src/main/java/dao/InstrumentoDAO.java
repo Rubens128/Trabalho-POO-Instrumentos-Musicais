@@ -119,21 +119,21 @@ public class InstrumentoDAO {
                         
                     if (instrumento instanceof InstrumentoHarmonico ih) {
                         
-                        ps2.setLong(1, ih.getId());
+                        ps2.setLong(1, ih.getFamiliaId());
                         ps2.setLong(2, ih.getPolifoniaMax());
                         ps2.setBoolean(3, ih.isPossuiPedalSustain());
                         ps2.setBoolean(4, ih.isSuportaAcordes());
                         
                     } else if (instrumento instanceof InstrumentoMelodico im) {
                         
-                        ps2.setLong(1, im.getId());
+                        ps2.setLong(1, im.getFamiliaId());
                         ps2.setBoolean(2, im.isTranspositor());
                         ps2.setString(3, im.getAfinacaoTransposicao().getValor());
                         ps2.setBoolean(4, im.isMicrotonalidadeSuportada());
                         
                     } else if (instrumento instanceof InstrumentoRitmico ir) {
                         
-                        ps2.setLong(1, ir.getId());
+                        ps2.setLong(1, ir.getFamiliaId());
                         ps2.setBoolean(2, ir.isAlturaDefinida());
                         ps2.setString(3, ir.getCategoriaPercussao().getValor());
                         ps2.setString(4, ir.getTocadoCom().getValor());
@@ -291,10 +291,10 @@ public class InstrumentoDAO {
     
     public Instrumento buscarPorID(long id, String especializacao){
         
-        String sql = "SELECT * FROM " + especializacao + " e"
-                + "LEFT JOIN instrumento i"
+        String sql = "SELECT * FROM " + especializacao + " e "
+                + "LEFT JOIN instrumento i "
                 + "ON e.instrumento_id = i.id "
-                + "WHERE = i.id = ?";
+                + "WHERE i.id = ?";
         Instrumento instrumento = null;
         Connection c = null;
         
