@@ -1,3 +1,5 @@
+
+
 package controller;
 
 import dao.ParteDAO;
@@ -36,8 +38,8 @@ public class ParteControl {
         return parteDAO.deletar(instrumentoId);
     }
     
-    public Map<String, Long> atualizarParte(Parte parte){
-        return parteDAO.atualizar(parte);
+    public Map<String, Long> atualizarParte(Parte parte, long instrumentoId){
+        return parteDAO.atualizar(parte, instrumentoId);
     }
 }
 
