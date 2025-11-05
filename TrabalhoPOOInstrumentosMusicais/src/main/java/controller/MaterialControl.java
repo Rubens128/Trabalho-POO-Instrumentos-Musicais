@@ -1,3 +1,5 @@
+
+
 package controller;
 
 import dao.MaterialDAO;
@@ -19,7 +21,7 @@ public class MaterialControl {
     }
     
     public void adicionarMaterial(long id, String nome, String descricao) throws SQLException {
-        Material m = new Material(0, nome, descricao);
+        Material m = new Material(id, nome, descricao);
         materialDAO.inserir(m);
     }
 
