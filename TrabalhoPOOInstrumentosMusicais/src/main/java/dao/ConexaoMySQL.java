@@ -16,8 +16,8 @@ import java.sql.SQLException;
 public class ConexaoMySQL implements ConexaoBD {
     
     private static final String URL = "jdbc:mysql://localhost:3306/musica";
-    private static final String USUARIO = "root";
-    private static final String SENHA = "1234";
+    private static final String USUARIO = "TrabalhoPOO";
+    private static final String SENHA = "Trabalho";
     
     @Override
     public Connection obterConexao() throws SQLException, ClassNotFoundException {

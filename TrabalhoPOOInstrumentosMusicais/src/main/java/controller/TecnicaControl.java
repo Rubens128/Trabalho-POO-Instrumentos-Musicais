@@ -7,6 +7,7 @@ import dao.TecnicaDAO;
 import model.Tecnica;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,14 +18,19 @@ import java.util.Map;
 public class TecnicaControl {
     private TecnicaDAO tecnicaDAO;
     
-    public TecnicaControl(TecnicaDAO tecnicaDAO){
-        this.tecnicaDAO = tecnicaDAO;
+    public TecnicaControl(){
+        this.tecnicaDAO = new TecnicaDAO();
     }
     
-    public void adcionarTecnica(long id, String nome, String descricao) throws SQLException {
+    public Map<String, Long> adicionarTecnica(long id, String nome, String descricao) throws SQLException {
+        
+        Map<String, Long> retornos = new HashMap<>();
+        
         Tecnica t = new Tecnica(id, nome, descricao);
         
-        tecnicaDAO.inserir(t);
+        retornos = tecnicaDAO.inserir(t);
+        
+        return retornos;
     }
     
     public List<Tecnica> listarTecnicas() throws SQLException {

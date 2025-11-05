@@ -4,6 +4,7 @@ package controller;
 
 import dao.MaterialDAO;
 import java.sql.SQLException;
+import java.util.HashMap;
 import model.Material;
 import java.util.List;
 import java.util.Map;
@@ -16,13 +17,19 @@ import java.util.Map;
 public class MaterialControl {
     private MaterialDAO materialDAO;
     
-    public MaterialControl(MaterialDAO materialDAO){
-        this.materialDAO = materialDAO;
+    public MaterialControl( ){
+        this.materialDAO = new MaterialDAO();
     }
     
-    public void adicionarMaterial(long id, String nome, String descricao) throws SQLException {
+    public Map<String, Long> adicionarMaterial(long id, String nome, String descricao) throws SQLException {
+        
+        Map<String, Long> retornos = new HashMap<>();
+        
         Material m = new Material(id, nome, descricao);
-        materialDAO.inserir(m);
+        
+        retornos = materialDAO.inserir(m);
+        
+        return retornos;
     }
 
     public List<Material> listarMaterial() throws SQLException{

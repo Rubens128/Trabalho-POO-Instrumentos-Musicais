@@ -8,6 +8,7 @@ import dao.ApelidosDAO;
 import model.Apelidos;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 /**
@@ -15,16 +16,21 @@ import java.util.Map;
  * @author Nascimento
  */
 public class ApelidosControl {
-    private ApelidosDAO apelidosDAO;
+    private final ApelidosDAO apelidosDAO;
     
-    public ApelidosControl(ApelidosDAO apelidosDAO) throws SQLException {
-        this.apelidosDAO = apelidosDAO;
+    public ApelidosControl() throws SQLException {
+        this.apelidosDAO = new ApelidosDAO();
     }
     
-    public void adcionarApelido(long instrumentoId, String apelido) throws SQLException {
+    public Map<String, Long> adicionarApelido(long instrumentoId, String apelido) throws SQLException {
+        
+        Map<String, Long> retornos = new HashMap<>();
+        
         Apelidos ap = new Apelidos(instrumentoId, apelido);
         
-        apelidosDAO.inserir(ap);
+        retornos = apelidosDAO.inserir(ap);
+        
+        return retornos;
     }
     
     public List<Apelidos> listarApelidos() throws SQLException {

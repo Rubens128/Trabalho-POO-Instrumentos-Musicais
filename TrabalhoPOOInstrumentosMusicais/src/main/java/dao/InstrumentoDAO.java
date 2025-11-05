@@ -281,7 +281,7 @@ public class InstrumentoDAO {
                                     rs.getString("classificacao_sonoridade"),
                                     rs.getBoolean("transpositor"),
                                     AfinacaoTransposicao.valueOf(
-                                        rs.getString("afinacao_transposicao")
+                                        rs.getString("afinacao_transposicao").toUpperCase()
                                     ),
                                     rs.getBoolean("microtonalidade_suportada")
 
@@ -297,10 +297,10 @@ public class InstrumentoDAO {
                                     rs.getString("classificacao_sonoridade"),
                                     rs.getBoolean("altura_definida"),
                                     CategoriaPercussao.valueOf(
-                                        rs.getString("categoria_percussao")
+                                        rs.getString("categoria_percussao").toUpperCase()
                                     ),
                                     TocadoCom.valueOf(
-                                        rs.getString("tocado_com")
+                                        rs.getString("tocado_com").toUpperCase()
                                     )
 
                             ).descricao(rs.getString("descricao")).historia(rs.getString("historia")).build();

@@ -191,7 +191,7 @@ public class AudioDAO {
                             rs.getInt("oitava"),     
                             rs.getString("arquivo")
                             
-                    ).descricao(rs.getString("descricao")).bpm(rs.getInt("bpm")).creditoGravacao(rs.getString("credito_gravacao")).build();
+                    ).descricao(rs.getString("descricao")).bpm(rs.getLong("bpm")).creditoGravacao(rs.getString("credito_gravacao")).build();
        
                     audios.add(a);
                 }
@@ -253,7 +253,7 @@ public class AudioDAO {
                                rs.getInt("oitava"),     
                                rs.getString("arquivo")
 
-                       ).descricao(rs.getString("descricao")).bpm(rs.getInt("bpm")).creditoGravacao(rs.getString("credito_gravacao")).build();     
+                       ).descricao(rs.getString("descricao")).bpm(rs.getLong("bpm")).creditoGravacao(rs.getString("credito_gravacao")).build();     
 
                    } else {
 

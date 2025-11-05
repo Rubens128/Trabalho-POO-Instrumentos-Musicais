@@ -8,6 +8,7 @@ import model.FamiliaInstrumento;
 import dao.FamiliaInstrumentoDAO;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 /**
@@ -15,16 +16,21 @@ import java.util.Map;
  * @author Nascimento
  */
 public class FamiliaInstrumentoControl {
-    private FamiliaInstrumentoDAO familiaInstrumentoDAO;
+    private final FamiliaInstrumentoDAO familiaInstrumentoDAO;
     
-    public FamiliaInstrumentoControl(FamiliaInstrumentoDAO familiaInstrumento){
-        this.familiaInstrumentoDAO = familiaInstrumentoDAO;
+    public FamiliaInstrumentoControl(){
+        this.familiaInstrumentoDAO = new FamiliaInstrumentoDAO();
     }
     
-    public void adicionarFamilia(FamiliaInstrumento fi) throws SQLException {
-        FamiliaInstrumento f = new FamiliaInstrumento(fi.getId(), fi.getNome(), fi.getDescricao());
+    public Map<String, Long> adicionarFamilia(String nome, String descricao) throws SQLException {
         
-        familiaInstrumentoDAO.inserir(f);
+        FamiliaInstrumento f = new FamiliaInstrumento(0 ,nome, descricao);
+        
+        Map<String, Long> retornos = new HashMap<>();
+        
+        retornos = familiaInstrumentoDAO.inserir(f);
+        
+        return retornos;
     }
     
     public List<FamiliaInstrumento> listarFamilia() throws SQLException {

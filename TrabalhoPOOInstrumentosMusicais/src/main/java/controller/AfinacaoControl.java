@@ -6,6 +6,7 @@ package controller;
 import dao.AfinacaoDAO;
 import model.Afinacao;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,20 +15,25 @@ import java.util.Map;
  * @author Nascimento
  */
 public class AfinacaoControl {
-    private AfinacaoDAO afinacaoDAO;
+    private final AfinacaoDAO afinacaoDAO;
     
-    public AfinacaoControl(AfinacaoDAO afinacaoDAO){
-        this.afinacaoDAO = afinacaoDAO;
+    public AfinacaoControl(){
+        this.afinacaoDAO = new AfinacaoDAO();
     }
     
-    public void adicionarAfinacao(long id, String nome, String descricao, String referencia, String contextoAfinacao) throws SQLException {
-        Afinacao a = new Afinacao.Builder(id, nome)
+    public Map<String, Long> adicionarAfinacao(String nome, String descricao, String referencia, String contextoAfinacao) throws SQLException {
+        
+        Map<String, Long> retornos = new HashMap<>();
+        
+        Afinacao a = new Afinacao.Builder(0, nome)
                 .descricao(descricao)
                 .referencia(referencia)
                 .contextoAfinacao(contextoAfinacao)
                 .build();
         
-        afinacaoDAO.inserir(a);
+        retornos = afinacaoDAO.inserir(a);
+        
+        return retornos;
     }
     
     public List<Afinacao> listarAfinacao() throws SQLException {

@@ -778,7 +778,17 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
         if(telaInputAfinacao != null) telaInputAfinacao.dispose();
         if(telaInputMaterial != null) telaInputMaterial.dispose();
         
-        TelaInstrumentos telaInstrumento = new TelaInstrumentos();
+        TelaInstrumentos telaInstrumento = null;
+                 
+        try{
+            
+            telaInstrumento = new TelaInstrumentos();
+            
+        } catch (Exception e){
+            
+            System.out.println("Erro: " + e.getMessage());
+            return;
+        }
         
         telaInstrumento.setVisible(true);
     }//GEN-LAST:event_BotaoCancelarActionPerformed

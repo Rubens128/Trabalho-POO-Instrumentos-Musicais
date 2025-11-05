@@ -16,7 +16,7 @@ public class Audio {
     private String descricao;
     private String nota;
     private long oitava; 
-    private long bpm;
+    private Long bpm;
     private String arquivo;
     private String creditoGravacao;
     private Tecnica tecnica;
@@ -151,7 +151,7 @@ public class Audio {
             return this;
         }
 
-        public Builder bpm(long val) {
+        public Builder bpm(Long val) {
             this.bpm = val;
             return this;
         }

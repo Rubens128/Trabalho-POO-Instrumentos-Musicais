@@ -20,7 +20,8 @@ public class Instrumento {
     private FamiliaInstrumento familiaInstrumento;
     private AlcanceInstrumento alcanceInstrumento;
     private ArrayList<Audio> audios;
-    private ArrayList<ParteEMaterial> partesEMateriais;
+    private ArrayList<Parte> partes;
+    private ArrayList<Material> materiais;
     private ArrayList<Afinacao> afinacoes;
     
     protected Instrumento(Builder<?> builder) {
@@ -33,7 +34,8 @@ public class Instrumento {
         this.familiaInstrumento = builder.familiaInstrumento;
         this.alcanceInstrumento = builder.alcanceInstrumento;
         this.audios = builder.audios;
-        this.partesEMateriais = builder.partesEMateriais;
+        this.partes = builder.partes;
+        this.materiais = builder.materiais;
         this.afinacoes = builder.afinacoes;
     }
 
@@ -74,8 +76,12 @@ public class Instrumento {
         return audios;
     }
 
-    public ArrayList<ParteEMaterial> getPartesEMateriais() {
-        return partesEMateriais;
+    public ArrayList<Parte> getPartes() {
+        return partes;
+    }
+    
+    public ArrayList<Material> getMateriais() {
+        return materiais;
     }
 
     public ArrayList<Afinacao> getAfinacoes() {
@@ -119,8 +125,12 @@ public class Instrumento {
         this.audios = audios;
     }
 
-    public void setPartesEMateriais(ArrayList<ParteEMaterial> parteEMaterial) {
-        this.partesEMateriais = parteEMaterial;
+    public void setPartes(ArrayList<Parte> parte) {
+        this.partes = parte;
+    }
+    
+    public void setMateriais(ArrayList<Material> material) {
+        this.materiais = material;
     }
 
     public void setAfinacoes(ArrayList<Afinacao> afinacao) {
@@ -137,12 +147,20 @@ public class Instrumento {
         this.audios.add(audio);
     }
     
-    // Partes e Materiais
-    public void adicionarParteEMaterial(ParteEMaterial pem) {
-        if (this.partesEMateriais == null) {
-            this.partesEMateriais = new ArrayList<>();
+    // Partes
+    public void adicionarPartes(Parte parte) {
+        if (this.partes == null) {
+            this.partes = new ArrayList<>();
         }
-        this.partesEMateriais.add(pem);
+        this.partes.add(parte);
+    }
+    
+    // Materiais
+    public void adicionarMaterial(Material material) {
+        if (this.materiais == null) {
+            this.materiais = new ArrayList<>();
+        }
+        this.materiais.add(material);
     }
     
     // Afinacoes
@@ -169,7 +187,8 @@ public class Instrumento {
         private FamiliaInstrumento familiaInstrumento = null;
         private AlcanceInstrumento alcanceInstrumento = null;
         private ArrayList<Audio> audios = new ArrayList<>(); // Inicializa listas
-        private ArrayList<ParteEMaterial> partesEMateriais = new ArrayList<>();
+        private ArrayList<Parte> partes;
+        private ArrayList<Material> materiais;
         private ArrayList<Afinacao> afinacoes = new ArrayList<>();
 
         // Construtor do Builder (só com obrigatórios)
@@ -207,8 +226,13 @@ public class Instrumento {
             return (T) this;
         }
         
-        public T partesEMateriais(ArrayList<ParteEMaterial> val) {
-            this.partesEMateriais = new ArrayList<>(val);
+        public T partes(ArrayList<Parte> val) {
+            this.partes = new ArrayList<>(val);
+            return (T) this;
+        }
+        
+        public T materiais(ArrayList<Material> val) {
+            this.materiais = new ArrayList<>(val);
             return (T) this;
         }
         

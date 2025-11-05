@@ -6,6 +6,7 @@ import dao.ParteDAO;
 import model.Parte;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,13 +18,19 @@ import java.util.Map;
 public class ParteControl {
     private ParteDAO parteDAO;
     
-    public ParteControl(ParteDAO parteDAO){
-        this.parteDAO = parteDAO;
+    public ParteControl(){
+        this.parteDAO = new ParteDAO();
     }
     
-    public void adicionarParte(long instrumentoId, String nome, String descricao){
+    public Map<String, Long> adicionarParte(long instrumentoId, String nome, String descricao){
+        
+        Map<String, Long> retornos = new HashMap<>();
+        
         Parte p = new Parte(instrumentoId, nome, descricao);
-        parteDAO.inserir(p);
+        
+        retornos = parteDAO.inserir(p);
+        
+        return retornos;
     }
     
     public List<Parte> listarPartes(){

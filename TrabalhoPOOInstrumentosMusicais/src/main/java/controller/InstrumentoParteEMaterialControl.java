@@ -9,6 +9,7 @@ import model.ParteEMaterial;
 import java.util.List;
 import java.util.Map;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 /**
  *
@@ -18,14 +19,19 @@ import java.sql.SQLException;
 public class InstrumentoParteEMaterialControl {
    private final InstrumentoTemParteEMaterialDAO parteEMaterialDAO;
    
-    public InstrumentoParteEMaterialControl(InstrumentoTemParteEMaterialDAO parteEMaterialDAO){
-        this.parteEMaterialDAO = parteEMaterialDAO;
+    public InstrumentoParteEMaterialControl(){
+        this.parteEMaterialDAO = new InstrumentoTemParteEMaterialDAO();
     }      
     
-    public void adcionarParteEMaterial(ParteEMaterial a) throws SQLException {
-        ParteEMaterial pm = new ParteEMaterial(a.getInstrumentoId(), a.getMaterialId(), a.getParteNome());
+    public Map<String, Long> adicionarParteEMaterial(Long instrumentoID, Long materialID, String parteNome) throws SQLException {
         
-        parteEMaterialDAO.inserir(pm);
+        Map<String, Long> retornos = new HashMap<>();
+        
+        ParteEMaterial pm = new ParteEMaterial(instrumentoID, materialID, parteNome);
+        
+        retornos = parteEMaterialDAO.inserir(pm);
+        
+        return retornos;
     }
     
     public List<ParteEMaterial> listarTodos() throws SQLException { 

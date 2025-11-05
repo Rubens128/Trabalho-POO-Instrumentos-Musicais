@@ -5,11 +5,14 @@ package controller;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 import dao.InstrumentoUsaAfinacaoDAO;
+import dao.InstrumentoDAO;
 import model.InstrumentoUsaAfinacao;
+import model.Instrumento;
 
 import java.util.List;
 import java.util.Map;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 
 /**
@@ -17,16 +20,36 @@ import java.sql.SQLException;
  * @author Nascimento
  */
 public class InstrumentoAfinacaoControl {
-    private InstrumentoUsaAfinacaoDAO instrumentoAfiacaoDAO;
+    private final InstrumentoUsaAfinacaoDAO instrumentoAfiacaoDAO;
+    private final InstrumentoDAO instrumentoDAO;
     
-    public InstrumentoAfinacaoControl(InstrumentoUsaAfinacaoDAO instrumentoAfiacaoDAO){
-        this.instrumentoAfiacaoDAO = instrumentoAfiacaoDAO;
+    public InstrumentoAfinacaoControl(){
+        this.instrumentoAfiacaoDAO = new InstrumentoUsaAfinacaoDAO();
+        this.instrumentoDAO = new InstrumentoDAO();
     }
     
-    public void adcionarInstrumentoAfiacao(InstrumentoUsaAfinacao ia){
-        InstrumentoUsaAfinacao i = new InstrumentoUsaAfinacao(ia.getAfinacaoId(), ia.getInstrumentoId(), ia.getContexto());
+    public Map<String, Long> adicionarInstrumentoAfiacao(long instrumentoId, String contexto){
         
-        instrumentoAfiacaoDAO.inserir(i);
+        Map<String, Long> retornos = new HashMap<>();
+        
+        Instrumento instrumento = instrumentoDAO.buscarPorID("harmonico", instrumentoId);
+        
+        if(instrumento == null) instrumento = instrumentoDAO.buscarPorID("ritmico", instrumentoId);
+        
+        if(instrumento == null) instrumento = instrumentoDAO.buscarPorID("melodico", instrumentoId);
+        
+        if(instrumento == null){
+            
+            retornos.put("Instrumento", 404L);
+            
+            return retornos;
+        }
+        
+        InstrumentoUsaAfinacao i = new InstrumentoUsaAfinacao(0, instrumentoId, contexto);
+        
+        retornos = instrumentoAfiacaoDAO.inserir(i);
+        
+        return retornos;
     }
     
     public List<InstrumentoUsaAfinacao> listarInstrumentosAfinacao(){

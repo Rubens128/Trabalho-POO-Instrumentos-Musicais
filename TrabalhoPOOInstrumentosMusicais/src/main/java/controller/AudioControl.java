@@ -13,6 +13,7 @@ import model.AudioUtilizaTecnica;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 import model.Tecnica;
 
 
@@ -25,35 +26,47 @@ public class AudioControl {
     private AudioUtilizaTecnicaDAO audioTecnicaDAO;
     private final TecnicaDAO tecnicaDAO;
     
-    public AudioControl(AudioDAO audioDAO, AudioUtilizaTecnica audioUltilizaTecnicaDAO, TecnicaDAO tecnicaDAO){
-        this.audioDAO = audioDAO;
-        this.audioTecnicaDAO = audioTecnicaDAO;
-        this.tecnicaDAO = tecnicaDAO;
+    public AudioControl(){
+        this.audioDAO = new AudioDAO();
+        this.audioTecnicaDAO = new AudioUtilizaTecnicaDAO();
+        this.tecnicaDAO = new TecnicaDAO();
     }
     
-    public void adicionarAudio(Audio a, Tecnica t) throws SQLException {
+    public Map<String, Long> adicionarAudio(long instrumentoID, String titulo, String nota, 
+            long oitava, String arquivo, String descricao, Long bpm, String creditos, long tecnicaID) throws SQLException {
         
         //ele ira verificar se o usuario colocou uma id valida de tecnica no audio
         //caso positico ele relacionar o id audio com a tecnica, cao contrario ele ira direto
+
+        Map<String, Long> retornos = new HashMap<>();
         
-        Tecnica tecnicaEncontrar = tecnicaDAO.buscarPorID(t.getId()); 
+        Tecnica tecnicaEncontrar = tecnicaDAO.buscarPorID(tecnicaID); 
         if (tecnicaEncontrar == null){
-           System.out.println("tecnica nao encontrada");
-           return;
+           
+           retornos.put("Tecnica", 404L);
+           
+           return retornos;
         } 
 
-        Audio ad = new Audio.Builder(a.getId(), a.getInstrumentoID(), a.getTitulo(), a.getNota(), a.getOitava(), a.getArquivo())
-                .descricao(a.getDescricao())
-                .bpm(a.getBpm())
-                .creditoGravacao(a.getCreditoGravacao())
+        Audio ad = new Audio.Builder(0, instrumentoID, titulo, nota, oitava, arquivo)
+                .descricao(descricao != null ? descricao : null)
+                .bpm(bpm != null ? bpm : null)
+                .creditoGravacao(creditos != null ? creditos : null)
                 .tecnica(tecnicaEncontrar)
                 .build();
         
-        audioDAO.inserir(ad); 
+         retornos = audioDAO.inserir(ad); 
+         
+         if(retornos.get("Codigo") != 200){
+             
+             return retornos;
+         }
         
-        AudioUtilizaTecnica rela = new AudioUtilizaTecnica(a.getId(), tecnicaEncontrar.getId());
+        AudioUtilizaTecnica rela = new AudioUtilizaTecnica(retornos.get("ID"), tecnicaEncontrar.getId());
                 
-        audioTecnicaDAO.inserir(rela);
+        retornos = audioTecnicaDAO.inserir(rela);
+        
+        return retornos;
     }
     
     public List<Audio> listarAudio() throws SQLException {

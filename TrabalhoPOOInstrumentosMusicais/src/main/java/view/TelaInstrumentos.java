@@ -9,6 +9,12 @@ package view;
  * @author ruben
  */
 
+
+import controller.InstrumentosControl;
+import model.Instrumento;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.JMenuItem;
 
 public class TelaInstrumentos extends javax.swing.JFrame {
@@ -18,8 +24,9 @@ public class TelaInstrumentos extends javax.swing.JFrame {
 
     /**
      * Creates new form TelaPrincipal
+     * 
      */
-    public TelaInstrumentos() {
+    public TelaInstrumentos() throws Exception {
         initComponents();
         
         DivInstrumentos.getVerticalScrollBar().setUnitIncrement(32);
@@ -27,6 +34,19 @@ public class TelaInstrumentos extends javax.swing.JFrame {
         CardsPanel.setLayout(new javax.swing.BoxLayout(CardsPanel, javax.swing.BoxLayout.Y_AXIS));
         
         setLocationRelativeTo(null);
+        
+        InstrumentosControl instrumentosControl = new InstrumentosControl();
+        
+        List<Instrumento> instrumentos = instrumentosControl.listarInstrumentos("harmonico");
+        instrumentos.addAll(instrumentosControl.listarInstrumentos("melodico"));
+        instrumentos.addAll(instrumentosControl.listarInstrumentos("ritmico"));
+        
+        for(Instrumento i: instrumentos){
+            
+            addInstrumentoCard(i.getNome(), i.getDescricao(), true);
+        }
+    
+        
     }
 
     /**
