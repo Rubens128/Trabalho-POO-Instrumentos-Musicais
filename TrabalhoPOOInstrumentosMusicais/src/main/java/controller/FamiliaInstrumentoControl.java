@@ -8,7 +8,6 @@ import model.FamiliaInstrumento;
 import dao.FamiliaInstrumentoDAO;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 /**
@@ -22,21 +21,21 @@ public class FamiliaInstrumentoControl {
         this.familiaInstrumentoDAO = familiaInstrumentoDAO;
     }
     
-    public void adicionarFamilia(FamiliaInstrumento fi) throws SQLException{
+    public void adicionarFamilia(FamiliaInstrumento fi) throws SQLException {
         FamiliaInstrumento f = new FamiliaInstrumento(fi.getId(), fi.getNome(), fi.getDescricao());
         
         familiaInstrumentoDAO.inserir(f);
     }
     
-    public List<FamiliaInstrumento> listarFamilia() throws SQLException{
+    public List<FamiliaInstrumento> listarFamilia() throws SQLException {
         return familiaInstrumentoDAO.listarTodos();
     }
     
-    public FamiliaInstrumento listarFamiliaporId(long id) throws SQLException{
+    public FamiliaInstrumento listarFamiliaporId(long id) throws SQLException { 
         return familiaInstrumentoDAO.buscarPorID(id);
     }
     
-    public Map<String, Long> atualizarFamilia(FamiliaInstrumento familiaInstrumento) throws SQLException{
+    public Map<String, Long> atualizarFamilia(FamiliaInstrumento familiaInstrumento) throws SQLException {
         return familiaInstrumentoDAO.atualizar(familiaInstrumento);
     }
     
