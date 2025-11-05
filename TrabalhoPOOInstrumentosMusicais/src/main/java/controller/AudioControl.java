@@ -33,6 +33,9 @@ public class AudioControl {
     
     public void adicionarAudio(Audio a, Tecnica t) throws SQLException {
         
+        //ele ira verificar se o usuario colocou uma id valida de tecnica no audio
+        //caso positico ele relacionar o id audio com a tecnica, cao contrario ele ira direto
+        
         Tecnica tecnicaEncontrar = tecnicaDAO.buscarPorID(t.getId()); 
         if (tecnicaEncontrar == null){
            System.out.println("tecnica nao encontrada");

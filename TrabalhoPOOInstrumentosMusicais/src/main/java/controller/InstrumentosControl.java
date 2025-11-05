@@ -31,6 +31,9 @@ public class InstrumentosControl {
 
         Instrumento InstrumentoEspecializado = null;
         
+        //Switch fara a separacao de cada tipo de especializacao;
+        //caso nao tenha, ele o instanteof no dao vai fazer tudo e deixar sem;
+
         switch (especializacao) {
             case "harmonico" -> {
                 InstrumentoEspecializado = new InstrumentoHarmonico.Builder(

@@ -41,7 +41,7 @@ public class InstrumentoAfinacaoControl {
         return instrumentoAfiacaoDAO.atualizar(instrumentoUsaAfinacao, escolha, id);
     }
     
-    public Map<String, Long> deletarInstrumentoAfinacao( String escolha, long id){
+    public Map<String, Long> deletarInstrumentoAfinacao(String escolha, long id){
         return instrumentoAfiacaoDAO.deletar(escolha, id);  
     }
     
