@@ -258,8 +258,8 @@ public class AudioUtilizaTecnicaDAO {
         
         String sql;
         
-        if(escolha.equals("audio")) sql = "SELECT * FROM audio_tecnica WHERE audio_id = ?";
-        else sql = "SELECT * FROM audio_tecnica WHERE tecnica_id = ?";
+        if(escolha.equals("audio")) sql = "UPDATE audio_tecnica SET audio_ID = ?, tecnica_id = ? WHERE audio_id = ?";
+        else sql = "UPDATE audio_tecnica SET audio_ID = ?, tecnica_id = ? WHERE tecnica_id = ?";
         
         Map<String, Long> retornos = new HashMap<>();
         Connection c = null;
@@ -274,7 +274,8 @@ public class AudioUtilizaTecnicaDAO {
             try (PreparedStatement ps = c.prepareStatement(sql)) {
                 
                 ps.setLong(1, audioUtilizaTecnica.getAudioId());
-                ps.setLong(1, audioUtilizaTecnica.getTecnicaId());
+                ps.setLong(2, audioUtilizaTecnica.getTecnicaId());
+                ps.setLong(3, id);
 
                 int atualizou = ps.executeUpdate();
                 
@@ -326,8 +327,8 @@ public class AudioUtilizaTecnicaDAO {
         
         String sql;
         
-        if(escolha.equals("audio_id")) sql = "SELECT * FROM audio_tecnica WHERE audio_id = ?";
-        else sql = "SELECT * FROM audio_tecnica WHERE tecnica_id = ?";
+        if(escolha.equals("audio")) sql = "DELETE FROM audio_tecnica WHERE audio_id = ?";
+        else sql = "DELETE FROM audio_tecnica WHERE tecnica_id = ?";
         
         Map<String, Long> retornos = new HashMap<>();
         Connection c = null;

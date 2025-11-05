@@ -61,6 +61,24 @@ public class InstrumentoUsaAfinacaoDAO {
         }
     }
     
+    //Método de verificação se o usuário digitou uma escolha válida
+    boolean isEscolha(String escolha) {
+        
+        if(escolha.equals("instrumento")
+           || escolha.equals("afinacao")) {
+            
+            return true;
+            
+        } else {
+            
+            System.out.printf("\nEscolha inválida, tente uma das opções abaixo:\n"
+                    + "\n\"instrumento\""
+                    + "\n\"afinacao\"\n");
+            
+            return false;
+        }
+    }
+    
     /*
     Insere valores na tabela instrumento_afinacao. 
     */
@@ -167,48 +185,50 @@ public class InstrumentoUsaAfinacaoDAO {
     /*
     Seleciona todos os valores da tabela instrumento_afinacao na tupla especificada pelo ID
     */
-    public InstrumentoUsaAfinacao buscarPorID(long id, String escolha){
+    public InstrumentoUsaAfinacao buscarPorID(String escolha, long id){
         
         String sql;
-        
-        if(escolha.equals("instrumento_id")) sql = "SELECT * FROM instrumento_afinacao WHERE instrumento_id = ?";
-        else sql = "SELECT * FROM instrumento_afinacao WHERE afinacao_id = ?";
-        
         InstrumentoUsaAfinacao instrumentoUsaAfinacao = null;
         Connection c = null;
         
-        try {
-            c = conexao.obterConexao();
-            try (PreparedStatement ps = c.prepareStatement(sql)){
-                 ps.setLong(1, id);
-                 try (ResultSet rs = ps.executeQuery()) {
-                    if (rs.next()) {
-                        
-                       instrumentoUsaAfinacao = new InstrumentoUsaAfinacao(
-                                         
-                               rs.getLong("instrumento_id"),
-                               rs.getLong("afinacao_id"),
-                               rs.getString("contexto")
-                       );
-                       
-                   } else {
-                       System.out.println("Nenhuma relação instrumento-afinação encontrada com o ID informado.");
-                   }
+        if(isEscolha(escolha)) {
+        
+            if(escolha.equals("instrumento")) sql = "SELECT * FROM instrumento_afinacao WHERE instrumento_id = ?";
+            else sql = "SELECT * FROM instrumento_afinacao WHERE afinacao_id = ?";
+
+            try {
+                c = conexao.obterConexao();
+                try (PreparedStatement ps = c.prepareStatement(sql)){
+                     ps.setLong(1, id);
+                     try (ResultSet rs = ps.executeQuery()) {
+                        if (rs.next()) {
+
+                           instrumentoUsaAfinacao = new InstrumentoUsaAfinacao(
+
+                                   rs.getLong("instrumento_id"),
+                                   rs.getLong("afinacao_id"),
+                                   rs.getString("contexto")
+                           );
+
+                       } else {
+                           System.out.println("Nenhuma relação instrumento-afinação encontrada com o ID informado.");
+                       }
+                    }
                 }
+
+            } catch (SQLException e) {
+
+                System.out.println("Erro SQL ao buscar relação instrumento-afinação: " + e.getMessage());
+
+            } catch (Exception e) {
+
+                System.out.println("Erro inesperado ao buscar relação instrumento-afinação: " + e.getMessage());
+
+            } finally {
+
+                finalizarMetodos(c, null, 0);
             }
-            
-        } catch (SQLException e) {
-            
-            System.out.println("Erro SQL ao buscar relação instrumento-afinação: " + e.getMessage());
-            
-        } catch (Exception e) {
-            
-            System.out.println("Erro inesperado ao buscar relação instrumento-afinação: " + e.getMessage());
-            
-        } finally {
-            
-            finalizarMetodos(c, null, 0);
-        }
+        }    
         
         return instrumentoUsaAfinacao;
     }
@@ -216,71 +236,75 @@ public class InstrumentoUsaAfinacaoDAO {
     /*
     Atualiza valores da tupla especificada através do ID na tabela instrumento_afinacao  
     */
-    public Map<String, Long> atualizar(InstrumentoUsaAfinacao instrumentoUsaAfinacao, String escolha){
+    public Map<String, Long> atualizar(InstrumentoUsaAfinacao instrumentoUsaAfinacao, String escolha, long id){
         
         String sql;
-        
-        if(escolha.equals("instrumento_id")) sql = "SELECT * FROM instrumento_afinacao WHERE instrumento_id = ?";
-        else sql = "SELECT * FROM instrumento_afinacao WHERE afinacao_id = ?";
-        
         Map<String, Long> retornos = new HashMap<>();
         Connection c = null;
         long erros = -1;
         
-        try {
-            
-            c = conexao.obterConexao();
-            c.setAutoCommit(false);
+        if(isEscolha(escolha)) {
         
-            try (PreparedStatement ps = c.prepareStatement(sql)) {
-                
-                ps.setLong(1, instrumentoUsaAfinacao.getInstrumentoId());
-                ps.setLong(2, instrumentoUsaAfinacao.getAfinacaoId());
-                ps.setString(3, instrumentoUsaAfinacao.getContexto());
-                
-                int atualizou = ps.executeUpdate();
-                c.commit();
+            if(escolha.equals("instrumento")) sql = "UPDATE instrumento_afinacao SET instrumento_id = ?, afinacao_id = ?, contexto = ? WHERE instrumento_id = ?";
+            else sql = "UPDATE instrumento_afinacao SET instrumento_id = ?, afinacao_id = ?, contexto = ? WHERE afinacao_id = ?";
 
-                if(atualizou > 0) System.out.println("Relação instrumento-afinação atualizada com sucesso!");
-                else  {
-                    System.out.println("Nenhuma relação instrumento-afinação encontrada para atualizar.");
-                    retornos.put("Codigo", malSucedido);
-                    System.out.println("Tentando rollback...");
-                    tentarRollback(c, retornos);
-                }
-            }    
-        } catch (SQLException e) {
-            
-            System.out.println("Erro SQL ao atualizar relação instrumento-afinação: " + e.getMessage());
-            retornos.put("Codigo", (long)e.getErrorCode()); 
-            System.out.println("Tentando rollback...");
-            tentarRollback(c, retornos);
-            
-        } catch (Exception e) {
-            
-            System.out.println("Erro inesperado ao atualizar relação instrumento-afinação: " + e.getMessage());
-            retornos.put("Codigo", erros);  
-            System.out.println("Tentando rollback...");
-            tentarRollback(c, retornos);
-            
-        } finally {
-            
-            finalizarMetodos(c, retornos, erros);
+            try {
+
+                c = conexao.obterConexao();
+                c.setAutoCommit(false);
+
+                try (PreparedStatement ps = c.prepareStatement(sql)) {
+
+                    ps.setLong(1, instrumentoUsaAfinacao.getInstrumentoId());
+                    ps.setLong(2, instrumentoUsaAfinacao.getAfinacaoId());
+                    ps.setString(3, instrumentoUsaAfinacao.getContexto());
+                    ps.setLong(4, id);
+
+                    int atualizou = ps.executeUpdate();
+                    c.commit();
+
+                    if(atualizou > 0) System.out.println("Relação instrumento-afinação atualizada com sucesso!");
+                    else  {
+                        System.out.println("Nenhuma relação instrumento-afinação encontrada para atualizar.");
+                        retornos.put("Codigo", malSucedido);
+                        System.out.println("Tentando rollback...");
+                        tentarRollback(c, retornos);
+                    }
+                }    
+            } catch (SQLException e) {
+
+                System.out.println("Erro SQL ao atualizar relação instrumento-afinação: " + e.getMessage());
+                retornos.put("Codigo", (long)e.getErrorCode()); 
+                System.out.println("Tentando rollback...");
+                tentarRollback(c, retornos);
+
+            } catch (Exception e) {
+
+                System.out.println("Erro inesperado ao atualizar relação instrumento-afinação: " + e.getMessage());
+                retornos.put("Codigo", erros);  
+                System.out.println("Tentando rollback...");
+                tentarRollback(c, retornos);
+
+            } finally {
+
+                finalizarMetodos(c, retornos, erros);
+            }
+
+            if (retornos.isEmpty()) retornos.put("Codigo", bemSucedido);
         }
         
-        if (retornos.isEmpty()) retornos.put("Codigo", bemSucedido);
         return retornos;
     }
     
     /*
     Deleta valores da tupla especificada através do ID na tabela instrumento_afinacao  
     */
-    public Map<String, Long> deletar(long id, String escolha) {
+    public Map<String, Long> deletar( String escolha, long id) {
         
         String sql;
         
-        if(escolha.equals("instrumento_id")) sql = "SELECT * FROM instrumento_afinacao WHERE instrumento_id = ?";
-        else sql = "SELECT * FROM instrumento_afinacao WHERE afinacao_id = ?";
+        if(escolha.equals("instrumento")) sql = "DELETE FROM instrumento_afinacao WHERE instrumento_id = ?";
+        else sql = "DELETE FROM instrumento_afinacao WHERE afinacao_id = ?";
         
         Map<String, Long> retornos = new HashMap<>();
         Connection c = null;
