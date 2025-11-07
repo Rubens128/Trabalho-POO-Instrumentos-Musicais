@@ -58,7 +58,7 @@ public class InstrumentosControl {
         this.instrumentoTemParteEMaterialDAO = new InstrumentoTemParteEMaterialDAO();
     }
 
-    public Map<String, Long> adicionarInstrumento(long id, Long familiaId, String nome, String classificacaoSonoridade, String historia,
+    public Map<String, Long> adicionarInstrumento(Long familiaId, String nome, String classificacaoSonoridade, String historia,
             String descricao, Long afinacoesId, Long audioIds, String parteNome, String parteDescricao, Long materialId, 
             String especializacao, Object opcao1, Object opcao2, Object opcao3) throws SQLException { 
 
@@ -82,7 +82,7 @@ public class InstrumentosControl {
             
             audio.add(audioDAO.buscarPorID(audioIds)); 
 
-            if(audio.isEmpty()) retornos.put("Audio", 404L);
+            if(audio.get(0) == null && audioIds != -1L) retornos.put("Audio", 404L);
             
         }
         
@@ -90,30 +90,109 @@ public class InstrumentosControl {
             
             afinacao.add(afinacaoDAO.buscarPorID(afinacoesId));
             
-            if(afinacao.isEmpty()) retornos.put("Afinacao", 404L);
+            if(afinacao.get(0) == null && afinacoesId != -1L) retornos.put("Afinacao", 404L);
         }
         
         if(materialId != null){
             
             material.add(materialDAO.buscarPorID(materialId));
             
-            if(material.isEmpty()) retornos.put("Material", 404L);
+            if(material.get(0) == null) retornos.put("Material", 404L);
         }
         
-        if(familiaInstrumento == null || audio.isEmpty() || afinacao.isEmpty() || material.isEmpty()) return retornos;
+        if(familiaInstrumento == null || (audio.get(0) == null && audioIds != -1) || 
+                (afinacao.get(0) == null && afinacoesId != -1L) || material.get(0) == null) return retornos;
+        
+        retornos = new HashMap<>();
+        
+        //Switch fara a separacao de cada tipo de especializacao;
+        //caso nao tenha, ele o instanteof no dao vai fazer tudo e deixar sem;
+
+        switch (especializacao) {
+            case "harmonico" -> {
+                InstrumentoEspecializado = new InstrumentoHarmonico.Builder(
+                        0,
+                        familiaId,
+                        nome,
+                        classificacaoSonoridade,
+                        (Long) opcao1,
+                        (boolean) opcao2,
+                        (boolean) opcao3
+                )
+                        .familiaInstrumento(familiaInstrumento)
+                        .historia(historia != null ? historia : null)
+                        .descricao(descricao != null ? descricao : null)
+                        .afinacoes(afinacao)
+                        .audios(audio)
+                        .materiais(material)
+                        .build();
+            }
+            case "melodico" -> {
+                InstrumentoEspecializado = new InstrumentoMelodico.Builder(
+                        0,
+                        familiaId,
+                        nome,
+                        classificacaoSonoridade,
+                        (boolean) opcao1,
+                        AfinacaoTransposicao.valueOf((String)opcao2),
+                        (boolean) opcao3
+                )
+                        .familiaInstrumento(familiaInstrumento)
+                        .historia(historia != null ? historia : null)
+                        .descricao(descricao != null ? descricao : null)
+                        .afinacoes(afinacao)
+                        .audios(audio)
+                        .materiais(material)
+                        .build();
+            }
+            case "ritmico" -> {
+                InstrumentoEspecializado = new InstrumentoRitmico.Builder(
+                        0,
+                        familiaId,
+                        nome,
+                        classificacaoSonoridade,
+                        (boolean)opcao1,
+                        CategoriaPercussao.valueOf((String) opcao2),
+                        TocadoCom.valueOf((String) opcao3)
+                )
+                        .familiaInstrumento(familiaInstrumento)
+                        .historia(historia != null ? historia : null)
+                        .descricao(descricao != null ? descricao : null)
+                        .afinacoes(afinacao)
+                        .audios(audio)
+                        .materiais(material)
+                        .build();
+            }
+            default ->
+                System.out.println("especialidade nao definada ou invalida");
+        }
+        if(InstrumentoEspecializado != null){
+        
+            retornos = instrumentoDAO.inserir(InstrumentoEspecializado, especializacao);
+            
+            if(retornos.get("Codigo") != 200){
+                
+                return retornos;
+            }
+            
+        }
+             
+        Long instrumento_id = retornos.get("ID");
+        
+        System.out.println(instrumento_id);
         
         ArrayList<Parte> parte = new ArrayList();
         
         ParteControl parteControl = new ParteControl();
         
-        retornos = parteControl.adicionarParte(id, parteNome, parteDescricao);
+        retornos = parteControl.adicionarParte(instrumento_id, parteNome, parteDescricao);
         
         if(retornos.get("Codigo") != 200){
             
             return retornos;
         }
         
-        parte.addAll(parteControl.listarPartesporID(retornos.get("ID")));
+        parte.add(parteControl.listarPartesporID(instrumento_id));
         
         retornos = new HashMap<>();
         
@@ -124,85 +203,9 @@ public class InstrumentosControl {
             return retornos;   
         }
         
+        InstrumentoEspecializado.setPartes(parte);
         
-        retornos = new HashMap<>();
-        
-        //Switch fara a separacao de cada tipo de especializacao;
-        //caso nao tenha, ele o instanteof no dao vai fazer tudo e deixar sem;
-
-        switch (especializacao) {
-            case "harmonico" -> {
-                InstrumentoEspecializado = new InstrumentoHarmonico.Builder(
-                        id,
-                        familiaId,
-                        nome,
-                        classificacaoSonoridade,
-                        (int) opcao1,
-                        (boolean) opcao2,
-                        (boolean) opcao3
-                )
-                        .familiaInstrumento(familiaInstrumento)
-                        .historia(historia != null ? historia : null)
-                        .descricao(descricao != null ? descricao : null)
-                        .afinacoes(afinacao)
-                        .audios(audio)
-                        .partes(parte)
-                        .materiais(material)
-                        .build();
-            }
-            case "melodico" -> {
-                InstrumentoEspecializado = new InstrumentoMelodico.Builder(
-                        id,
-                        familiaId,
-                        nome,
-                        classificacaoSonoridade,
-                        (boolean) opcao1,
-                        (AfinacaoTransposicao) opcao2,
-                        (boolean) opcao3
-                )
-                        .familiaInstrumento(familiaInstrumento)
-                        .historia(historia != null ? historia : null)
-                        .descricao(descricao != null ? descricao : null)
-                        .afinacoes(afinacao)
-                        .audios(audio)
-                        .partes(parte)
-                        .materiais(material)
-                        .build();
-            }
-            case "ritmico" -> {
-                InstrumentoEspecializado = new InstrumentoRitmico.Builder(
-                        id,
-                        familiaId,
-                        nome,
-                        classificacaoSonoridade,
-                        (boolean)opcao1,
-                        (CategoriaPercussao) opcao2,
-                        (TocadoCom) opcao3
-                )
-                        .familiaInstrumento(familiaInstrumento)
-                        .historia(historia != null ? historia : null)
-                        .descricao(descricao != null ? descricao : null)
-                        .afinacoes(afinacao)
-                        .audios(audio)
-                        .partes(parte)
-                        .materiais(material)
-                        .build();
-            }
-            default ->
-                System.out.println("especialidade nao definada ou invalida");
-        }
-        if(InstrumentoEspecializado != null){
-        
-            retornos = instrumentoDAO.inserir(InstrumentoEspecializado, especializacao);
-        
-            if(retornos.get("Codigo") != 200){
-                
-                return retornos;
-            }
-            
-        }
-        
-        ParteEMaterial parteEMaterial = new ParteEMaterial(retornos.get("ID"), materialId, parteNome);
+        ParteEMaterial parteEMaterial = new ParteEMaterial(instrumento_id, materialId, parteNome);
         
         retornos = new HashMap<>();
         
@@ -220,6 +223,7 @@ public class InstrumentosControl {
     }
 
     public Map<String, Long> atualizarInstrumento(Instrumento instrumento, String especializacao) throws SQLException {
+      
         return instrumentoDAO.atualizar(instrumento, especializacao);
     }
 

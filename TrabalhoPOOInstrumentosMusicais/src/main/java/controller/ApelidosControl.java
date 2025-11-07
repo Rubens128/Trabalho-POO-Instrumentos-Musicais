@@ -42,6 +42,7 @@ public class ApelidosControl {
     }
     
     public Map<String, Long> atualizarApelidos(Apelidos apelidos) throws SQLException {
+        
         return apelidosDAO.atualizar(apelidos);
     }
     

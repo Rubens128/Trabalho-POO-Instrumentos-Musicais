@@ -5,6 +5,7 @@
 package view;
 
 import controller.*;
+import model.*;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.KeyAdapter;
@@ -22,9 +23,9 @@ import javax.swing.border.Border;
  *
  * @author ruben
  */
-public class InterfaceDeletarPadrao extends javax.swing.JFrame {
+public class InterfaceAtualizarPadrao extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(InterfaceDeletarPadrao.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(InterfaceAtualizarPadrao.class.getName());
     
     private boolean unicaTela;
     private TelaInstrumentos telaPrincipal;
@@ -40,7 +41,7 @@ public class InterfaceDeletarPadrao extends javax.swing.JFrame {
     /**
      * Creates new form InterfaceDeletarPadrao
      */
-    public InterfaceDeletarPadrao(String titulo, boolean unicaTela, String especializacao, TelaInstrumentos telaPrincipal) {
+    public InterfaceAtualizarPadrao(String titulo, boolean unicaTela, String especializacao, TelaInstrumentos telaPrincipal) {
         initComponents();
         
         this.telaPrincipal = telaPrincipal;
@@ -90,7 +91,7 @@ public class InterfaceDeletarPadrao extends javax.swing.JFrame {
         InputID = new javax.swing.JTextField();
         Erro = new javax.swing.JLabel();
         BotaoCancelar = new javax.swing.JButton();
-        BotaoDeletar = new javax.swing.JButton();
+        BotaoProcurar = new javax.swing.JButton();
         Listar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -135,16 +136,16 @@ public class InterfaceDeletarPadrao extends javax.swing.JFrame {
             }
         });
 
-        BotaoDeletar.setBackground(new java.awt.Color(252, 255, 255));
-        BotaoDeletar.setFont(new java.awt.Font("Segoe UI", 1, 32)); // NOI18N
-        BotaoDeletar.setText("Deletar");
-        BotaoDeletar.setBorderPainted(false);
-        BotaoDeletar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        BotaoDeletar.setMaximumSize(new java.awt.Dimension(180, 50));
-        BotaoDeletar.setPreferredSize(new java.awt.Dimension(180, 50));
-        BotaoDeletar.addActionListener(new java.awt.event.ActionListener() {
+        BotaoProcurar.setBackground(new java.awt.Color(252, 255, 255));
+        BotaoProcurar.setFont(new java.awt.Font("Segoe UI", 1, 32)); // NOI18N
+        BotaoProcurar.setText("Procurar");
+        BotaoProcurar.setBorderPainted(false);
+        BotaoProcurar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        BotaoProcurar.setMaximumSize(new java.awt.Dimension(180, 50));
+        BotaoProcurar.setPreferredSize(new java.awt.Dimension(180, 50));
+        BotaoProcurar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BotaoDeletarActionPerformed(evt);
+                BotaoProcurarActionPerformed(evt);
             }
         });
 
@@ -171,7 +172,7 @@ public class InterfaceDeletarPadrao extends javax.swing.JFrame {
                     .addGroup(TelaLayout.createSequentialGroup()
                         .addComponent(BotaoCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(BotaoDeletar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(BotaoProcurar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(TelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(Erro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(TelaLayout.createSequentialGroup()
@@ -198,7 +199,7 @@ public class InterfaceDeletarPadrao extends javax.swing.JFrame {
                 .addGap(133, 133, 133)
                 .addGroup(TelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(BotaoCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(BotaoDeletar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(BotaoProcurar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(66, Short.MAX_VALUE))
         );
 
@@ -220,7 +221,7 @@ public class InterfaceDeletarPadrao extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_InputIDActionPerformed
 
-    private void BotaoDeletarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotaoDeletarActionPerformed
+    private void BotaoProcurarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotaoProcurarActionPerformed
         
         
         if(InputID.getText() == null || InputID.getText().isBlank()){
@@ -234,46 +235,57 @@ public class InterfaceDeletarPadrao extends javax.swing.JFrame {
         
         Map<String, Long> retornos = new HashMap<>();
         
-        try{
-            
-           long id = Integer.parseInt(InputID.getText());
+        Long ID = Long.parseLong(InputID.getText());
         
+        Object dado = null; 
+        
+        try{
+                        
             if(titulo.equalsIgnoreCase("Instrumento")){
 
                 InstrumentosControl instrumentosControl = new InstrumentosControl();
 
-                retornos = instrumentosControl.deletarInstrumento(especializacao, id);
+                dado = instrumentosControl.listarInstrumentosporID(ID, especializacao);
 
             }else if(titulo.equalsIgnoreCase("Audio")){
 
                 AudioControl audioControl = new AudioControl();
                 
-                retornos = audioControl.deletarAudio(id);
+                dado = audioControl.listarAudioporId(ID);
 
             }else if(titulo.equalsIgnoreCase("Familia_Instrumento")){
 
                 FamiliaInstrumentoControl familiaInstrumentoControl = new FamiliaInstrumentoControl();
                 
-                retornos = familiaInstrumentoControl.deletarFamilia(id);
-
+                dado = familiaInstrumentoControl.listarFamiliaporId(ID);
+                
             }else if(titulo.equalsIgnoreCase("Tecnica")){
 
                 TecnicaControl tecnicaControl = new TecnicaControl();
                 
-                retornos = tecnicaControl.deleteTecnica(id);
-
+                dado = tecnicaControl.listarTecnicaporId(ID);
+                
             }else if(titulo.equalsIgnoreCase("Material")){
 
                 MaterialControl materialControl = new MaterialControl();
                 
-                retornos = materialControl.deletarMaterial(id);
-
+                dado = materialControl.listarMaterialporID(ID);
+                
             }else if(titulo.equalsIgnoreCase("Afinação")){
 
                 AfinacaoControl afinacaoControl = new AfinacaoControl();
                 
-                retornos = afinacaoControl.deletarAfinacao(id);
-
+                dado = afinacaoControl.listarAfinacaoporID(ID);
+                
+            }
+            
+            if(dado == null){
+                    
+                Erro.setText("Não existe um " + titulo + " com esse ID");
+                    
+                InputID.setBorder(bordaVermelha);
+                
+                return;
             }
             
         } catch(Exception e){
@@ -281,66 +293,33 @@ public class InterfaceDeletarPadrao extends javax.swing.JFrame {
             System.out.println("Erro: " + e.getMessage());
         }
         
-        if(retornos.get("Codigo") == 404){
-            
-            
-            Erro.setText("Erro: Não existe nenhum(a) " + titulo + " com esse ID");
-            
-            Erro.setVisible(true);
-            
-            InputID.setBorder(bordaVermelha);
-            
-            return;
-        }
+        this.dispose();
         
-        Timer temporizador = new Timer(3000, evento -> {
+        if(titulo.equalsIgnoreCase("Audio")){
             
-            this.dispose();
+            InterfaceInputAudio telaAudio = new InterfaceInputAudio(true, true, dado, telaPrincipal);
             
-            if(!unicaTela) return;
+            telaAudio.setVisible(true);
+            
+        }else if(titulo.equalsIgnoreCase("Instrumento")){
+            
+            InterfaceInputInstrumento telaInstrumento = new InterfaceInputInstrumento(especializacao,true, true, dado, telaPrincipal);
+            
+            telaInstrumento.setVisible(true);
 
-            TelaInstrumentos telaInstrumento = null;
+        }else{
+            
+            InterfaceInputPadrao telaPadrao = new InterfaceInputPadrao(titulo, true, true, dado, telaPrincipal);
+            
+            telaPadrao.setVisible(true);
 
-            if(telaPrincipal != null) telaPrincipal.setVisible(true);
-        });
-        
-        temporizador.setRepeats(false);
-        
-        temporizador.start();
-        
-        BotaoCancelar.setEnabled(false);
-        BotaoDeletar.setEnabled(false);
-        
-        final Confirmacao telaConfirmacao;
-        
-        if(retornos.get("Codigo") != 200){
-            
-            telaConfirmacao = new Confirmacao(titulo, "Objeto não Deletado", false);
-            
-            telaConfirmacao.setVisible(true);
-        
-            return;
-        }
-        
-        telaConfirmacao = new Confirmacao(titulo, "Objeto Deletado", true);
-     
-        telaConfirmacao.setVisible(true);
-        
-        Timer temporizador2 = new Timer(2500, (evento) -> {
-            
-            telaConfirmacao.dispose();
-        });
-        
-        temporizador2.setRepeats(false);
-        
-        temporizador2.start();
-        
-    }//GEN-LAST:event_BotaoDeletarActionPerformed
+        }        
+    }//GEN-LAST:event_BotaoProcurarActionPerformed
 
     private void BotaoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotaoCancelarActionPerformed
         this.dispose();
         
-        if(!unicaTela) return;
+        if(!unicaTela) return;    
         
         if(telaPrincipal != null) telaPrincipal.setVisible(true);
     }//GEN-LAST:event_BotaoCancelarActionPerformed
@@ -375,7 +354,7 @@ public class InterfaceDeletarPadrao extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BotaoCancelar;
-    private javax.swing.JButton BotaoDeletar;
+    private javax.swing.JButton BotaoProcurar;
     private javax.swing.JLabel Erro;
     private javax.swing.JLabel ID;
     private javax.swing.JTextField InputID;

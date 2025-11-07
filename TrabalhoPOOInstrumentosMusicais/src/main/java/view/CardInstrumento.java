@@ -14,9 +14,22 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.awt.Image;
 import java.io.IOException;
+import controller.AudioControl;
+import java.io.File;
+import java.util.List;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import model.Audio;
+import model.Instrumento;
 
 public class CardInstrumento extends javax.swing.JPanel {
 
+    private Long instrumento_id;
+    private Instrumento instrumento;
+    private TelaInstrumentos telaPrincipal;
+    
     /**
      * Creates new form CardInstrumento
      */
@@ -147,14 +160,59 @@ public class CardInstrumento extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BotaoTocarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotaoTocarActionPerformed
-        // TODO add your handling code here:
+        
+        AudioControl audioController = new AudioControl();
+        
+        try{
+            List<Audio> audios = audioController.listarAudio();
+            
+            for(Audio a: audios){
+                
+                if(!a.getArquivo().equalsIgnoreCase("semArquivo") && a.getInstrumentoID() == instrumento_id){
+                    
+                    File arquivo = new File(a.getArquivo());
+                    
+                    AudioInputStream audio = AudioSystem.getAudioInputStream(arquivo);
+                    
+                    Clip clip = AudioSystem.getClip();
+                    
+                    clip.open(audio);
+                    
+                    clip.start();
+                    
+                    Thread.sleep(clip.getMicrosecondLength() / 1000);
+                }
+            }
+        
+        }catch(UnsupportedAudioFileException e){
+            
+            System.out.println("Erro: " + e.getMessage());
+            
+        }catch(IOException e){
+            
+            System.out.println("Erro: " + e.getMessage());
+        
+        }catch(Exception e){
+            
+            System.out.println("Erro: " + e.getMessage());
+        
+        }
+        
+        
     }//GEN-LAST:event_BotaoTocarActionPerformed
 
     private void BotaoVerMaisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotaoVerMaisActionPerformed
-        // TODO add your handling code here:
+        
+        InterfaceInstrumentoVerMais telaVerMais = new InterfaceInstrumentoVerMais(instrumento, telaPrincipal);
+        
+        telaPrincipal.setVisible(false);
+        
+        telaVerMais.setVisible(true);
     }//GEN-LAST:event_BotaoVerMaisActionPerformed
     
-    public void setCardInstrumento(String nome, String descricao, boolean temAudio, String caminhoImagem){
+    public void setCardInstrumento(String nome, String descricao, boolean temAudio, String caminhoImagem, Long instrumento_id){
+        
+        this.instrumento_id = instrumento_id;
         
         Nome.setText(nome);
         AreaDescricao.setText(descricao);
@@ -173,7 +231,11 @@ public class CardInstrumento extends javax.swing.JPanel {
         }
     }
     
-    public void setCardInstrumento(String nome, String descricao, boolean temAudio){
+    public void setCardInstrumento(String nome, String descricao, boolean temAudio, Instrumento instrumento, TelaInstrumentos telaPrincipal){
+        
+        this.instrumento_id = instrumento.getId();
+        this.instrumento = instrumento;
+        this.telaPrincipal = telaPrincipal;
         
         Nome.setText(nome);
         AreaDescricao.setText(descricao);

@@ -40,7 +40,7 @@ public class CardListarPadrao extends javax.swing.JPanel {
 
         setBackground(new java.awt.Color(11, 27, 58));
         setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(11, 27, 58), 20));
-        setPreferredSize(new java.awt.Dimension(1070, 136));
+        setPreferredSize(new java.awt.Dimension(403, 146));
 
         Nome.setFont(new java.awt.Font("Segoe UI", 1, 25)); // NOI18N
         Nome.setForeground(java.awt.Color.white);
@@ -63,24 +63,21 @@ public class CardListarPadrao extends javax.swing.JPanel {
 
         Id.setFont(new java.awt.Font("Segoe UI", 1, 25)); // NOI18N
         Id.setForeground(java.awt.Color.white);
-        Id.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        Id.setText("ID");
+        Id.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        Id.setText("ID:100");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(Descricao, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(Descricao, javax.swing.GroupLayout.PREFERRED_SIZE, 590, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(Nome, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(Id, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(37, 37, 37))))
+                        .addComponent(Nome, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(Id))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -99,7 +96,7 @@ public class CardListarPadrao extends javax.swing.JPanel {
         
         Nome.setText(nome);
         AreaDescricao.setText(descricao);
-        Id.setText(id);
+        Id.setText("ID: " + id);
        
     }
 

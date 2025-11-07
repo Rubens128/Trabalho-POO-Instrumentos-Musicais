@@ -45,6 +45,7 @@ public class AfinacaoControl {
     }
     
     public Map<String, Long> atualizarAfinacao(Afinacao afinacao) throws SQLException {
+        
         return afinacaoDAO.atualizar(afinacao);
     }
     

@@ -12,7 +12,8 @@ public enum TocadoCom {
     BAQUETA("baqueta"),
     MAO("mao"),
     HIBRIDO("hibrido"),
-    OUTRO("outro");
+    OUTRO("outro"),
+    NAOINFORMADO("nãoInformado");
 
     private final String valor;
 

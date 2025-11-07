@@ -9,25 +9,113 @@ package view;
  * @author ruben
  */
 
-import javax.swing.JMenuItem;
+import controller.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.SwingUtilities;
+import model.*;
 
 public class TelaListarPadrao extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(TelaListarPadrao.class.getName());
-
+    
+    private TelaInstrumentos telaPrincipal;
+    
     /**
      * Creates new form TelaPrincipal
      */
-    public TelaListarPadrao(String nome) {
+    public TelaListarPadrao(String nome, String especializacao, TelaInstrumentos telaPrincipal) throws Exception{
         initComponents();
+        
+        this.telaPrincipal = telaPrincipal;
         
         DivInstrumentos.getVerticalScrollBar().setUnitIncrement(32);
 
         CardsPanel.setLayout(new javax.swing.BoxLayout(CardsPanel, javax.swing.BoxLayout.Y_AXIS));
         
+        DivInstrumentos.setViewportView(CardsPanel);
+        
         setLocationRelativeTo(null);
         
         titulo.setText(nome);
+        
+        if(nome.equalsIgnoreCase("Instrumento")){
+
+            InstrumentosControl instrumentosControl = new InstrumentosControl();
+            
+            List<Instrumento> instrumentos = new ArrayList<>();
+            
+            if(especializacao == null || especializacao.equalsIgnoreCase("harmonico"))
+                instrumentos.addAll(instrumentosControl.listarInstrumentos("harmonico"));
+            
+            if(especializacao == null || especializacao.equalsIgnoreCase("melodico"))
+                instrumentos.addAll(instrumentosControl.listarInstrumentos("melodico"));
+            
+            if(especializacao == null || especializacao.equalsIgnoreCase("ritmico"))
+                instrumentos.addAll(instrumentosControl.listarInstrumentos("ritmico"));
+            
+            for(Instrumento i: instrumentos){
+                
+                this.addCard(i.getNome(), i.getDescricao(), String.valueOf(i.getId()));
+            }
+
+        }else if(nome.equalsIgnoreCase("Audio")){
+
+            AudioControl audioControl = new AudioControl();
+                
+            List<Audio> audios = audioControl.listarAudio();
+            
+            for(Audio a: audios){
+                
+                this.addCard(a.getTitulo(), a.getDescricao(), String.valueOf(a.getId()));
+            }
+
+        }else if(nome.equalsIgnoreCase("Familia_Instrumento")){
+
+            FamiliaInstrumentoControl familiaInstrumentoControl = new FamiliaInstrumentoControl();
+                
+            List<FamiliaInstrumento> familias = familiaInstrumentoControl.listarFamilia();
+            
+            for(FamiliaInstrumento fi: familias){
+                
+                this.addCard(fi.getNome(), fi.getDescricao(), String.valueOf(fi.getId()));
+            }
+            
+        }else if(nome.equalsIgnoreCase("Tecnica")){
+
+            TecnicaControl tecnicaControl = new TecnicaControl();
+                
+            List<Tecnica> tecnicas = tecnicaControl.listarTecnicas();
+
+            for(Tecnica t: tecnicas){
+                
+                this.addCard(t.getNome(), t.getDescricao(), String.valueOf(t.getId()));
+            }
+            
+        }else if(nome.equalsIgnoreCase("Material")){
+
+            MaterialControl materialControl = new MaterialControl();
+                
+            List<Material> materiais = materialControl.listarMaterial();
+
+            for(Material m: materiais){
+                
+                this.addCard(m.getNome(), m.getDescricao(), String.valueOf((int)m.getId()));
+            }
+            
+        }else if(nome.equalsIgnoreCase("Afinação")){
+
+            AfinacaoControl afinacaoControl = new AfinacaoControl();
+                
+            List<Afinacao> afinacoes = afinacaoControl.listarAfinacao();
+
+            for(Afinacao a: afinacoes){
+                
+                this.addCard(a.getNome(), a.getDescricao(), String.valueOf(a.getId()));
+            }
+        }    
     }
 
     /**
@@ -57,7 +145,7 @@ public class TelaListarPadrao extends javax.swing.JFrame {
         CardsPanel.setBackground(new java.awt.Color(11, 27, 78));
         CardsPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 15, 10, 15));
         CardsPanel.setAutoscrolls(true);
-        CardsPanel.setPreferredSize(new java.awt.Dimension(435, 355));
+        CardsPanel.setPreferredSize(null);
 
         javax.swing.GroupLayout CardsPanelLayout = new javax.swing.GroupLayout(CardsPanel);
         CardsPanel.setLayout(CardsPanelLayout);
@@ -97,8 +185,10 @@ public class TelaListarPadrao extends javax.swing.JFrame {
                 .addGroup(DivPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 715, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(DivPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(BotaoFechar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(DivInstrumentos, javax.swing.GroupLayout.PREFERRED_SIZE, 458, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(DivInstrumentos, javax.swing.GroupLayout.PREFERRED_SIZE, 458, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, DivPanelLayout.createSequentialGroup()
+                            .addGap(278, 278, 278)
+                            .addComponent(BotaoFechar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         DivPanelLayout.setVerticalGroup(
@@ -117,7 +207,7 @@ public class TelaListarPadrao extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(DivPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(DivPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 500, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -133,7 +223,7 @@ public class TelaListarPadrao extends javax.swing.JFrame {
 
     }//GEN-LAST:event_BotaoFecharActionPerformed
  
-    public void addCard(String nome, String descricao, String id){
+    public final void addCard(String nome, String descricao, String id){
         
         CardListarPadrao card = new CardListarPadrao();
         card.setCard(nome, descricao, id);

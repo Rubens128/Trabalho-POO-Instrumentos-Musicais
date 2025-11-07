@@ -22,11 +22,11 @@ public class TecnicaControl {
         this.tecnicaDAO = new TecnicaDAO();
     }
     
-    public Map<String, Long> adicionarTecnica(long id, String nome, String descricao) throws SQLException {
+    public Map<String, Long> adicionarTecnica(String nome, String descricao) throws SQLException {
         
         Map<String, Long> retornos = new HashMap<>();
         
-        Tecnica t = new Tecnica(id, nome, descricao);
+        Tecnica t = new Tecnica(0, nome, descricao);
         
         retornos = tecnicaDAO.inserir(t);
         
@@ -42,6 +42,7 @@ public class TecnicaControl {
     }
     
     public Map<String, Long> atualizarTecnicas(Tecnica tecnica) throws SQLException {
+  
         return tecnicaDAO.atualizar(tecnica);
     }
     

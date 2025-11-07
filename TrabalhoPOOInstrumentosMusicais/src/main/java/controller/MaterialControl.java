@@ -21,11 +21,11 @@ public class MaterialControl {
         this.materialDAO = new MaterialDAO();
     }
     
-    public Map<String, Long> adicionarMaterial(long id, String nome, String descricao) throws SQLException {
+    public Map<String, Long> adicionarMaterial(String nome, String descricao) throws SQLException {
         
         Map<String, Long> retornos = new HashMap<>();
         
-        Material m = new Material(id, nome, descricao);
+        Material m = new Material(0, nome, descricao);
         
         retornos = materialDAO.inserir(m);
         
@@ -36,8 +36,9 @@ public class MaterialControl {
         return materialDAO.listarTodos();
     }
     
-    public List<Material> listarMaterialporID(long id) throws SQLException{
-        return (List<Material>) materialDAO.buscarPorID(id);
+    public Material listarMaterialporID(long id) throws SQLException{
+        
+        return materialDAO.buscarPorID(id);
     }
     
     public Map<String, Long> deletarMaterial(long id) throws SQLException {
@@ -45,6 +46,7 @@ public class MaterialControl {
     }
     
     public Map<String, Long> atualizarMaterial(Material material) throws SQLException{
+        
         return materialDAO.atualizar(material);
     }
 }

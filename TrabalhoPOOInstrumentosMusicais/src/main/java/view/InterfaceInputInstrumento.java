@@ -4,6 +4,37 @@
  */
 package view;
 
+import controller.AfinacaoControl;
+import controller.AudioControl;
+import controller.FamiliaInstrumentoControl;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.util.HashMap;
+import java.util.Map;
+import javax.swing.BorderFactory;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
+import controller.InstrumentosControl;
+import controller.MaterialControl;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.Timer;
+import model.Afinacao;
+import model.AfinacaoTransposicao;
+import model.Audio;
+import model.CategoriaPercussao;
+import model.FamiliaInstrumento;
+import model.Instrumento;
+import model.InstrumentoHarmonico;
+import model.InstrumentoMelodico;
+import model.InstrumentoRitmico;
+import model.Material;
+import model.TocadoCom;
+
 /**
  *
  * @author ruben
@@ -15,15 +46,29 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
     private InterfaceInputPadrao telaInputFamilia, telaInputAfinacao, telaInputMaterial; 
     private boolean unicaTela;
     private TelaListarPadrao telaListarAudio, telaListarFamilia, telaListarAfinacao, telaListarMaterial;
+    private String especializacao;
+    private Object dado;
+    private boolean editar;
+    private final TelaInstrumentos telaPrincipal;
+    
+    Border bordaVermelha = BorderFactory.createLineBorder(Color.RED, 3);
+    
+    Border bordaBranca = BorderFactory.createLineBorder(Color.WHITE, 3);
     
     /**
      * Creates new form InterfaceInputInstrumento
-     * @param familiaInstrumento variavel para identificar a especialização do instrumento
+     * @param especializacao variavel para identificar a especialização do instrumento
      */
-    public InterfaceInputInstrumento(String familiaInstrumento, boolean unicaTela, boolean editar) {
+    public InterfaceInputInstrumento(String especializacao, boolean unicaTela, boolean editar, Object dado, TelaInstrumentos telaPrincipal) {
         initComponents();
         
+        this.telaPrincipal = telaPrincipal;
+        
         setLocationRelativeTo(null);
+        
+        this.especializacao = especializacao;
+        this.dado = dado;
+        this.editar = editar;
         
         if(editar){
             
@@ -35,19 +80,19 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
             Audio_ids.setText("Audio_ids:");
         }
         
-        if(familiaInstrumento.equalsIgnoreCase("harmonico")){
+        if(especializacao.equalsIgnoreCase("harmonico")){
             
             Opcao1.setText("Polifonia_max:");
             Opcao2.setText("Tem_pedal_sustain?");
             Opcao3.setText("Suporta_acordes?");
             
-        }else if(familiaInstrumento.equalsIgnoreCase("melodico")){
+        }else if(especializacao.equalsIgnoreCase("melodico")){
             
             Opcao1.setText("Transpositor?");
             Opcao2.setText("Afinacao_transposicao:");
             Opcao3.setText("Microtonalidade_suportada?");
             
-        }else if(familiaInstrumento.equalsIgnoreCase("ritmico")){
+        }else if(especializacao.equalsIgnoreCase("ritmico")){
             
             Opcao1.setText("Altura_definida?");
             Opcao2.setText("Categoria_percussao:");
@@ -55,6 +100,44 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
         }
         
         this.unicaTela = unicaTela;
+        
+        SwingUtilities.invokeLater(() -> {
+        
+            for(Component componente: Tela.getComponents()){
+                
+                if(componente instanceof JTextField campoTexto){
+                    
+                    campoTexto.setBorder(bordaBranca);
+                    
+                }else if(componente instanceof JScrollPane areaTextoScroll){
+                    
+                    areaTextoScroll.setBorder(bordaBranca);
+                   
+                }
+            }
+            
+            KeyAdapter funcaoSoNumero = new KeyAdapter() {
+                
+                @Override
+                public void keyTyped(KeyEvent e){
+                    
+                    char caractere = e.getKeyChar();
+                    
+                    if(!Character.isDigit(caractere)){
+                        e.consume();
+                    }
+                }
+            };
+            
+            InputAudio_ids.addKeyListener(funcaoSoNumero);
+            
+            InputFamInsId.addKeyListener(funcaoSoNumero);
+                    
+            InputAfinacao_ids.addKeyListener(funcaoSoNumero);
+                    
+            InputMaterial.addKeyListener(funcaoSoNumero);
+            
+        });
     }
 
     /**
@@ -66,7 +149,9 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        NomeErro = new javax.swing.JPopupMenu();
+        ErroTextNome = new javax.swing.JMenuItem();
+        Tela = new javax.swing.JPanel();
         Titulo = new javax.swing.JLabel();
         Classificacao_sonoridade = new javax.swing.JLabel();
         InputClassificacao_sonoridade = new javax.swing.JTextField();
@@ -109,10 +194,29 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
         BotaoRegistrar = new javax.swing.JButton();
         BotaoCancelar = new javax.swing.JButton();
 
+        NomeErro.setBackground(new java.awt.Color(11, 27, 58));
+        NomeErro.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        NomeErro.setForeground(java.awt.Color.white);
+        NomeErro.setBorder(javax.swing.BorderFactory.createEmptyBorder(3, 3, 3, 3));
+        NomeErro.setBorderPainted(false);
+        NomeErro.setPreferredSize(new java.awt.Dimension(340, 33));
+
+        ErroTextNome.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        ErroTextNome.setText("Preencha o campo");
+        ErroTextNome.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 4, 4));
+        ErroTextNome.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        ErroTextNome.setPreferredSize(new java.awt.Dimension(300, 33));
+        ErroTextNome.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ErroTextNomepadraoActionPerformed(evt);
+            }
+        });
+        NomeErro.add(ErroTextNome);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(11, 27, 58));
-        jPanel1.setPreferredSize(new java.awt.Dimension(1530, 900));
+        Tela.setBackground(new java.awt.Color(11, 27, 58));
+        Tela.setPreferredSize(new java.awt.Dimension(1530, 900));
 
         Titulo.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
         Titulo.setForeground(java.awt.Color.white);
@@ -126,7 +230,7 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
         InputClassificacao_sonoridade.setBackground(new java.awt.Color(11, 27, 70));
         InputClassificacao_sonoridade.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         InputClassificacao_sonoridade.setForeground(java.awt.Color.white);
-        InputClassificacao_sonoridade.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 3, true));
+        InputClassificacao_sonoridade.setBorder(null);
         InputClassificacao_sonoridade.setCaretColor(java.awt.Color.white);
         InputClassificacao_sonoridade.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -142,7 +246,7 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
         InputNome.setBackground(new java.awt.Color(11, 27, 70));
         InputNome.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         InputNome.setForeground(java.awt.Color.white);
-        InputNome.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 3, true));
+        InputNome.setBorder(null);
         InputNome.setCaretColor(java.awt.Color.white);
         InputNome.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -155,6 +259,8 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
         Nome.setText("Nome:");
         Nome.setToolTipText("");
 
+        ScrollDescricao.setBorder(null);
+
         InputDescricao.setBackground(new java.awt.Color(11, 27, 70));
         InputDescricao.setColumns(20);
         InputDescricao.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
@@ -162,14 +268,17 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
         InputDescricao.setLineWrap(true);
         InputDescricao.setRows(3);
         InputDescricao.setWrapStyleWord(true);
-        InputDescricao.setBorder(new javax.swing.border.LineBorder(java.awt.Color.white, 3, true));
+        InputDescricao.setBorder(null);
         InputDescricao.setCaretColor(java.awt.Color.white);
+        InputDescricao.setName("opcional"); // NOI18N
         ScrollDescricao.setViewportView(InputDescricao);
 
         Historia.setFont(new java.awt.Font("Segoe UI", 1, 32)); // NOI18N
         Historia.setForeground(java.awt.Color.white);
         Historia.setText("História(opcional):");
         Historia.setToolTipText("");
+
+        ScrollHistoria.setBorder(null);
 
         InputHistoria.setBackground(new java.awt.Color(11, 27, 70));
         InputHistoria.setColumns(20);
@@ -178,8 +287,9 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
         InputHistoria.setLineWrap(true);
         InputHistoria.setRows(3);
         InputHistoria.setWrapStyleWord(true);
-        InputHistoria.setBorder(new javax.swing.border.LineBorder(java.awt.Color.white, 3, true));
+        InputHistoria.setBorder(null);
         InputHistoria.setCaretColor(java.awt.Color.white);
+        InputHistoria.setName("opcional"); // NOI18N
         ScrollHistoria.setViewportView(InputHistoria);
 
         Audio_ids.setFont(new java.awt.Font("Segoe UI", 1, 32)); // NOI18N
@@ -221,8 +331,9 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
         InputAfinacao_ids.setBackground(new java.awt.Color(11, 27, 70));
         InputAfinacao_ids.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         InputAfinacao_ids.setForeground(java.awt.Color.white);
-        InputAfinacao_ids.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 3, true));
+        InputAfinacao_ids.setBorder(null);
         InputAfinacao_ids.setCaretColor(java.awt.Color.white);
+        InputAfinacao_ids.setName("opcional"); // NOI18N
         InputAfinacao_ids.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 InputAfinacao_idsActionPerformed(evt);
@@ -237,8 +348,9 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
         InputAudio_ids.setBackground(new java.awt.Color(11, 27, 70));
         InputAudio_ids.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         InputAudio_ids.setForeground(java.awt.Color.white);
-        InputAudio_ids.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 3, true));
+        InputAudio_ids.setBorder(null);
         InputAudio_ids.setCaretColor(java.awt.Color.white);
+        InputAudio_ids.setName("opcional"); // NOI18N
         InputAudio_ids.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 InputAudio_idsActionPerformed(evt);
@@ -305,7 +417,7 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
         InputFamInsId.setBackground(new java.awt.Color(11, 27, 70));
         InputFamInsId.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         InputFamInsId.setForeground(java.awt.Color.white);
-        InputFamInsId.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 3, true));
+        InputFamInsId.setBorder(null);
         InputFamInsId.setCaretColor(java.awt.Color.white);
         InputFamInsId.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -316,7 +428,7 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
         InputOpcao1.setBackground(new java.awt.Color(11, 27, 70));
         InputOpcao1.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         InputOpcao1.setForeground(java.awt.Color.white);
-        InputOpcao1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 3, true));
+        InputOpcao1.setBorder(null);
         InputOpcao1.setCaretColor(java.awt.Color.white);
         InputOpcao1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -332,7 +444,7 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
         InputApelidos.setBackground(new java.awt.Color(11, 27, 70));
         InputApelidos.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         InputApelidos.setForeground(java.awt.Color.white);
-        InputApelidos.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 3, true));
+        InputApelidos.setBorder(null);
         InputApelidos.setCaretColor(java.awt.Color.white);
         InputApelidos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -348,7 +460,7 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
         InputOpcao2.setBackground(new java.awt.Color(11, 27, 70));
         InputOpcao2.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         InputOpcao2.setForeground(java.awt.Color.white);
-        InputOpcao2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 3, true));
+        InputOpcao2.setBorder(null);
         InputOpcao2.setCaretColor(java.awt.Color.white);
         InputOpcao2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -390,7 +502,7 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
         InputMaterial.setBackground(new java.awt.Color(11, 27, 70));
         InputMaterial.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         InputMaterial.setForeground(java.awt.Color.white);
-        InputMaterial.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 3, true));
+        InputMaterial.setBorder(null);
         InputMaterial.setCaretColor(java.awt.Color.white);
         InputMaterial.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -406,7 +518,7 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
         InputNotaMinNotaMax.setBackground(new java.awt.Color(11, 27, 70));
         InputNotaMinNotaMax.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         InputNotaMinNotaMax.setForeground(java.awt.Color.white);
-        InputNotaMinNotaMax.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 3, true));
+        InputNotaMinNotaMax.setBorder(null);
         InputNotaMinNotaMax.setCaretColor(java.awt.Color.white);
         InputNotaMinNotaMax.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -422,7 +534,7 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
         InputParte.setBackground(new java.awt.Color(11, 27, 70));
         InputParte.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         InputParte.setForeground(java.awt.Color.white);
-        InputParte.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 3, true));
+        InputParte.setBorder(null);
         InputParte.setCaretColor(java.awt.Color.white);
         InputParte.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -438,7 +550,7 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
         InputOpcao3.setBackground(new java.awt.Color(11, 27, 70));
         InputOpcao3.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         InputOpcao3.setForeground(java.awt.Color.white);
-        InputOpcao3.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 3, true));
+        InputOpcao3.setBorder(null);
         InputOpcao3.setCaretColor(java.awt.Color.white);
         InputOpcao3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -471,18 +583,18 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout TelaLayout = new javax.swing.GroupLayout(Tela);
+        Tela.setLayout(TelaLayout);
+        TelaLayout.setHorizontalGroup(
+            TelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(TelaLayout.createSequentialGroup()
                 .addGap(27, 27, 27)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(TelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(TelaLayout.createSequentialGroup()
+                        .addGroup(TelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(TelaLayout.createSequentialGroup()
+                                .addGroup(TelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(TelaLayout.createSequentialGroup()
                                         .addComponent(Familia_Instrumento_id)
                                         .addGap(18, 18, 18)
                                         .addComponent(AdicionarFamInsId)
@@ -491,8 +603,8 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
                                     .addComponent(ScrollDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(InputFamInsId, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(36, 36, 36)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(TelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(TelaLayout.createSequentialGroup()
                                         .addComponent(Afinacao_ids)
                                         .addGap(18, 18, 18)
                                         .addComponent(AdicionarAfinacao_ids)
@@ -500,14 +612,14 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
                                         .addComponent(ListarAfinacao_ids))
                                     .addComponent(ScrollHistoria, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(InputAfinacao_ids, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addGroup(TelaLayout.createSequentialGroup()
                                         .addComponent(Material)
                                         .addGap(18, 18, 18)
                                         .addComponent(AdicionarMaterial)
                                         .addGap(18, 18, 18)
                                         .addComponent(ListarMaterial))))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(TelaLayout.createSequentialGroup()
+                                .addGroup(TelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(InputNome, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(InputParte, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(Opcao2)
@@ -515,7 +627,7 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
                                     .addComponent(Nome, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(Descricao))
                                 .addGap(36, 36, 36)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(TelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(Historia)
                                     .addComponent(InputOpcao3, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(Opcao3)
@@ -524,16 +636,16 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
                                     .addComponent(InputMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(ParteNome))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(TelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, TelaLayout.createSequentialGroup()
                                 .addComponent(Apelidos, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(314, 314, 314))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(TelaLayout.createSequentialGroup()
+                                .addGroup(TelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(InputNotaMinNotaMax, javax.swing.GroupLayout.PREFERRED_SIZE, 430, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(InputOpcao1, javax.swing.GroupLayout.PREFERRED_SIZE, 430, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(InputApelidos, javax.swing.GroupLayout.PREFERRED_SIZE, 430, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addGroup(TelaLayout.createSequentialGroup()
                                         .addComponent(Audio_ids)
                                         .addGap(18, 18, 18)
                                         .addComponent(AdicionarAudio_ids)
@@ -542,86 +654,86 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
                                     .addComponent(InputAudio_ids, javax.swing.GroupLayout.PREFERRED_SIZE, 430, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(NotaMinNotaMax)
                                     .addComponent(Opcao1)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, TelaLayout.createSequentialGroup()
                                         .addComponent(BotaoCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(35, 35, 35)
                                         .addComponent(BotaoRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addContainerGap())))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGroup(TelaLayout.createSequentialGroup()
                         .addComponent(Titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 1404, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        TelaLayout.setVerticalGroup(
+            TelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(TelaLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(Titulo)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(TelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(TelaLayout.createSequentialGroup()
+                        .addGroup(TelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(Nome, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(Classificacao_sonoridade, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(Apelidos, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(TelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(TelaLayout.createSequentialGroup()
+                                .addGroup(TelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(InputNome, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(InputClassificacao_sonoridade, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(InputApelidos, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(35, 35, 35)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addGroup(TelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(Descricao, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(Historia, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(Audio_ids, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(TelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(ListarAudio_ids)
                                 .addComponent(AdicionarAudio_ids, javax.swing.GroupLayout.Alignment.TRAILING)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(TelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(TelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addComponent(ScrollDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(ScrollHistoria, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(InputAudio_ids, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(26, 26, 26)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(TelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(Afinacao_ids, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(ListarAfinacao_ids)
                             .addComponent(AdicionarAfinacao_ids)
                             .addComponent(Familia_Instrumento_id, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(TelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(ListarFamInsId)
                                 .addComponent(AdicionarFamInsId, javax.swing.GroupLayout.Alignment.TRAILING))))
                     .addComponent(NotaMinNotaMax, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(TelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(InputFamInsId, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(InputAfinacao_ids, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(InputNotaMinNotaMax, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(TelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(TelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(ParteNome, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(Material, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(ListarMaterial)
                     .addComponent(AdicionarMaterial)
                     .addComponent(Opcao1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(TelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(InputParte, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(InputMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(InputOpcao1, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(29, 29, 29)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(TelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Opcao2, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Opcao3, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(TelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(TelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(BotaoCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(BotaoRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addGroup(TelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(InputOpcao3, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(InputOpcao2, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(24, Short.MAX_VALUE))
@@ -631,13 +743,11 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(Tela, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 792, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(Tela, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 792, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -668,7 +778,14 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
             }
         }
         
-        telaListarAudio = new TelaListarPadrao("Áudios");
+        try{
+            
+            telaListarAudio = new TelaListarPadrao("Audio", null, telaPrincipal);
+        
+        } catch(Exception e){
+            
+            System.out.println("Erro: " + e.getMessage());
+        }
         
         telaListarAudio.setVisible(true);
     }//GEN-LAST:event_ListarAudio_idsActionPerformed
@@ -690,7 +807,14 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
             }
         }
         
-        telaListarFamilia = new TelaListarPadrao("Família_Instrumento_ids:");
+        try{
+            
+            telaListarFamilia = new TelaListarPadrao("Familia_Instrumento", null, telaPrincipal);
+        
+        } catch(Exception e){
+            
+            System.out.println("Erro: " + e.getMessage());
+        }
         
         telaListarFamilia.setVisible(true);
     }//GEN-LAST:event_ListarFamInsIdActionPerformed
@@ -708,7 +832,14 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
             }
         }
         
-        telaListarAfinacao = new TelaListarPadrao("Afinações:");
+        try{
+            
+            telaListarAfinacao = new TelaListarPadrao("Afinação", null, telaPrincipal);
+        
+        } catch(Exception e){
+            
+            System.out.println("Erro: " + e.getMessage());
+        }
         
         telaListarAfinacao.setVisible(true);
     }//GEN-LAST:event_ListarAfinacao_idsActionPerformed
@@ -743,7 +874,14 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
             }
         }
         
-        telaListarMaterial = new TelaListarPadrao("Materiais:");
+        try{
+            
+            telaListarMaterial = new TelaListarPadrao("Material", null, telaPrincipal);
+        
+        } catch(Exception e){
+            
+            System.out.println("Erro: " + e.getMessage());
+        }
         
         telaListarMaterial.setVisible(true);
     }//GEN-LAST:event_ListarMaterialActionPerformed
@@ -764,8 +902,398 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_InputOpcao3ActionPerformed
 
+    private void finalizarTela(Map<String, Long> retornos){
+        Timer temporizador = new Timer(3000, evento -> {
+            
+            this.dispose();
+            
+            if(!unicaTela) return;
+
+            TelaInstrumentos telaInstrumento = null;
+
+            telaPrincipal.dispose();
+            
+            try{
+                
+                telaInstrumento = new TelaInstrumentos();
+            
+            }catch (Exception e){
+                
+                System.out.println("Erro: " + e.getMessage());
+            }
+            
+            telaInstrumento.setVisible(true);
+            
+        });
+        
+        temporizador.setRepeats(false);
+        
+        temporizador.start();
+        
+        BotaoCancelar.setEnabled(false);
+        BotaoRegistrar.setEnabled(false);
+        
+        final Confirmacao telaConfirmacao;
+        
+        if(retornos.get("Codigo") != 200){
+            
+            
+            if(editar) telaConfirmacao = new Confirmacao("Instrumento", "Objeto não Atualizado", false);
+            else telaConfirmacao = new Confirmacao("Instrumento", "Objeto não Registrado", false);
+            
+            telaConfirmacao.setVisible(true);
+        
+            return;
+        }
+        
+        if(editar) telaConfirmacao = new Confirmacao("Instrumento", "Objeto Atualizado", true);
+        else telaConfirmacao = new Confirmacao("Instrumento", "Objeto Registrado", true);
+        
+        telaConfirmacao.setVisible(true);
+        
+        Timer temporizador2 = new Timer(2500, (evento) -> {
+            
+            telaConfirmacao.dispose();
+        });
+        
+        temporizador2.setRepeats(false);
+        
+        temporizador2.start();
+    }
+    
     private void BotaoRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotaoRegistrarActionPerformed
-        // TODO add your handling code here:
+        
+        boolean faltaCampo = false;
+        
+        for(Component componente: Tela.getComponents()){
+                
+            if(componente instanceof JTextField campoTexto){
+                    
+                if((campoTexto.getText() == null || campoTexto.getText().isBlank()) && !editar){
+                    
+                    if(campoTexto.getName() != null && campoTexto.getName().equalsIgnoreCase("opcional")) continue;
+                    
+                    faltaCampo = true;
+
+                    campoTexto.setBorder(bordaVermelha);
+
+                }else{
+
+                    campoTexto.setBorder(bordaBranca);
+                }
+                    
+            }
+        }
+        
+        String nome = InputNome.getText() == null || InputNome.getText().isBlank() ? null : InputNome.getText();
+        String descricao = InputDescricao.getText() == null || InputDescricao.getText().isBlank() ? null : InputDescricao.getText();
+        
+        String classificacaoSonoridade = InputClassificacao_sonoridade.getText() == null || 
+                InputClassificacao_sonoridade.getText().isBlank() ? null : InputClassificacao_sonoridade.getText();
+        
+        String historia = InputHistoria.getText() == null || InputHistoria.getText().isBlank() ? null : InputHistoria.getText();
+        Long familia_id = InputFamInsId.getText() == null || InputFamInsId.getText().isBlank() ? -1L : Long.parseLong(InputFamInsId.getText());
+        
+        Long afinacao_id = InputAfinacao_ids.getText() == null ||
+                InputAfinacao_ids.getText().isBlank() ? -1L : Long.parseLong(InputAfinacao_ids.getText());
+        
+        String parteNome = InputParte.getText() == null || InputParte.getText().isBlank() ? null : InputParte.getText();
+        Long material_id = InputMaterial.getText() == null || InputMaterial.getText().isBlank() ? -1L : Long.parseLong(InputMaterial.getText());
+        
+        Long audio_id = InputAudio_ids.getText() == null || InputAudio_ids.getText().isBlank() ? -1L : Long.parseLong(InputAudio_ids.getText());
+        
+        
+        Object opcao1 = null, opcao2 = null, opcao3 = null;
+        
+        if(faltaCampo) return;
+        
+        Map<String, Long> retornos = new HashMap<>();
+        
+        InstrumentosControl instrumentoController = new InstrumentosControl();
+        
+        if(especializacao.equalsIgnoreCase("harmonico")){
+            
+            if(Opcao1.getText().chars().allMatch(Character::isDigit)){
+                
+                opcao1 = Long.parseLong(Opcao1.getText());
+                
+            }else{
+                
+                opcao1 = 0L;
+
+            }
+            
+            if(Opcao2.getText().equalsIgnoreCase("verdadeiro") || Opcao2.getText().equalsIgnoreCase("true")){
+                
+                opcao2 = true;
+                
+            }else{
+                
+                opcao2 = false;
+                
+            }
+            
+            if(Opcao3.getText().equalsIgnoreCase("verdadeiro") || Opcao3.getText().equalsIgnoreCase("true")){
+                
+                opcao3 = true;
+                
+            }else{
+                
+                opcao3 = false;
+                
+            }
+            
+            
+        }else if(especializacao.equalsIgnoreCase("melodico")){
+            
+            if(Opcao1.getText().equalsIgnoreCase("verdadeiro") || Opcao1.getText().equalsIgnoreCase("true")){
+                
+                opcao1 = true;
+                
+            }else{
+                
+                opcao1 = false;
+            }
+            
+            if(List.of("c", "bb", "eb", "f", "outro").contains(Opcao2.getText().toLowerCase())){
+                
+                opcao2 = Opcao2.getText().toUpperCase();
+                
+            }else{
+                
+                opcao2 = "NAOINFORMADO";
+                
+            }
+            
+            if(Opcao3.getText().equalsIgnoreCase("verdadeiro") || Opcao3.getText().equalsIgnoreCase("true")){
+                
+                opcao3 = true;
+                
+            }else{
+                
+                opcao3 = false;
+                
+            }
+            
+        }else if(especializacao.equalsIgnoreCase("ritmico")){
+            
+            if(Opcao1.getText().equalsIgnoreCase("verdadeiro") || Opcao1.getText().equalsIgnoreCase("true")){
+                
+                opcao1 = true;
+                
+            }else{
+                
+                opcao1 = false;
+               
+            }
+            
+            if(List.of("membranofone", "idiofone", "cordofone", "aerofone", "eletrofone", "outro").contains(Opcao2.getText().toLowerCase())){
+                
+                opcao2 = Opcao2.getText().toUpperCase();
+                
+            }else{
+                
+                opcao2 = "NAOINFORMADO";
+                
+            }
+            
+            if(List.of("baqueta", "mao", "hibrido", "outro").contains(Opcao3.getText().toLowerCase())){
+                
+                opcao3 = Opcao3.getText().toUpperCase();
+                
+            }else{
+                
+                opcao3 = "NAOINFORMADO";
+                
+            }
+        }
+        
+        try{
+            
+            if(editar){
+                
+                Instrumento instrumento = (Instrumento) dado;
+                
+                /*if(nome != null) instrumento.setNome(nome);;
+                if(descricao != null) instrumento.setDescricao(descricao);
+                if(classificacaoSonoridade != null) instrumento.setClassificacaoSonoridade(classificacaoSonoridade);
+                if(historia != null) instrumento.setHistoria(historia);*/
+                
+                
+                if(familia_id != -1L){
+                    
+                    FamiliaInstrumentoControl familiaInstrumentoController = new FamiliaInstrumentoControl();
+                    
+                    FamiliaInstrumento familiaInstrumento = familiaInstrumentoController.listarFamiliaporId(familia_id);
+                    
+                    if(familiaInstrumento != null){
+
+                        instrumento.setFamiliaId(familia_id);
+
+                    }else{
+
+                        ErroTextNome.setText("Não existe Familia com esse ID");
+
+                        NomeErro.show(InputFamInsId, 0, InputFamInsId.getHeight());
+
+                        return;
+                    }
+                }
+
+                if(afinacao_id != -1L){
+                    
+                    AfinacaoControl afinacaoController = new AfinacaoControl();
+                    
+                    ArrayList<Afinacao> afinacao = new ArrayList<>();
+                    
+                    afinacao.add(afinacaoController.listarAfinacaoporID(afinacao_id));
+                   
+                    if(afinacao.get(0) != null){
+
+                        instrumento.setAfinacoes(afinacao);
+
+                    }else{
+
+                        ErroTextNome.setText("Não existe Afinação com esse ID");
+
+                        NomeErro.show(InputAfinacao_ids, 0, InputAfinacao_ids.getHeight());
+
+                        return;
+                    }
+                }
+                    
+                if(material_id != -1L){
+                    
+                    MaterialControl materialController = new MaterialControl();
+                    
+                    ArrayList<Material> material = new ArrayList<>();
+                    
+                    material.add(materialController.listarMaterialporID(material_id));
+                    
+                    if(material.get(0) != null){
+
+                        instrumento.setMateriais(material);
+
+                    }else{
+
+                        ErroTextNome.setText("Não existe Material com esse ID");
+
+                        NomeErro.show(InputMaterial, 0, InputMaterial.getHeight());
+
+                        return;
+                    }
+                }
+                    
+                if(audio_id != -1L){
+                    
+                    AudioControl audioController = new AudioControl();
+                    
+                    ArrayList<Audio> audio = new ArrayList<>();
+                    
+                    audio.add(audioController.listarAudioporId(audio_id));
+                    
+                    if(audio.get(0) != null){
+
+                        instrumento.setAudios(audio);
+
+                    }else{
+
+                        ErroTextNome.setText("Não existe Audio com esse ID");
+
+                        NomeErro.show(InputAudio_ids, 0, InputAudio_ids.getHeight());
+
+                        return;
+                    }
+                }
+                
+                if(especializacao.equalsIgnoreCase("harmonico")){
+                    
+                    InstrumentoHarmonico ih = (InstrumentoHarmonico) instrumento;
+                    
+                    if(opcao1 != null && Opcao1.getText() != null) ih.setPolifoniaMax((Long)opcao1);
+                    if(opcao2 != null && Opcao2.getText() != null) ih.setPossuiPedalSustain((boolean) opcao2);
+                    if(opcao3 != null && Opcao3.getText() != null) ih.setSuportaAcordes((boolean) opcao3);
+                    
+                    retornos = instrumentoController.atualizarInstrumento(ih, especializacao);
+                            
+                }else if(especializacao.equalsIgnoreCase("melodico")){
+                    
+                    InstrumentoMelodico im = (InstrumentoMelodico) instrumento;
+                    
+                    if(opcao1 != null && Opcao1.getText() != null) im.setTranspositor((boolean)opcao1);
+                    if(opcao2 != null && Opcao2.getText() != null) im.setAfinacaoTransposicao(AfinacaoTransposicao.valueOf((String)opcao2));
+                    if(opcao3 != null && Opcao3.getText() != null) im.setMicrotonalidadeSuportada((boolean) opcao3);
+                    
+                    retornos = instrumentoController.atualizarInstrumento(im, especializacao);
+                    
+                }else if(especializacao.equalsIgnoreCase("ritmico")){
+                    
+                    InstrumentoRitmico ir = (InstrumentoRitmico) instrumento;
+                    
+                    if(opcao1 != null && Opcao1.getText() != null) ir.setAlturaDefinida((boolean)opcao1);
+                    if(opcao2 != null && Opcao2.getText() != null) ir.setCategoriaPercussao(CategoriaPercussao.valueOf((String)opcao2));
+                    if(opcao3 != null && Opcao3.getText() != null) ir.setTocadoCom(TocadoCom.valueOf((String) opcao3));
+                    
+                    retornos = instrumentoController.atualizarInstrumento(ir, especializacao);
+                    
+                }
+                
+                finalizarTela(retornos);
+                
+                return;
+            }
+            
+        }catch(Exception e){
+            
+            System.out.println("Erro: " + e.getMessage());
+        }
+        
+        try{
+            
+            retornos = instrumentoController.adicionarInstrumento(familia_id, nome, classificacaoSonoridade, 
+                historia, descricao, afinacao_id, audio_id, parteNome, descricao, material_id, 
+                especializacao, opcao1, opcao2, opcao3);
+            
+        }catch(Exception e){
+            
+            System.out.println("ErroAqui: " + e.getMessage());
+        }
+        
+        if(retornos.containsKey("Familia")){
+            
+            ErroTextNome.setText("Não existe Familia com esse ID");
+            
+            NomeErro.show(InputFamInsId, 0, InputFamInsId.getHeight());
+            
+            return;
+            
+        }else if (retornos.containsKey("Audio")){
+            
+            ErroTextNome.setText("Não existe Audio com esse ID");
+            
+            NomeErro.show(InputAudio_ids, 0, InputAudio_ids.getHeight());
+            
+            return;
+            
+        }else if (retornos.containsKey("Afinacao")){
+            
+            ErroTextNome.setText("Não existe Afinacao com esse ID");
+            
+            NomeErro.show(InputAfinacao_ids, 0, InputAfinacao_ids.getHeight());
+            
+            return;
+           
+        }else if (retornos.containsKey("Material")){
+            
+            ErroTextNome.setText("Não existe Material com esse ID");
+            
+            NomeErro.show(InputMaterial, 0, InputMaterial.getHeight());
+            
+            return;
+        }
+        
+        finalizarTela(retornos);
+        
     }//GEN-LAST:event_BotaoRegistrarActionPerformed
 
     private void BotaoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotaoCancelarActionPerformed
@@ -780,17 +1308,7 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
         
         TelaInstrumentos telaInstrumento = null;
                  
-        try{
-            
-            telaInstrumento = new TelaInstrumentos();
-            
-        } catch (Exception e){
-            
-            System.out.println("Erro: " + e.getMessage());
-            return;
-        }
-        
-        telaInstrumento.setVisible(true);
+        if(telaPrincipal != null) telaPrincipal.setVisible(true);
     }//GEN-LAST:event_BotaoCancelarActionPerformed
 
     private void AdicionarFamInsIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AdicionarFamInsIdActionPerformed
@@ -807,7 +1325,7 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
             }
         }
         
-        telaInputFamilia = new InterfaceInputPadrao("Familia_Instrumento", false, false);
+        telaInputFamilia = new InterfaceInputPadrao("Familia_Instrumento", false, false, null, telaPrincipal);
             
         telaInputFamilia.setVisible(true);
     }//GEN-LAST:event_AdicionarFamInsIdActionPerformed
@@ -826,7 +1344,7 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
             }
         }
         
-        telaInputAfinacao = new InterfaceInputPadrao("Afinação", false, false);
+        telaInputAfinacao = new InterfaceInputPadrao("Afinação", false, false, null, telaPrincipal);
             
         telaInputAfinacao.setVisible(true);
     }//GEN-LAST:event_AdicionarAfinacao_idsActionPerformed
@@ -845,7 +1363,7 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
             }
         }
         
-        telaInputMaterial = new InterfaceInputPadrao("Material", false, false);
+        telaInputMaterial = new InterfaceInputPadrao("Material", false, false, null, telaPrincipal);
             
         telaInputMaterial.setVisible(true);
     }//GEN-LAST:event_AdicionarMaterialActionPerformed
@@ -864,10 +1382,14 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
             }
         }
         
-        telaInputAudio = new InterfaceInputAudio(false, false);
+        telaInputAudio = new InterfaceInputAudio(false, false, null, telaPrincipal);
             
         telaInputAudio.setVisible(true);
     }//GEN-LAST:event_AdicionarAudio_idsActionPerformed
+
+    private void ErroTextNomepadraoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ErroTextNomepadraoActionPerformed
+
+    }//GEN-LAST:event_ErroTextNomepadraoActionPerformed
 
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -882,6 +1404,7 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
     private javax.swing.JButton BotaoRegistrar;
     private javax.swing.JLabel Classificacao_sonoridade;
     private javax.swing.JLabel Descricao;
+    private javax.swing.JMenuItem ErroTextNome;
     private javax.swing.JLabel Familia_Instrumento_id;
     private javax.swing.JLabel Historia;
     private javax.swing.JTextField InputAfinacao_ids;
@@ -904,6 +1427,7 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
     private javax.swing.JButton ListarMaterial;
     private javax.swing.JLabel Material;
     private javax.swing.JLabel Nome;
+    private javax.swing.JPopupMenu NomeErro;
     private javax.swing.JLabel NotaMinNotaMax;
     private javax.swing.JLabel Opcao1;
     private javax.swing.JLabel Opcao2;
@@ -911,7 +1435,7 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
     private javax.swing.JLabel ParteNome;
     private javax.swing.JScrollPane ScrollDescricao;
     private javax.swing.JScrollPane ScrollHistoria;
+    private javax.swing.JPanel Tela;
     private javax.swing.JLabel Titulo;
-    private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }

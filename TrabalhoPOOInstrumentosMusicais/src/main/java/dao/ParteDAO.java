@@ -99,7 +99,7 @@ public class ParteDAO {
             
             c.setAutoCommit(false); // inicia transação
             
-            try (PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
+            try (PreparedStatement ps = c.prepareStatement(sql)){
                 
                 ps.setLong(1, parte.getInstrumentoId());
                 ps.setString(2, parte.getNome());
@@ -107,15 +107,12 @@ public class ParteDAO {
 
                 ps.executeUpdate();
                
-                try(ResultSet rs = ps.getGeneratedKeys()){
-                    
-                    if (rs.next()) retornos.put("ID", rs.getLong(1));
-                    else System.out.println("Erro ao retornar ID");
-                }
+             
+                retornos.put("ID", parte.getInstrumentoId());
                 
-                 c.commit(); 
-                 sucesso = true; 
-                 System.out.println("Parte inserida com sucesso!");
+                c.commit(); 
+                sucesso = true; 
+                System.out.println("Parte inserida com sucesso!");
             } 
             
         } catch(SQLException e) {

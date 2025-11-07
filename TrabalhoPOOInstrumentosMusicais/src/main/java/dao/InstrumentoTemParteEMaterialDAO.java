@@ -116,6 +116,7 @@ public class InstrumentoTemParteEMaterialDAO {
             
             System.out.println("Erro SQL: " + e.getMessage());
             retornos.put("Codigo", (long)e.getErrorCode()); 
+            
             System.out.println("Tentando rollback...");
             tentarRollback(c, retornos);
             

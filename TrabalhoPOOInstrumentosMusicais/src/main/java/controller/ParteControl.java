@@ -37,8 +37,8 @@ public class ParteControl {
         return parteDAO.listarTodos();
     }
 
-    public List<Parte> listarPartesporID(long instrumentoId){
-        return (List<Parte>) parteDAO.buscarPorID(instrumentoId);
+    public Parte listarPartesporID(long instrumentoId){
+        return parteDAO.buscarPorID(instrumentoId);
     }
     
     public Map<String, Long> deleterParte(long instrumentoId){
@@ -46,6 +46,7 @@ public class ParteControl {
     }
     
     public Map<String, Long> atualizarParte(Parte parte, long instrumentoId){
+        
         return parteDAO.atualizar(parte, instrumentoId);
     }
 }

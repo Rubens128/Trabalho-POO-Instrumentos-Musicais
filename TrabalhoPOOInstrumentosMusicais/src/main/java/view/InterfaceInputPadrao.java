@@ -4,6 +4,27 @@
  */
 package view;
 
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Color;
+import java.awt.Insets;
+import javax.swing.BorderFactory;
+import javax.swing.JTextField;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.Timer;
+import javax.swing.border.Border;
+import javax.swing.SwingUtilities;
+import controller.AfinacaoControl;
+import controller.FamiliaInstrumentoControl;
+import controller.MaterialControl;
+import controller.TecnicaControl;
+import model.*;
+import java.awt.GridBagLayout;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  *
  * @author ruben
@@ -12,16 +33,31 @@ public class InterfaceInputPadrao extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(InterfaceInputPadrao.class.getName());
     
+    Border bordaVermelha = BorderFactory.createLineBorder(Color.RED, 3);
+    
+    Border bordaBranca = BorderFactory.createLineBorder(Color.WHITE, 3);
+    
     private boolean unicaTela;
+    private String titulo;
+    private boolean editar;
+    private Object dado;
+    private TelaInstrumentos telaPrincipal;
+    
     /**
      * Creates new form InterfaceInputPadrão
      * 
      * @param titulo serve para mostrar o titulo da interface
      */
-    public InterfaceInputPadrao(String titulo, boolean unicaTela, boolean editar) {
+    public InterfaceInputPadrao(String titulo, boolean unicaTela, boolean editar, Object dado, TelaInstrumentos telaPrincipal) {
         initComponents();
         
+        this.telaPrincipal = telaPrincipal;
+        
         Titulo.setText(titulo);
+        
+        this.titulo = titulo;
+        this.editar = editar;
+        this.dado = dado;
         
         if(editar){
             
@@ -29,6 +65,7 @@ public class InterfaceInputPadrao extends javax.swing.JFrame {
             
             Descricao.setText("Descrição:");
             Referencia.setText("Referência:");
+            Contexto.setText("Contexto");
             
         }else{
             
@@ -42,13 +79,35 @@ public class InterfaceInputPadrao extends javax.swing.JFrame {
             
             Referencia.setVisible(false);
             InputReferencia.setVisible(false);
+            
+            Contexto.enableInputMethods(false);
+            InputContexto.enableInputMethods(false);
+            
+            Contexto.setVisible(false);
+            InputContexto.setVisible(false);
         }
         
         this.unicaTela = unicaTela;
         
         setLocationRelativeTo(null);
+        
+        SwingUtilities.invokeLater(() -> {
+        
+            for(Component componente: Tela.getComponents()){
+                
+                if(componente instanceof JTextField campoTexto){
+                    
+                    campoTexto.setBorder(bordaBranca);
+                    
+                }else if(componente instanceof JScrollPane areaTextoScroll){
+                    
+                    areaTextoScroll.setBorder(bordaBranca);
+                   
+                }
+            }
+        });
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -58,7 +117,9 @@ public class InterfaceInputPadrao extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        NomeErro = new javax.swing.JPopupMenu();
+        ErroTextNome = new javax.swing.JMenuItem();
+        Tela = new javax.swing.JPanel();
         Titulo = new javax.swing.JLabel();
         Descricao = new javax.swing.JLabel();
         Nome = new javax.swing.JLabel();
@@ -70,11 +131,32 @@ public class InterfaceInputPadrao extends javax.swing.JFrame {
         BotaoRegistrar = new javax.swing.JButton();
         BotaoCancelar = new javax.swing.JButton();
         SubTitulo = new javax.swing.JLabel();
+        Contexto = new javax.swing.JLabel();
+        InputContexto = new javax.swing.JTextField();
+
+        NomeErro.setBackground(new java.awt.Color(11, 27, 58));
+        NomeErro.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        NomeErro.setForeground(java.awt.Color.white);
+        NomeErro.setBorder(javax.swing.BorderFactory.createEmptyBorder(3, 3, 3, 3));
+        NomeErro.setBorderPainted(false);
+        NomeErro.setPreferredSize(new java.awt.Dimension(340, 33));
+
+        ErroTextNome.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        ErroTextNome.setText("Preencha o campo");
+        ErroTextNome.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 4, 4));
+        ErroTextNome.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        ErroTextNome.setPreferredSize(new java.awt.Dimension(300, 33));
+        ErroTextNome.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ErroTextNomepadraoActionPerformed(evt);
+            }
+        });
+        NomeErro.add(ErroTextNome);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(11, 27, 58));
-        jPanel1.setPreferredSize(new java.awt.Dimension(680, 657));
+        Tela.setBackground(new java.awt.Color(11, 27, 58));
+        Tela.setPreferredSize(new java.awt.Dimension(680, 657));
 
         Titulo.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
         Titulo.setForeground(java.awt.Color.white);
@@ -93,13 +175,20 @@ public class InterfaceInputPadrao extends javax.swing.JFrame {
         InputNome.setBackground(new java.awt.Color(11, 27, 70));
         InputNome.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         InputNome.setForeground(java.awt.Color.white);
-        InputNome.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 3, true));
+        InputNome.setBorder(null);
         InputNome.setCaretColor(java.awt.Color.white);
+        InputNome.setMinimumSize(new java.awt.Dimension(64, 52));
+        InputNome.setPreferredSize(new java.awt.Dimension(64, 52));
         InputNome.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 InputNomeActionPerformed(evt);
             }
         });
+
+        ScrollDescricao.setBorder(null);
+        ScrollDescricao.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        ScrollDescricao.setOpaque(false);
+        ScrollDescricao.setPreferredSize(new java.awt.Dimension(610, 78));
 
         InputDescricao.setBackground(new java.awt.Color(11, 27, 70));
         InputDescricao.setColumns(20);
@@ -108,7 +197,7 @@ public class InterfaceInputPadrao extends javax.swing.JFrame {
         InputDescricao.setLineWrap(true);
         InputDescricao.setRows(3);
         InputDescricao.setWrapStyleWord(true);
-        InputDescricao.setBorder(new javax.swing.border.LineBorder(java.awt.Color.white, 3, true));
+        InputDescricao.setBorder(null);
         InputDescricao.setCaretColor(java.awt.Color.white);
         ScrollDescricao.setViewportView(InputDescricao);
 
@@ -120,8 +209,9 @@ public class InterfaceInputPadrao extends javax.swing.JFrame {
         InputReferencia.setBackground(new java.awt.Color(11, 27, 70));
         InputReferencia.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         InputReferencia.setForeground(java.awt.Color.white);
-        InputReferencia.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 3, true));
+        InputReferencia.setBorder(null);
         InputReferencia.setCaretColor(java.awt.Color.white);
+        InputReferencia.setPreferredSize(new java.awt.Dimension(64, 52));
         InputReferencia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 InputReferenciaActionPerformed(evt);
@@ -157,67 +247,297 @@ public class InterfaceInputPadrao extends javax.swing.JFrame {
         SubTitulo.setForeground(java.awt.Color.white);
         SubTitulo.setText("Titulo");
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        Contexto.setFont(new java.awt.Font("Segoe UI", 1, 32)); // NOI18N
+        Contexto.setForeground(java.awt.Color.white);
+        Contexto.setText("Contexto(opcional):");
+        Contexto.setToolTipText("");
+
+        InputContexto.setBackground(new java.awt.Color(11, 27, 70));
+        InputContexto.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        InputContexto.setForeground(java.awt.Color.white);
+        InputContexto.setBorder(null);
+        InputContexto.setCaretColor(java.awt.Color.white);
+        InputContexto.setPreferredSize(new java.awt.Dimension(64, 52));
+        InputContexto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                InputContextoActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout TelaLayout = new javax.swing.GroupLayout(Tela);
+        Tela.setLayout(TelaLayout);
+        TelaLayout.setHorizontalGroup(
+            TelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(TelaLayout.createSequentialGroup()
                 .addGap(37, 37, 37)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(SubTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 572, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(InputReferencia)
-                        .addComponent(Nome, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(Titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 572, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(ScrollDescricao, javax.swing.GroupLayout.DEFAULT_SIZE, 610, Short.MAX_VALUE)
-                        .addComponent(Referencia)
-                        .addComponent(Descricao)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                            .addComponent(BotaoCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(BotaoRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(InputNome)))
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addGroup(TelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(TelaLayout.createSequentialGroup()
+                        .addGroup(TelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(InputNome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(ScrollDescricao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(TelaLayout.createSequentialGroup()
+                                .addGroup(TelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(InputReferencia, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(Referencia, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(26, 26, 26)
+                                .addGroup(TelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(Contexto)
+                                    .addComponent(InputContexto, javax.swing.GroupLayout.DEFAULT_SIZE, 355, Short.MAX_VALUE)))
+                            .addComponent(SubTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 572, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Nome, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 572, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Descricao))
+                        .addContainerGap(28, Short.MAX_VALUE))
+                    .addGroup(TelaLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(BotaoCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(58, 58, 58)
+                        .addComponent(BotaoRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(40, 40, 40))))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        TelaLayout.setVerticalGroup(
+            TelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(TelaLayout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addComponent(Titulo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(SubTitulo)
-                .addGap(18, 18, 18)
+                .addGap(18, 30, Short.MAX_VALUE)
                 .addComponent(Nome, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(InputNome, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(InputNome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(Descricao, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(ScrollDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(Referencia, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(InputReferencia, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(BotaoCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(BotaoRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(22, 22, 22))
+                .addGroup(TelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(TelaLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(ScrollDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(TelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(Referencia, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Contexto, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(TelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(InputReferencia, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(InputContexto, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(22, 149, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, TelaLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(TelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(BotaoRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(BotaoCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(49, 49, 49))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(Tela, javax.swing.GroupLayout.DEFAULT_SIZE, 766, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 680, Short.MAX_VALUE)
+            .addComponent(Tela, javax.swing.GroupLayout.DEFAULT_SIZE, 680, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void ErroTextNomepadraoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ErroTextNomepadraoActionPerformed
+        
+    }//GEN-LAST:event_ErroTextNomepadraoActionPerformed
+
+    private void BotaoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotaoCancelarActionPerformed
+
+        this.dispose();
+
+        if(!unicaTela) return;
+
+        TelaInstrumentos telaInstrumento = null;
+
+        if(telaPrincipal != null) telaPrincipal.setVisible(true);
+    }//GEN-LAST:event_BotaoCancelarActionPerformed
+
+    private void finalizarTela(Map<String, Long> retornos){
+        Timer temporizador = new Timer(3000, evento -> {
+            
+            this.dispose();
+            
+            if(!unicaTela) return;
+
+            TelaInstrumentos telaInstrumento = null;
+
+            if(telaPrincipal != null) telaPrincipal.setVisible(true);
+        });
+        
+        temporizador.setRepeats(false);
+        
+        temporizador.start();
+        
+        BotaoCancelar.setEnabled(false);
+        BotaoRegistrar.setEnabled(false);
+        
+        final Confirmacao telaConfirmacao;
+        
+        if(retornos.get("Codigo") != 200){
+            
+            if(editar) telaConfirmacao = new Confirmacao(titulo, "Objeto não Atualizado", false);
+            else telaConfirmacao = new Confirmacao(titulo, "Objeto não Registrado", false);   
+            
+            telaConfirmacao.setVisible(true);
+        
+            return;
+        }
+        
+        if(editar) telaConfirmacao = new Confirmacao(titulo, "Objeto não Atualizado", false);
+        else telaConfirmacao = new Confirmacao(titulo, "Objeto não Registrado", false);
+     
+        telaConfirmacao.setVisible(true);
+        
+        Timer temporizador2 = new Timer(2500, (evento) -> {
+            
+            telaConfirmacao.dispose();
+        });
+        
+        temporizador2.setRepeats(false);
+        
+        temporizador2.start();
+    }
+    
+    private void BotaoRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotaoRegistrarActionPerformed
+        
+
+        boolean faltaCampo = false;
+
+        if((InputNome.getText() == null || InputNome.getText().isBlank()) && !editar){
+
+            faltaCampo = true;
+
+            InputNome.setBorder(bordaVermelha);
+
+        }else{
+
+            InputNome.setBorder(bordaBranca);
+        }
+
+        if(faltaCampo) return;
+        
+        Map<String, Long> retornos = new HashMap<>();
+        
+        String nome = InputNome.getText() == null || InputNome.getText().isBlank() ? null : InputNome.getText();
+        String descricao = InputDescricao.getText() == null || InputDescricao.getText().isBlank() ? null : InputDescricao.getText();
+        String contexto = InputContexto.getText() == null || InputContexto.getText().isBlank() ? null : InputContexto.getText();
+        String referencia = InputReferencia.getText() == null || InputReferencia.getText().isBlank() ? null : InputReferencia.getText();
+        
+        try{
+            
+            if(editar){
+            
+                if(titulo.equalsIgnoreCase("Familia_Instrumento")){
+
+                    FamiliaInstrumentoControl familiaController = new FamiliaInstrumentoControl();
+
+                    FamiliaInstrumento fi = (FamiliaInstrumento) dado;
+
+                    if(nome != null) fi.setNome(nome);
+                    if(descricao != null) fi.setDescricao(descricao);
+
+                    retornos = familiaController.atualizarFamilia(fi);
+
+                }else if(titulo.equalsIgnoreCase("Tecnica")){
+
+                    TecnicaControl tecnicaController = new TecnicaControl();
+
+                    Tecnica t = (Tecnica) dado;
+                    
+                    if(nome != null) t.setNome(nome);
+                    if(descricao != null) t.setDescricao(descricao);
+
+                    retornos = tecnicaController.atualizarTecnicas(t);
+
+                }else if(titulo.equalsIgnoreCase("Material")){
+
+                    MaterialControl materialControl = new MaterialControl();
+
+                    Material m = (Material) dado;
+                    
+                    if(nome != null) m.setNome(nome);
+                    if(descricao != null) m.setDescricao(descricao);
+
+                    retornos = materialControl.atualizarMaterial(m);
+
+                }else if(titulo.equalsIgnoreCase("Afinação")){
+
+                    AfinacaoControl AfinacaoController = new AfinacaoControl();
+
+                    Afinacao a = (Afinacao) dado;
+                    
+                    if(nome != null) a.setNome(nome);
+                    if(descricao != null) a.setDescricao(descricao);
+                    if(referencia != null) a.setReferencia(referencia);
+                    if(contexto != null) a.setContextoAfinacao(contexto);
+
+                    retornos = AfinacaoController.atualizarAfinacao(a);
+
+                }
+                
+                finalizarTela(retornos);
+                
+                return;
+            }
+            
+        }catch (Exception e){
+            
+            System.out.println("ErroAtualizar: " + e.getMessage());
+        }
+        
+        try{
+           
+            if(titulo.equalsIgnoreCase("Familia_Instrumento")){
+
+                FamiliaInstrumentoControl familiaController = new FamiliaInstrumentoControl();
+
+                retornos = familiaController.adicionarFamilia(nome, descricao);
+
+            }else if(titulo.equalsIgnoreCase("Tecnica")){
+
+                TecnicaControl tecnicaController = new TecnicaControl();
+
+                retornos = tecnicaController.adicionarTecnica(nome, descricao);
+
+            }else if(titulo.equalsIgnoreCase("Material")){
+
+                MaterialControl materialControl = new MaterialControl();
+
+                retornos = materialControl.adicionarMaterial(nome, descricao);
+
+            }else if(titulo.equalsIgnoreCase("Afinação")){
+
+                AfinacaoControl AfinacaoController = new AfinacaoControl();
+
+                retornos = AfinacaoController.adicionarAfinacao(nome, descricao, referencia, contexto);
+
+            }
+
+        } catch (Exception e){
+
+            System.out.println("ErroInserir: " + e.getMessage());
+            
+            return;
+        }
+        
+        if(retornos.get("Codigo") == 1062){
+            
+            NomeErro.show(InputNome, 0, InputNome.getHeight());
+            ErroTextNome.setText("Já existe um " + titulo + " com esse nome");
+            
+            InputNome.setBorder(bordaVermelha);
+            
+            return;
+        } 
+        
+        finalizarTela(retornos);
+    }//GEN-LAST:event_BotaoRegistrarActionPerformed
 
     private void InputNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InputNomeActionPerformed
         // TODO add your handling code here:
@@ -227,43 +547,26 @@ public class InterfaceInputPadrao extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_InputReferenciaActionPerformed
 
-    private void BotaoRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotaoRegistrarActionPerformed
+    private void InputContextoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InputContextoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_BotaoRegistrarActionPerformed
-
-    private void BotaoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotaoCancelarActionPerformed
-        
-        this.dispose();
-        
-        if(!unicaTela) return;
-        
-        TelaInstrumentos telaInstrumento = null;
-                 
-        try{
-            
-            telaInstrumento = new TelaInstrumentos();
-            
-        } catch (Exception e){
-            
-            System.out.println("Erro: " + e.getMessage());
-            return;
-        }
-        
-        telaInstrumento.setVisible(true);
-    }//GEN-LAST:event_BotaoCancelarActionPerformed
+    }//GEN-LAST:event_InputContextoActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BotaoCancelar;
     private javax.swing.JButton BotaoRegistrar;
+    private javax.swing.JLabel Contexto;
     private javax.swing.JLabel Descricao;
+    private javax.swing.JMenuItem ErroTextNome;
+    private javax.swing.JTextField InputContexto;
     private javax.swing.JTextArea InputDescricao;
     private javax.swing.JTextField InputNome;
     private javax.swing.JTextField InputReferencia;
     private javax.swing.JLabel Nome;
+    private javax.swing.JPopupMenu NomeErro;
     private javax.swing.JLabel Referencia;
     private javax.swing.JScrollPane ScrollDescricao;
     private javax.swing.JLabel SubTitulo;
+    private javax.swing.JPanel Tela;
     private javax.swing.JLabel Titulo;
-    private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }

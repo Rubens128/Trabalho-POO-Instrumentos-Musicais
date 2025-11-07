@@ -6,15 +6,17 @@ package controller;
 
 import dao.AudioDAO;
 import dao.AudioUtilizaTecnicaDAO;
+import dao.InstrumentoDAO;
 import dao.TecnicaDAO;
 import model.Audio;
 import model.AudioUtilizaTecnica;
+import model.Instrumento;
+import model.Tecnica;
 
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
-import model.Tecnica;
 
 
 /**
@@ -25,34 +27,48 @@ public class AudioControl {
     private final AudioDAO audioDAO;
     private AudioUtilizaTecnicaDAO audioTecnicaDAO;
     private final TecnicaDAO tecnicaDAO;
+    private final InstrumentoDAO instrumentoDAO;
     
     public AudioControl(){
         this.audioDAO = new AudioDAO();
         this.audioTecnicaDAO = new AudioUtilizaTecnicaDAO();
         this.tecnicaDAO = new TecnicaDAO();
+        this.instrumentoDAO = new InstrumentoDAO();
     }
     
     public Map<String, Long> adicionarAudio(long instrumentoID, String titulo, String nota, 
-            long oitava, String arquivo, String descricao, Long bpm, String creditos, long tecnicaID) throws SQLException {
+            Long oitava, String arquivo, String descricao, Long bpm, String creditos, long tecnicaID) throws SQLException {
         
         //ele ira verificar se o usuario colocou uma id valida de tecnica no audio
         //caso positico ele relacionar o id audio com a tecnica, cao contrario ele ira direto
 
         Map<String, Long> retornos = new HashMap<>();
         
-        Tecnica tecnicaEncontrar = tecnicaDAO.buscarPorID(tecnicaID); 
-        if (tecnicaEncontrar == null){
+        Tecnica tecnicaEncontrar = tecnicaDAO.buscarPorID(tecnicaID);
+        
+        if (tecnicaEncontrar == null && tecnicaID != -1L){
            
            retornos.put("Tecnica", 404L);
            
            return retornos;
-        } 
+        }
+        
+        Instrumento instrumentoEncontrar = instrumentoDAO.buscarPorID("harmonico", instrumentoID);
+        if(instrumentoEncontrar == null) instrumentoEncontrar = instrumentoDAO.buscarPorID("melodico", instrumentoID);
+        if(instrumentoEncontrar == null) instrumentoEncontrar = instrumentoDAO.buscarPorID("ritmico", instrumentoID);
+        
+        if (instrumentoEncontrar == null){
+           
+           retornos.put("Instrumento", 404L);
+           
+           return retornos;
+        }
 
         Audio ad = new Audio.Builder(0, instrumentoID, titulo, nota, oitava, arquivo)
                 .descricao(descricao != null ? descricao : null)
                 .bpm(bpm != null ? bpm : null)
                 .creditoGravacao(creditos != null ? creditos : null)
-                .tecnica(tecnicaEncontrar)
+                .tecnica(tecnicaID == -1 ? null : tecnicaEncontrar)
                 .build();
         
          retornos = audioDAO.inserir(ad); 
@@ -61,10 +77,15 @@ public class AudioControl {
              
              return retornos;
          }
+         
+        AudioUtilizaTecnica rela;
         
-        AudioUtilizaTecnica rela = new AudioUtilizaTecnica(retornos.get("ID"), tecnicaEncontrar.getId());
-                
-        retornos = audioTecnicaDAO.inserir(rela);
+        if(tecnicaEncontrar != null){
+            
+            rela = new AudioUtilizaTecnica(retornos.get("ID"), tecnicaEncontrar.getId());
+            
+            retornos = audioTecnicaDAO.inserir(rela);
+        }
         
         return retornos;
     }
@@ -78,6 +99,7 @@ public class AudioControl {
     }
     
     public Map<String, Long> atualizarAudio(Audio audio) throws SQLException {
+       
         return audioDAO.atualizar(audio);
     }
     

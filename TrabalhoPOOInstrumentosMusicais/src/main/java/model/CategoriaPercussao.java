@@ -13,7 +13,9 @@ public enum CategoriaPercussao {
     IDIOFONE("idiofone"),
     CORDOFONE("cordofone"),
     AEROFONE("aerofone"),
-    ELETROFONE("eletrofone");
+    ELETROFONE("eletrofone"),
+    OUTRO("outro"),
+    NAOINFORMADO("nãoInformado");
 
     private final String valor;
 

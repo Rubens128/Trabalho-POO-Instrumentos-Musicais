@@ -14,6 +14,7 @@ import controller.InstrumentosControl;
 import model.Instrumento;
 import java.util.ArrayList;
 import java.util.List;
+import model.Audio;
 
 import javax.swing.JMenuItem;
 
@@ -43,10 +44,9 @@ public class TelaInstrumentos extends javax.swing.JFrame {
         
         for(Instrumento i: instrumentos){
             
-            addInstrumentoCard(i.getNome(), i.getDescricao(), true);
+            addInstrumentoCard(i.getNome(), i.getDescricao(), true, i);
         }
     
-        
     }
 
     /**
@@ -64,7 +64,6 @@ public class TelaInstrumentos extends javax.swing.JFrame {
         familia_instrumento = new javax.swing.JMenuItem();
         tecnica = new javax.swing.JMenuItem();
         material = new javax.swing.JMenuItem();
-        parte = new javax.swing.JMenuItem();
         afinação = new javax.swing.JMenuItem();
         menuInstrumento = new javax.swing.JPopupMenu();
         instrumentoHarmonico = new javax.swing.JMenuItem();
@@ -150,19 +149,6 @@ public class TelaInstrumentos extends javax.swing.JFrame {
         });
         menu.add(material);
 
-        parte.setBackground(new java.awt.Color(11, 27, 58));
-        parte.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        parte.setForeground(java.awt.Color.white);
-        parte.setText("Parte");
-        parte.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 4, 4));
-        parte.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        parte.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                padraoActionPerformed(evt);
-            }
-        });
-        menu.add(parte);
-
         afinação.setBackground(new java.awt.Color(11, 27, 58));
         afinação.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         afinação.setForeground(java.awt.Color.white);
@@ -233,6 +219,7 @@ public class TelaInstrumentos extends javax.swing.JFrame {
         CardsPanel.setBackground(new java.awt.Color(11, 27, 78));
         CardsPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 15, 10, 15));
         CardsPanel.setAutoscrolls(true);
+        CardsPanel.setPreferredSize(null);
 
         javax.swing.GroupLayout CardsPanelLayout = new javax.swing.GroupLayout(CardsPanel);
         CardsPanel.setLayout(CardsPanelLayout);
@@ -368,128 +355,128 @@ public class TelaInstrumentos extends javax.swing.JFrame {
 
     private void audioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_audioActionPerformed
         
-        this.dispose();
-        
+        this.setVisible(false);        
         
         if(acaoMenu.equalsIgnoreCase("Adicionar")){
             
-            InterfaceInputAudio telaInputAudio = new InterfaceInputAudio(true, false);
+            InterfaceInputAudio telaInputAudio = new InterfaceInputAudio(true, false, null, this);
             
             telaInputAudio.setVisible(true);
             
         }else if(acaoMenu.equalsIgnoreCase("Deletar")){
             
-            InterfaceDeletarPadrao telaDeletarAudio = new InterfaceDeletarPadrao("Audio", true);
+            InterfaceDeletarPadrao telaDeletarAudio = new InterfaceDeletarPadrao("Audio", true, null, this);
             
             telaDeletarAudio.setVisible(true);
         }else if(acaoMenu.equalsIgnoreCase("Editar")){
             
-            InterfaceInputAudio telaInputAudio = new InterfaceInputAudio(true, true);
+            InterfaceAtualizarPadrao telaAtualizarAudio = new InterfaceAtualizarPadrao("Audio", true, "sem", this);
             
-            telaInputAudio.setVisible(true);
+            telaAtualizarAudio.setVisible(true);
         }
         
     }//GEN-LAST:event_audioActionPerformed
 
     private void padraoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_padraoActionPerformed
        
-        this.dispose();
+        this.setVisible(false);
   
         JMenuItem menuItem = (JMenuItem) evt.getSource();
         String nome = menuItem.getText();
         
         if(acaoMenu.equalsIgnoreCase("Adicionar")){
             
-            InterfaceInputPadrao telaInputPadrao = new InterfaceInputPadrao(nome, true, false);
+            InterfaceInputPadrao telaInput = new InterfaceInputPadrao(nome, true, false, null, this);
             
-            telaInputPadrao.setVisible(true);
+            telaInput.setVisible(true);
             
         }else if(acaoMenu.equalsIgnoreCase("Deletar")){
             
-            InterfaceDeletarPadrao telaDeletarAudio = new InterfaceDeletarPadrao(nome, true);
+            InterfaceDeletarPadrao telaDeletar = new InterfaceDeletarPadrao(nome, true, null, this);
             
-            telaDeletarAudio.setVisible(true);
+            telaDeletar.setVisible(true);
+            
         }else if(acaoMenu.equalsIgnoreCase("Editar")){
             
-            InterfaceInputPadrao telaInputPadrao = new InterfaceInputPadrao(nome, true, true);
+            InterfaceAtualizarPadrao telaAtualizar = new InterfaceAtualizarPadrao(nome, true, "sem", this);
             
-            telaInputPadrao.setVisible(true);
+            telaAtualizar.setVisible(true);
         }
     }//GEN-LAST:event_padraoActionPerformed
 
     private void instrumentoHarmonicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_instrumentoHarmonicoActionPerformed
         
-        this.dispose();
+        this.setVisible(false);
         
         if(acaoMenu.equalsIgnoreCase("Adicionar")){
             
-            InterfaceInputInstrumento telaInputInstrumento = new InterfaceInputInstrumento("harmonico", true, false);
+            InterfaceInputInstrumento telaInputInstrumento = new InterfaceInputInstrumento("harmonico", true, false, null, this);
             
             telaInputInstrumento.setVisible(true);
             
         }else if(acaoMenu.equalsIgnoreCase("Deletar")){
             
-            InterfaceDeletarPadrao telaDeletarInstrumento = new InterfaceDeletarPadrao("Instrumento", true);
+            InterfaceDeletarPadrao telaDeletarInstrumento = new InterfaceDeletarPadrao("Instrumento", true, "harmonico", this);
             
             telaDeletarInstrumento.setVisible(true);
         }else if(acaoMenu.equalsIgnoreCase("Editar")){
             
-            InterfaceInputInstrumento telaInputInstrumento = new InterfaceInputInstrumento("harmonico", true, true);
+            InterfaceAtualizarPadrao telaAtualizar = new InterfaceAtualizarPadrao("Instrumento", true, "harmonico", this);
             
-            telaInputInstrumento.setVisible(true);
+            telaAtualizar.setVisible(true);
         }
     }//GEN-LAST:event_instrumentoHarmonicoActionPerformed
 
     private void instrumentoMelodicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_instrumentoMelodicoActionPerformed
         
-        this.dispose();
+        this.setVisible(false);
         
         if(acaoMenu.equalsIgnoreCase("Adicionar")){
             
-            InterfaceInputInstrumento telaInputInstrumento = new InterfaceInputInstrumento("melodico", true, false);
+            InterfaceInputInstrumento telaInputInstrumento = new InterfaceInputInstrumento("melodico", true, false, null, this);
             
             telaInputInstrumento.setVisible(true);
             
         }else if(acaoMenu.equalsIgnoreCase("Deletar")){
             
-            InterfaceDeletarPadrao telaDeletarInstrumento = new InterfaceDeletarPadrao("Instrumento", true);
+            InterfaceDeletarPadrao telaDeletarInstrumento = new InterfaceDeletarPadrao("Instrumento", true, "melodico", this);
             
             telaDeletarInstrumento.setVisible(true);
         }else if(acaoMenu.equalsIgnoreCase("Editar")){
             
-            InterfaceInputInstrumento telaInputInstrumento = new InterfaceInputInstrumento("melodico", true, true);
+            InterfaceAtualizarPadrao telaAtualizar = new InterfaceAtualizarPadrao("Instrumento", true, "melodico", this);
             
-            telaInputInstrumento.setVisible(true);
+            telaAtualizar.setVisible(true);
         }
     }//GEN-LAST:event_instrumentoMelodicoActionPerformed
 
     private void instrumentoRitmicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_instrumentoRitmicoActionPerformed
         
-        this.dispose();
+        this.setVisible(false);
         
         if(acaoMenu.equalsIgnoreCase("Adicionar")){
             
-            InterfaceInputInstrumento telaInputInstrumento = new InterfaceInputInstrumento("ritmico", true, false);
+            InterfaceInputInstrumento telaInputInstrumento = new InterfaceInputInstrumento("ritmico", true, false, null, this);
             
             telaInputInstrumento.setVisible(true);
             
         }else if(acaoMenu.equalsIgnoreCase("Deletar")){
             
-            InterfaceDeletarPadrao telaDeletarInstrumento = new InterfaceDeletarPadrao("Instrumento", true);
+            InterfaceDeletarPadrao telaDeletarInstrumento = new InterfaceDeletarPadrao("Instrumento", true, "ritmico", this);
             
             telaDeletarInstrumento.setVisible(true);
         }else if(acaoMenu.equalsIgnoreCase("Editar")){
             
-            InterfaceInputInstrumento telaInputInstrumento = new InterfaceInputInstrumento("ritmico", true, true);
+            InterfaceAtualizarPadrao telaAtualizar = new InterfaceAtualizarPadrao("Instrumento", true, "ritmico", this);
             
-            telaInputInstrumento.setVisible(true);
+            telaAtualizar.setVisible(true);
         }
     }//GEN-LAST:event_instrumentoRitmicoActionPerformed
  
-    public void addInstrumentoCard(String nome, String descricao, boolean temAudio){
+    public void addInstrumentoCard(String nome, String descricao, boolean temAudio, Instrumento instrumento){
         
         CardInstrumento card = new CardInstrumento();
-        card.setCardInstrumento(nome, descricao, temAudio);
+        card.setCardInstrumento(nome, descricao, temAudio, instrumento, this);
                 
         CardsPanel.add(card);
         CardsPanel.add(javax.swing.Box.createVerticalStrut(15));
@@ -516,7 +503,6 @@ public class TelaInstrumentos extends javax.swing.JFrame {
     private javax.swing.JMenuItem material;
     private javax.swing.JPopupMenu menu;
     private javax.swing.JPopupMenu menuInstrumento;
-    private javax.swing.JMenuItem parte;
     private javax.swing.JMenuItem tecnica;
     private javax.swing.JLabel titulo;
     // End of variables declaration//GEN-END:variables

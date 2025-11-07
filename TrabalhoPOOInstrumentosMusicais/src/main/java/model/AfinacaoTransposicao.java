@@ -13,7 +13,8 @@ public enum AfinacaoTransposicao {
     BB("Bb"),
     EB("Eb"),
     F("F"),
-    OUTRO("outro");
+    OUTRO("outro"),
+    NAOINFORMADO("nãoInformado");
 
     private String valor;
 
