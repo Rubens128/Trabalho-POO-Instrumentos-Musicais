@@ -59,6 +59,7 @@ public class InterfaceInputPadrao extends javax.swing.JFrame {
         this.editar = editar;
         this.dado = dado;
         
+        // Se essa interface for para atualizar algum objeto ele vai personalizar ela de acordo
         if(editar){
             
             SubTitulo.setText("Não digitar nada mantém o valor atual");
@@ -72,6 +73,7 @@ public class InterfaceInputPadrao extends javax.swing.JFrame {
             SubTitulo.setVisible(false);
         }
         
+        //Remover campos extras caso essa tela não seja para a classe de Afinação
         if(!titulo.equals("Afinação")){
             
             Referencia.enableInputMethods(false);
@@ -89,8 +91,11 @@ public class InterfaceInputPadrao extends javax.swing.JFrame {
         
         this.unicaTela = unicaTela;
         
+        //Centraliza na tela
         setLocationRelativeTo(null);
         
+        
+        //Percorre todos os campos de input da interface e coloca uma borda branca neles
         SwingUtilities.invokeLater(() -> {
         
             for(Component componente: Tela.getComponents()){
@@ -359,6 +364,8 @@ public class InterfaceInputPadrao extends javax.swing.JFrame {
     }//GEN-LAST:event_BotaoCancelarActionPerformed
 
     private void finalizarTela(Map<String, Long> retornos){
+        
+        //Cria um temporizador de 3 segundos para apagar essa tela e voltar para a tela principal
         Timer temporizador = new Timer(3000, evento -> {
             
             this.dispose();
@@ -379,6 +386,7 @@ public class InterfaceInputPadrao extends javax.swing.JFrame {
         
         final Confirmacao telaConfirmacao;
         
+        // Caso tenha dado erro o sistema vai mostrar uma mensagem de erro e voltar para a tela principal depois de 3 segundos
         if(retornos.get("Codigo") != 200){
             
             if(editar) telaConfirmacao = new Confirmacao(titulo, "Objeto não Atualizado", false);
@@ -389,11 +397,13 @@ public class InterfaceInputPadrao extends javax.swing.JFrame {
             return;
         }
         
-        if(editar) telaConfirmacao = new Confirmacao(titulo, "Objeto não Atualizado", false);
-        else telaConfirmacao = new Confirmacao(titulo, "Objeto não Registrado", false);
+        //Caso tenha dado certo o sistema vai mostrar uma mensagem de sucesso e voltar para a tela principal depois de 3 segundos
+        if(editar) telaConfirmacao = new Confirmacao(titulo, "Objeto Atualizado", false);
+        else telaConfirmacao = new Confirmacao(titulo, "Objeto Registrado", false);
      
         telaConfirmacao.setVisible(true);
         
+        //temporizador de 2,5 segundos para apagar a tela de confirmação do envio
         Timer temporizador2 = new Timer(2500, (evento) -> {
             
             telaConfirmacao.dispose();
@@ -408,7 +418,8 @@ public class InterfaceInputPadrao extends javax.swing.JFrame {
         
 
         boolean faltaCampo = false;
-
+        
+        //Caso esteja faltando o campo obrigatorio a borda fica vermelha e a função retorna
         if((InputNome.getText() == null || InputNome.getText().isBlank()) && !editar){
 
             faltaCampo = true;
@@ -424,6 +435,8 @@ public class InterfaceInputPadrao extends javax.swing.JFrame {
         
         Map<String, Long> retornos = new HashMap<>();
         
+        
+        //Coletando as informações que o usuario digitou
         String nome = InputNome.getText() == null || InputNome.getText().isBlank() ? null : InputNome.getText();
         String descricao = InputDescricao.getText() == null || InputDescricao.getText().isBlank() ? null : InputDescricao.getText();
         String contexto = InputContexto.getText() == null || InputContexto.getText().isBlank() ? null : InputContexto.getText();
@@ -431,8 +444,11 @@ public class InterfaceInputPadrao extends javax.swing.JFrame {
         
         try{
             
+            //Caso essa tela esteja no modo de atualizar vai entrar nesse if
             if(editar){
-            
+                
+                
+                //Cadeia de if else if para verificar em qual classe as informações deveriam ser atualizadas e vai atualizar
                 if(titulo.equalsIgnoreCase("Familia_Instrumento")){
 
                     FamiliaInstrumentoControl familiaController = new FamiliaInstrumentoControl();
@@ -481,6 +497,7 @@ public class InterfaceInputPadrao extends javax.swing.JFrame {
 
                 }
                 
+                //Chama a função que verifica os retornos e encerra a tela
                 finalizarTela(retornos);
                 
                 return;
@@ -493,6 +510,7 @@ public class InterfaceInputPadrao extends javax.swing.JFrame {
         
         try{
            
+            //Cadeia de if else if para ver em qual classe devem ser inseridos os dados coletados
             if(titulo.equalsIgnoreCase("Familia_Instrumento")){
 
                 FamiliaInstrumentoControl familiaController = new FamiliaInstrumentoControl();
@@ -526,6 +544,7 @@ public class InterfaceInputPadrao extends javax.swing.JFrame {
             return;
         }
         
+        //Coleta o erro de campos com valores iguais no banco de dados
         if(retornos.get("Codigo") == 1062){
             
             NomeErro.show(InputNome, 0, InputNome.getHeight());

@@ -25,22 +25,31 @@ public class TelaListarPadrao extends javax.swing.JFrame {
     
     /**
      * Creates new form TelaPrincipal
+     * @param nome é o parametro para definir o nome da Lista e o que ela vai mostrar
+     * @param especializacao serve para mostrar a especialização de instrumento
+     * @param telaPrincipal é a referencia da primeira tela de Instrumentos
      */
     public TelaListarPadrao(String nome, String especializacao, TelaInstrumentos telaPrincipal) throws Exception{
         initComponents();
         
         this.telaPrincipal = telaPrincipal;
         
+        
+        //Aumenta a velocidade do scroll da lista
         DivInstrumentos.getVerticalScrollBar().setUnitIncrement(32);
 
+        //Adiciona o layout que permite que o campo se expanda para baixo com o scroll
         CardsPanel.setLayout(new javax.swing.BoxLayout(CardsPanel, javax.swing.BoxLayout.Y_AXIS));
         
         DivInstrumentos.setViewportView(CardsPanel);
         
+        // coloca a tela no centro da tela do pc
         setLocationRelativeTo(null);
         
         titulo.setText(nome);
         
+        
+        //Cadeia de if else if para definir qual tabela os dados devem ser buscados
         if(nome.equalsIgnoreCase("Instrumento")){
 
             InstrumentosControl instrumentosControl = new InstrumentosControl();
@@ -219,15 +228,18 @@ public class TelaListarPadrao extends javax.swing.JFrame {
 
     private void BotaoFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotaoFecharActionPerformed
 
+        //fecha a tela atual
         this.dispose();
 
     }//GEN-LAST:event_BotaoFecharActionPerformed
  
+    
+    // Cria os cards com as informações de cada elemento para ser adicionado no campo do scroll
     public final void addCard(String nome, String descricao, String id){
         
         CardListarPadrao card = new CardListarPadrao();
         card.setCard(nome, descricao, id);
-                
+        
         CardsPanel.add(card);
         CardsPanel.add(javax.swing.Box.createVerticalStrut(15));
         

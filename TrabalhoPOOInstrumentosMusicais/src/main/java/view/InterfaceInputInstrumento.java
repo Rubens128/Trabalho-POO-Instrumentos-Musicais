@@ -70,6 +70,8 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
         this.dado = dado;
         this.editar = editar;
         
+        
+        //Caso a tela seja para atualizar ela vai ser personalizada de outra forma
         if(editar){
             
             Titulo.setText("Instrumento" + " (Não digitar nada mantém o valor atual):");
@@ -80,6 +82,7 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
             Audio_ids.setText("Audio_ids:");
         }
         
+        //Cadeia de if else if para verificar qual tipo de especialização do instrumento o usuario quer adicionar e criar os inputs de acordo
         if(especializacao.equalsIgnoreCase("harmonico")){
             
             Opcao1.setText("Polifonia_max:");
@@ -101,8 +104,10 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
         
         this.unicaTela = unicaTela;
         
+        //Função que é executada depois que a interface está montada
         SwingUtilities.invokeLater(() -> {
-        
+            
+            //Percorre todos os campos de input e coloca uma borda branca neles
             for(Component componente: Tela.getComponents()){
                 
                 if(componente instanceof JTextField campoTexto){
@@ -116,6 +121,7 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
                 }
             }
             
+            //Função para evitar que campos de input numericos possam aceitar caracteres
             KeyAdapter funcaoSoNumero = new KeyAdapter() {
                 
                 @Override
@@ -778,6 +784,7 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
             }
         }
         
+        //Cria a tela para listar audio
         try{
             
             telaListarAudio = new TelaListarPadrao("Audio", null, telaPrincipal);
@@ -807,6 +814,7 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
             }
         }
         
+        //cria a tela para listar familia instrumento
         try{
             
             telaListarFamilia = new TelaListarPadrao("Familia_Instrumento", null, telaPrincipal);
@@ -832,6 +840,7 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
             }
         }
         
+        //cria a tela para listar afinações
         try{
             
             telaListarAfinacao = new TelaListarPadrao("Afinação", null, telaPrincipal);
@@ -874,6 +883,7 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
             }
         }
         
+        //cria a tela para listar materiais
         try{
             
             telaListarMaterial = new TelaListarPadrao("Material", null, telaPrincipal);
@@ -903,6 +913,8 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
     }//GEN-LAST:event_InputOpcao3ActionPerformed
 
     private void finalizarTela(Map<String, Long> retornos){
+        
+        //temporizador de 3 segundos para apagar essa tela e voltar para a tela principal
         Timer temporizador = new Timer(3000, evento -> {
             
             this.dispose();
@@ -935,6 +947,7 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
         
         final Confirmacao telaConfirmacao;
         
+        //se der erro no sistema, é criado uma pequena tela que mostra que a operação deu um erro
         if(retornos.get("Codigo") != 200){
             
             
@@ -946,11 +959,14 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
             return;
         }
         
+        //se der certo a operação, é criado uma mini tela que mostrar que a operação deu certo
         if(editar) telaConfirmacao = new Confirmacao("Instrumento", "Objeto Atualizado", true);
         else telaConfirmacao = new Confirmacao("Instrumento", "Objeto Registrado", true);
         
         telaConfirmacao.setVisible(true);
         
+        
+        //timer de 2,5 segundos para fechar a tela de confimação
         Timer temporizador2 = new Timer(2500, (evento) -> {
             
             telaConfirmacao.dispose();
@@ -965,6 +981,7 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
         
         boolean faltaCampo = false;
         
+        //Percorre todos os inputs que são obrigatorios e caso o usuario não tenha preenchido algum é colocado uma borda vermelha para alertar
         for(Component componente: Tela.getComponents()){
                 
             if(componente instanceof JTextField campoTexto){
@@ -985,6 +1002,7 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
             }
         }
         
+        //Variaveis para coletar os dados que o usuario enviou
         String nome = InputNome.getText() == null || InputNome.getText().isBlank() ? null : InputNome.getText();
         String descricao = InputDescricao.getText() == null || InputDescricao.getText().isBlank() ? null : InputDescricao.getText();
         
@@ -1011,6 +1029,8 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
         
         InstrumentosControl instrumentoController = new InstrumentosControl();
         
+        // as opcoes são objetos genericos então essa cadeia de if else if serve para colocar os valores correspondentes em cada opção
+        // com base na especialização do instrumento
         if(especializacao.equalsIgnoreCase("harmonico")){
             
             if(Opcao1.getText().chars().allMatch(Character::isDigit)){
@@ -1109,17 +1129,19 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
         }
         
         try{
-            
+            // caso a tela seja para atualizar um instrumento entra nesse if
             if(editar){
                 
                 Instrumento instrumento = (Instrumento) dado;
                 
-                /*if(nome != null) instrumento.setNome(nome);;
+                if(nome != null) instrumento.setNome(nome);
                 if(descricao != null) instrumento.setDescricao(descricao);
                 if(classificacaoSonoridade != null) instrumento.setClassificacaoSonoridade(classificacaoSonoridade);
-                if(historia != null) instrumento.setHistoria(historia);*/
+                if(historia != null) instrumento.setHistoria(historia);
                 
                 
+                //Vários ifs para verificar se os ids de tabelas que o instrumento se relaciona existem, e caso não exita é criado um
+                //alerta para o usuario
                 if(familia_id != -1L){
                     
                     FamiliaInstrumentoControl familiaInstrumentoController = new FamiliaInstrumentoControl();
@@ -1206,6 +1228,8 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
                     }
                 }
                 
+                
+                //Cadeia de if else if para preencher os dados do instrumento com base na sua especialização
                 if(especializacao.equalsIgnoreCase("harmonico")){
                     
                     InstrumentoHarmonico ih = (InstrumentoHarmonico) instrumento;
@@ -1248,6 +1272,8 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
             System.out.println("Erro: " + e.getMessage());
         }
         
+        
+        //criando o objeto do instrumento
         try{
             
             retornos = instrumentoController.adicionarInstrumento(familia_id, nome, classificacaoSonoridade, 
@@ -1259,6 +1285,8 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
             System.out.println("ErroAqui: " + e.getMessage());
         }
         
+        //Cadeia de if else if que serve para verificar se o ID do relacionamento de alguma tabela que o usuario inseriou não existe
+        //caso não exista é criado um alerta em baixo do campo onde o usuario errou
         if(retornos.containsKey("Familia")){
             
             ErroTextNome.setText("Não existe Familia com esse ID");
@@ -1301,6 +1329,7 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
         
         if(!unicaTela) return;
         
+        //fecha todas as telas e volta para a tela principal
         if(telaInputFamilia != null) telaInputFamilia.dispose();
         if(telaInputAudio != null) telaInputAudio.dispose();
         if(telaInputAfinacao != null) telaInputAfinacao.dispose();
@@ -1325,6 +1354,8 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
             }
         }
         
+        // abre a tela de adicionar familia instrumento
+        
         telaInputFamilia = new InterfaceInputPadrao("Familia_Instrumento", false, false, null, telaPrincipal);
             
         telaInputFamilia.setVisible(true);
@@ -1343,6 +1374,8 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
                 return;
             }
         }
+        
+        //Abre a tela de adicionar afinações
         
         telaInputAfinacao = new InterfaceInputPadrao("Afinação", false, false, null, telaPrincipal);
             
@@ -1363,6 +1396,8 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
             }
         }
         
+        //Abre a tela de adicionar materiais
+        
         telaInputMaterial = new InterfaceInputPadrao("Material", false, false, null, telaPrincipal);
             
         telaInputMaterial.setVisible(true);
@@ -1381,6 +1416,8 @@ public class InterfaceInputInstrumento extends javax.swing.JFrame {
                 return;
             }
         }
+        
+        //Abre a tela de adicionar Audios
         
         telaInputAudio = new InterfaceInputAudio(false, false, null, telaPrincipal);
             

@@ -30,20 +30,24 @@ public class TelaInstrumentos extends javax.swing.JFrame {
     public TelaInstrumentos() throws Exception {
         initComponents();
         
+        //Aumenta a velocidade do Scroll
         DivInstrumentos.getVerticalScrollBar().setUnitIncrement(32);
 
+        //Layout para permitir o scroll na vertical
         CardsPanel.setLayout(new javax.swing.BoxLayout(CardsPanel, javax.swing.BoxLayout.Y_AXIS));
         
+        //Centraliza a tela no meio da tela do pc
         setLocationRelativeTo(null);
-        
+       
         InstrumentosControl instrumentosControl = new InstrumentosControl();
         
+        //Coleta todos os instrumentos
         List<Instrumento> instrumentos = instrumentosControl.listarInstrumentos("harmonico");
         instrumentos.addAll(instrumentosControl.listarInstrumentos("melodico"));
         instrumentos.addAll(instrumentosControl.listarInstrumentos("ritmico"));
         
         for(Instrumento i: instrumentos){
-            
+            //Adiciona o card de cada instrumento no campo do scroll
             addInstrumentoCard(i.getNome(), i.getDescricao(), true, i);
         }
     
@@ -330,6 +334,7 @@ public class TelaInstrumentos extends javax.swing.JFrame {
 
     private void adicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adicionarActionPerformed
         
+        //Abre o menu de seleção
         acaoMenu = "Adicionar";
         menu.show(adicionar, -(adicionar.getWidth()), adicionar.getHeight());
         
@@ -337,18 +342,21 @@ public class TelaInstrumentos extends javax.swing.JFrame {
 
     private void deletarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deletarActionPerformed
         
+        //Abre o menu de seleção
         acaoMenu = "Deletar";
         menu.show(adicionar, -(adicionar.getWidth()), adicionar.getHeight());
     }//GEN-LAST:event_deletarActionPerformed
 
     private void editarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarActionPerformed
         
+        //Abre o menu de seleção
         acaoMenu = "Editar";
         menu.show(adicionar, -(adicionar.getWidth()), adicionar.getHeight());
     }//GEN-LAST:event_editarActionPerformed
 
     private void instrumentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_instrumentoActionPerformed
            
+        //Abre o menu de seleção de especialização do instrumento
         menuInstrumento.show(adicionar, -(adicionar.getWidth()), adicionar.getHeight());
         
     }//GEN-LAST:event_instrumentoActionPerformed
@@ -357,6 +365,7 @@ public class TelaInstrumentos extends javax.swing.JFrame {
         
         this.setVisible(false);        
         
+        //cadeia de if else if para definir qual tela abrir ao clicar em "audio"
         if(acaoMenu.equalsIgnoreCase("Adicionar")){
             
             InterfaceInputAudio telaInputAudio = new InterfaceInputAudio(true, false, null, this);
@@ -380,10 +389,11 @@ public class TelaInstrumentos extends javax.swing.JFrame {
     private void padraoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_padraoActionPerformed
        
         this.setVisible(false);
-  
+        
         JMenuItem menuItem = (JMenuItem) evt.getSource();
         String nome = menuItem.getText();
         
+        //Cadeia de if else if para definir qual tela abrir com base na escolha do usuario (tela generica)
         if(acaoMenu.equalsIgnoreCase("Adicionar")){
             
             InterfaceInputPadrao telaInput = new InterfaceInputPadrao(nome, true, false, null, this);
@@ -408,6 +418,8 @@ public class TelaInstrumentos extends javax.swing.JFrame {
         
         this.setVisible(false);
         
+        
+        //Cadeia de if else if para definir qual tela de especialização de instrumento abrir
         if(acaoMenu.equalsIgnoreCase("Adicionar")){
             
             InterfaceInputInstrumento telaInputInstrumento = new InterfaceInputInstrumento("harmonico", true, false, null, this);
@@ -431,6 +443,7 @@ public class TelaInstrumentos extends javax.swing.JFrame {
         
         this.setVisible(false);
         
+        //Cadeia de if else if para definir qual tela de especialização de instrumento abrir
         if(acaoMenu.equalsIgnoreCase("Adicionar")){
             
             InterfaceInputInstrumento telaInputInstrumento = new InterfaceInputInstrumento("melodico", true, false, null, this);
@@ -454,6 +467,8 @@ public class TelaInstrumentos extends javax.swing.JFrame {
         
         this.setVisible(false);
         
+        
+        //Cadeia de if else if para definir qual especialização de instrumento abrir
         if(acaoMenu.equalsIgnoreCase("Adicionar")){
             
             InterfaceInputInstrumento telaInputInstrumento = new InterfaceInputInstrumento("ritmico", true, false, null, this);
@@ -477,7 +492,8 @@ public class TelaInstrumentos extends javax.swing.JFrame {
         
         CardInstrumento card = new CardInstrumento();
         card.setCardInstrumento(nome, descricao, temAudio, instrumento, this);
-                
+        
+        //Cria um card com base nas informações e adiciona ele no campo de scroll junto com um espaçamento
         CardsPanel.add(card);
         CardsPanel.add(javax.swing.Box.createVerticalStrut(15));
         

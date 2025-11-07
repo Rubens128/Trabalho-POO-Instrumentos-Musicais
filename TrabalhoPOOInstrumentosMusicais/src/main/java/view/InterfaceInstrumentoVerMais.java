@@ -38,7 +38,8 @@ public class InterfaceInstrumentoVerMais extends javax.swing.JFrame {
     /**
      * Creates new form InterfaceInputPadrão
      * 
-     * @param titulo serve para mostrar o titulo da interface
+     * @param instrumento serve para coletar os principais dados de informação
+     * @param telaPrincipal referencia a tela principal de instrumentos
      */
     public InterfaceInstrumentoVerMais(Instrumento instrumento, TelaInstrumentos telaPrincipal) {
         initComponents();
@@ -47,6 +48,8 @@ public class InterfaceInstrumentoVerMais extends javax.swing.JFrame {
         
         this.instrumento_id = instrumento.getId();
         
+        
+        //vários if else para personalizar a interface com base no instrumento clicado
         if(instrumento.getNome() != null) Nome.setText(instrumento.getNome());
         if(instrumento.getId() != -1) ID.setText("ID: " + String.valueOf(instrumento.getId()));
         
@@ -64,6 +67,8 @@ public class InterfaceInstrumentoVerMais extends javax.swing.JFrame {
         
         FamiliaInstrumento familiaInstrumento = null;
         
+        
+        //Colentando o objeto da familiaID que está relacionado com esse instrumento para pegar suas informações e colocar na interface
         try{
             if(instrumento.getFamiliaId() != -1) familiaInstrumento = familiaController.listarFamiliaporId(instrumento.getFamiliaId());
             
@@ -380,7 +385,8 @@ public class InterfaceInstrumentoVerMais extends javax.swing.JFrame {
 
     private void BotaoTocarSomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotaoTocarSomActionPerformed
         AudioControl audioController = new AudioControl();
-
+        
+        //Carregar o audio com base no arquivo relacionado com o instrumento
         try{
             List<Audio> audios = audioController.listarAudio();
 

@@ -18,10 +18,12 @@ public class TrabalhoPOOInstrumentosMusicais {
 
     public static void main(String[] args) {
        
+        //Thread para poder começar a interface do javaForms
         java.awt.EventQueue.invokeLater(() -> {
             
             try{
-            
+                
+                //Instanciando a tela principal para começar todo o sistema
                 TelaInstrumentos telaInstrumentos = new TelaInstrumentos();
                 telaInstrumentos.setVisible(true);
             
